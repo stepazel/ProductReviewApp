@@ -20,7 +20,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Override
     @Caching(evict = {
             @CacheEvict(key = "#p0.userId", condition = "#p0.userId != null"),
-            @CacheEvict(key = "#p0.username", condition = "#p0.username != null") })
+            @CacheEvict(key = "#p0.username", condition = "#p0.username != null")})
     <S extends User> S save(S entity);
 
     @Override
@@ -28,10 +28,10 @@ public interface UserRepository extends CrudRepository<User, Long> {
     Optional<User> findById(Long userId);
 
     @Cacheable
-    default User getById(final Long userId){
+    default User getById(final Long userId) {
         final Optional<User> optionalUser = findById(userId);
 
-        if(optionalUser.isEmpty()){
+        if (optionalUser.isEmpty()) {
             throw new ResourceNotFoundException(User.class, userId);
         }
         if (!optionalUser.get().isEnabled()) {

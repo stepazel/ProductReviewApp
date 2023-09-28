@@ -7,7 +7,6 @@ import java.util.Objects;
 public class Product {
 
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long productID;
@@ -24,7 +23,8 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Review> review = new ArrayList<Review>(); */
 
-    protected Product(){}
+    protected Product() {
+    }
 
     public Product(final Long productID, final String sku) {
         this.productID = Objects.requireNonNull(productID);

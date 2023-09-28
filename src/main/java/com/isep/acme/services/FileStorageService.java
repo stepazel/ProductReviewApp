@@ -27,11 +27,11 @@ public class FileStorageService {
     private ProductRepository repository;
 
     public Optional<Product> findByID(final Long id) {
-        return repository.findById( id);
+        return repository.findById(id);
     }
 
     @Autowired
-    public FileStorageService(FileStorageProperties fileStorageProperties)  {
+    public FileStorageService(FileStorageProperties fileStorageProperties) {
 
         this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir()).toAbsolutePath().normalize();
 
@@ -43,13 +43,13 @@ public class FileStorageService {
     }
 
 
-    public String storeFile(MultipartFile file){
+    public String storeFile(MultipartFile file) {
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
         try {
             // Check if the file's name contains invalid characters
-            if(fileName.contains("..")) {
+            if (fileName.contains("..")) {
                 throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
             }
 
@@ -63,11 +63,11 @@ public class FileStorageService {
         }
     }
 
-    public Resource loadFileAsResource( String fileName) {
+    public Resource loadFileAsResource(String fileName) {
         try {
             Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
             Resource resource = new UrlResource(filePath.toUri());
-            if(resource.exists()) {
+            if (resource.exists()) {
                 return resource;
             } else {
                 throw new MyFileNotFoundException("File not found " + fileName);

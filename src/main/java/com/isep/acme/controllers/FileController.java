@@ -39,13 +39,13 @@ public class FileController {
 
 
     @GetMapping(value = "/fileid/{id}")
-    public ResponseEntity<ProdImage> findById(@PathVariable("id") final Long id){
+    public ResponseEntity<ProdImage> findById(@PathVariable("id") final Long id) {
 
         final var prodImage = iRepo.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, " Not Found"));
 
 
-        return  ResponseEntity.ok().body(prodImage);
+        return ResponseEntity.ok().body(prodImage);
     }
 
     @PostMapping("/uploadFile")
@@ -70,14 +70,12 @@ public class FileController {
     }
 
     @GetMapping(value = "/ID/{productID}")
-    public ResponseEntity<Product> findByID(@PathVariable("productID") final Long productID){
+    public ResponseEntity<Product> findByID(@PathVariable("productID") final Long productID) {
         final var product = pRepo.findById(productID)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product Not Found"));
 
         return ResponseEntity.ok().body(product);
     }
-
-
 
 
 }

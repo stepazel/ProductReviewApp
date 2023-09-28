@@ -21,7 +21,7 @@ public class AggregatedRatingController {
 
 
     @GetMapping(value = "/{sku}")
-    ResponseEntity<AggregatedRating> getAverage(@PathVariable("sku") final String sku ) {
+    ResponseEntity<AggregatedRating> getAverage(@PathVariable("sku") final String sku) {
 
         AggregatedRating a = aService.save(sku);
 

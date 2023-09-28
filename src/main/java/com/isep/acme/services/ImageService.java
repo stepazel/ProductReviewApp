@@ -15,34 +15,31 @@ public class ImageService {
     @Autowired
     private Resource image;
     @Autowired
-     private ProdImage id;
-     @Autowired
-     private FileStorageService service;
-     @Autowired
-     private ImageRepository repository;
+    private ProdImage id;
+    @Autowired
+    private FileStorageService service;
+    @Autowired
+    private ImageRepository repository;
     private String filename;
 
 
-    public Iterable<ImageDTO> getImageProduct(){
-          Iterable<ProdImage> p = repository.findAll();
-          List<ImageDTO> iDto= new ArrayList();
-          for (ProdImage pd:p) {
-               iDto.add(pd.toDto());
-          }
+    public Iterable<ImageDTO> getImageProduct() {
+        Iterable<ProdImage> p = repository.findAll();
+        List<ImageDTO> iDto = new ArrayList();
+        for (ProdImage pd : p) {
+            iDto.add(pd.toDto());
+        }
 
-          return iDto;
-     };
+        return iDto;
+    }
 
-    public <ProdImage> Resource addImage(Resource image){
+    ;
 
-        this.image =  service.loadFileAsResource(filename);
+    public <ProdImage> Resource addImage(Resource image) {
+
+        this.image = service.loadFileAsResource(filename);
         return image;
-     }
-
-
-
-
-
+    }
 
 
 }

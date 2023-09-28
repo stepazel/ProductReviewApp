@@ -48,7 +48,8 @@ public class Review {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true)
     private Rating rating;
 
-    protected Review(){}
+    protected Review() {
+    }
 
     public Review(final Long idReview, final long version, final String approvalStatus, final String reviewText, final LocalDate publishingDate, final String funFact) {
         this.idReview = Objects.requireNonNull(idReview);
@@ -59,7 +60,7 @@ public class Review {
         setFunFact(funFact);
     }
 
-    public Review(final Long idReview, final long version, final String approvalStatus, final  String reviewText, final List<Vote> upVote, final List<Vote> downVote, final String report, final LocalDate publishingDate, final String funFact, Product product, Rating rating, User user) {
+    public Review(final Long idReview, final long version, final String approvalStatus, final String reviewText, final List<Vote> upVote, final List<Vote> downVote, final String report, final LocalDate publishingDate, final String funFact, Product product, Rating rating, User user) {
         this(idReview, version, approvalStatus, reviewText, publishingDate, funFact);
 
         setUpVote(upVote);
@@ -93,10 +94,10 @@ public class Review {
 
     public Boolean setApprovalStatus(String approvalStatus) {
 
-        if( approvalStatus.equalsIgnoreCase("pending") ||
-            approvalStatus.equalsIgnoreCase("approved") ||
-            approvalStatus.equalsIgnoreCase("rejected")) {
-            
+        if (approvalStatus.equalsIgnoreCase("pending") ||
+                approvalStatus.equalsIgnoreCase("approved") ||
+                approvalStatus.equalsIgnoreCase("rejected")) {
+
             this.approvalStatus = approvalStatus;
             return true;
         }
@@ -162,7 +163,7 @@ public class Review {
     }
 
     public Rating getRating() {
-        if(rating == null) {
+        if (rating == null) {
             return new Rating(0.0);
         }
         return rating;
@@ -190,10 +191,10 @@ public class Review {
 
     public boolean addUpVote(Vote upVote) {
 
-        if( !this.approvalStatus.equals("approved"))
+        if (!this.approvalStatus.equals("approved"))
             return false;
 
-        if(!this.upVote.contains(upVote)){
+        if (!this.upVote.contains(upVote)) {
             this.upVote.add(upVote);
             return true;
         }
@@ -202,10 +203,10 @@ public class Review {
 
     public boolean addDownVote(Vote downVote) {
 
-        if( !this.approvalStatus.equals( "approved") )
+        if (!this.approvalStatus.equals("approved"))
             return false;
 
-        if(!this.downVote.contains(downVote)){
+        if (!this.downVote.contains(downVote)) {
             this.downVote.add(downVote);
             return true;
         }

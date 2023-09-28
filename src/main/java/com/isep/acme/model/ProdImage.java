@@ -11,8 +11,6 @@ public class ProdImage {
     private Long id;
 
 
-
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "product_id")
     private Product product;
@@ -21,15 +19,11 @@ public class ProdImage {
     private Resource image;
 
 
+    public ProdImage(Product product, Resource image) {
+        setProduct(product);
+        //addImage(image);;
 
-
-public ProdImage( Product product, Resource image){
-    setProduct(product);
-    //addImage(image);;
-
-}
-
-
+    }
 
 
     public ProdImage() {
@@ -38,8 +32,6 @@ public ProdImage( Product product, Resource image){
 
     private void setProduct(Product product) {
     }
-
-
 
 
     public ImageDTO toDto() {

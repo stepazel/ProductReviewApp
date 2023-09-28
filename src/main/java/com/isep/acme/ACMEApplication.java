@@ -13,16 +13,16 @@ import java.awt.image.BufferedImage;
 
 @SpringBootApplication
 @EnableConfigurationProperties({
-		FileStorageProperties.class
+        FileStorageProperties.class
 })
 public class ACMEApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ACMEApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ACMEApplication.class, args);
+    }
 
-	@Bean
-	public HttpMessageConverter<BufferedImage> createImageHttpMessageConverter() {
-		return new BufferedImageHttpMessageConverter();
-	}
+    @Bean
+    public HttpMessageConverter<BufferedImage> createImageHttpMessageConverter() {
+        return new BufferedImageHttpMessageConverter();
+    }
 }

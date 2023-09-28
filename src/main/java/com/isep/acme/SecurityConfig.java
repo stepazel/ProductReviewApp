@@ -96,21 +96,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/product/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/product/**/reviews").permitAll()
                 .antMatchers(HttpMethod.GET, "/aggregatedrating/**").permitAll()
-               // .antMatchers(HttpMethod.POST, "/product/**/reviews").permitAll()
-               // .antMatchers(HttpMethod.POST, "/uploadFile").permitAll()
+                // .antMatchers(HttpMethod.POST, "/product/**/reviews").permitAll()
+                // .antMatchers(HttpMethod.POST, "/uploadFile").permitAll()
                 //.antMatchers(HttpMethod.POST, "/uploadMultipleFiles").permitAll()
                 //.antMatchers(HttpMethod.GET, "/fileid").permitAll()
                 // Our private endpoints
-               .antMatchers(HttpMethod.GET,"/admin/user/**").hasRole(Role.Admin)
-               .antMatchers(HttpMethod.POST, "/product/**/reviews/**").hasRole(Role.RegisteredUser)
-               .antMatchers(HttpMethod.PUT, "/review/**/vote").hasRole(Role.RegisteredUser)
-               .antMatchers(HttpMethod.GET, "/review/pendingreview").hasRole(Role.Mod)
+                .antMatchers(HttpMethod.GET, "/admin/user/**").hasRole(Role.Admin)
+                .antMatchers(HttpMethod.POST, "/product/**/reviews/**").hasRole(Role.RegisteredUser)
+                .antMatchers(HttpMethod.PUT, "/review/**/vote").hasRole(Role.RegisteredUser)
+                .antMatchers(HttpMethod.GET, "/review/pendingreview").hasRole(Role.Mod)
                 .antMatchers(HttpMethod.PUT, "/review/acceptrejectreview/**").hasRole(Role.Mod)
                 .antMatchers(HttpMethod.GET, "/review/**").hasRole(Role.RegisteredUser)
 
 
-               // .antMatchers("/product/**/reviews").hasRole(Role.RegisteredUser).antMatchers(HttpMethod.POST, "/product/**/reviews")
-               // .hasRole(Role.RegisteredUser).anyRequest().authenticated()
+                // .antMatchers("/product/**/reviews").hasRole(Role.RegisteredUser).antMatchers(HttpMethod.POST, "/product/**/reviews")
+                // .hasRole(Role.RegisteredUser).anyRequest().authenticated()
 
                 //.antMatchers("/review/**/vote").hasRole(Role.RegisteredUser).antMatchers()
 

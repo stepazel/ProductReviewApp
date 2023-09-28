@@ -1,4 +1,5 @@
 package com.isep.acme.property;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "file")
@@ -11,7 +12,7 @@ public class FileStorageProperties {
         return uploadDir;
     }
 
-    public void setUploadDir( final String uploadDir) {
+    public void setUploadDir(final String uploadDir) {
         this.uploadDir = uploadDir;
     }
 }

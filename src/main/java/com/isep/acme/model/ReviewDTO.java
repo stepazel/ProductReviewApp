@@ -22,7 +22,7 @@ public class ReviewDTO {
         this.vote = vote;
     }
 
-    public void setIdReview( Long idReview ) {
+    public void setIdReview(Long idReview) {
         this.idReview = idReview;
     }
 

@@ -14,10 +14,10 @@ public class BarCodeService {
 
     private static final Font BARCODE_TEXT_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 14);
 
-   // @Autowired
+    // @Autowired
     //private static ProductRepository pRepo;
 
-    public static BufferedImage getBarcode(String sku) throws Exception{
+    public static BufferedImage getBarcode(String sku) throws Exception {
         //Optional<Product> product = pRepo.findBySKU(sku);
         //if (product == null){
         //    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product Not fOUND");

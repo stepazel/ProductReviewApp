@@ -33,9 +33,9 @@ class ProductController {
     @Operation(summary = "gets catalog, i.e. all products")
     @GetMapping
     public ResponseEntity<Iterable<ProductDTO>> getCatalog() {
-       final var products = service.getCatalog();
+        final var products = service.getCatalog();
 
-       return ResponseEntity.ok().body( products );
+        return ResponseEntity.ok().body(products);
     }
 
     @Operation(summary = "finds product by sku")
@@ -44,19 +44,19 @@ class ProductController {
 
         final Optional<ProductDTO> product = service.findBySku(sku);
 
-        if( product.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Product not found.");
+        if (product.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found.");
         else
             return ResponseEntity.ok().body(product.get());
     }
 
     @Operation(summary = "finds product by designation")
     @GetMapping(value = "/designation/{designation}")
-    public ResponseEntity<Iterable<ProductDTO>> findAllByDesignation(@PathVariable("designation") final String designation){
+    public ResponseEntity<Iterable<ProductDTO>> findAllByDesignation(@PathVariable("designation") final String designation) {
 
-        final Iterable<ProductDTO> products = service.findByDesignation( designation );
-        
-        return ResponseEntity.ok().body( products );
+        final Iterable<ProductDTO> products = service.findByDesignation(designation);
+
+        return ResponseEntity.ok().body(products);
     }
 
     @Operation(summary = "creates a product")
@@ -66,9 +66,8 @@ class ProductController {
         try {
             final ProductDTO product = service.create(manager);
             return new ResponseEntity<ProductDTO>(product, HttpStatus.CREATED);
-        }
-        catch( Exception e ) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT,"Product must have a unique SKU.");
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Product must have a unique SKU.");
         }
     }
 
@@ -78,15 +77,15 @@ class ProductController {
 
         final ProductDTO productDTO = service.updateBySku(sku, product);
 
-        if( productDTO == null )
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Product not found.");
+        if (productDTO == null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found.");
         else
             return ResponseEntity.ok().body(productDTO);
     }
 
     @Operation(summary = "deletes a product")
     @DeleteMapping(value = "/{sku}")
-    public ResponseEntity<Product> delete(@PathVariable("sku") final String sku ){
+    public ResponseEntity<Product> delete(@PathVariable("sku") final String sku) {
 
         service.deleteBySku(sku);
         return ResponseEntity.noContent().build();

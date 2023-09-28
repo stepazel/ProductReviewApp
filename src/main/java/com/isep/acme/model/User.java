@@ -39,9 +39,10 @@ public class User implements UserDetails {
 /*    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Review> review = new ArrayList<Review>(); */
 
-    protected User() {}
+    protected User() {
+    }
 
-    public User(final String username, final String password){
+    public User(final String username, final String password) {
         this.username = username;
         this.password = password;
     }
@@ -60,7 +61,7 @@ public class User implements UserDetails {
     }
 
     public void setNif(String nif) {
-        if(nif.length() != 9) {
+        if (nif.length() != 9) {
             throw new IllegalArgumentException("NIF must be 9 characters.");
         }
         this.nif = nif;

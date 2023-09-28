@@ -26,7 +26,7 @@ class ReviewController {
 
         final var review = rService.getReviewsOfProduct(sku, status);
 
-        return ResponseEntity.ok().body( review );
+        return ResponseEntity.ok().body(review);
     }
 
     @Operation(summary = "gets review by user")
@@ -44,7 +44,7 @@ class ReviewController {
 
         final var review = rService.create(createReviewDTO, sku);
 
-        if(review == null){
+        if (review == null) {
             return ResponseEntity.badRequest().build();
         }
 
@@ -53,11 +53,11 @@ class ReviewController {
 
     @Operation(summary = "add vote")
     @PutMapping("/reviews/{reviewID}/vote")
-    public ResponseEntity<Boolean> addVote(@PathVariable(value = "reviewID") final Long reviewID, @RequestBody VoteReviewDTO voteReviewDTO){
+    public ResponseEntity<Boolean> addVote(@PathVariable(value = "reviewID") final Long reviewID, @RequestBody VoteReviewDTO voteReviewDTO) {
 
         boolean added = this.rService.addVoteToReview(reviewID, voteReviewDTO);
 
-        if(!added){
+        if (!added) {
             return ResponseEntity.badRequest().build();
         }
 
@@ -79,7 +79,7 @@ class ReviewController {
 
     @Operation(summary = "gets pedding reviews")
     @GetMapping("/reviews/pending")
-    public ResponseEntity<List<ReviewDTO>> getPendingReview(){
+    public ResponseEntity<List<ReviewDTO>> getPendingReview() {
 
         List<ReviewDTO> r = rService.findPendingReview();
 
@@ -88,17 +88,15 @@ class ReviewController {
 
     @Operation(summary = "Accept or reject review")
     @PutMapping("/reviews/acceptreject/{reviewID}")
-    public ResponseEntity<ReviewDTO> putAcceptRejectReview(@PathVariable(value = "reviewID") final Long reviewID, @RequestBody String approved){
+    public ResponseEntity<ReviewDTO> putAcceptRejectReview(@PathVariable(value = "reviewID") final Long reviewID, @RequestBody String approved) {
 
         try {
             ReviewDTO rev = rService.moderateReview(reviewID, approved);
 
             return ResponseEntity.ok().body(rev);
-        }
-        catch( IllegalArgumentException e ) {
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
-        }
-        catch( ResourceNotFoundException e ) {
+        } catch (ResourceNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }

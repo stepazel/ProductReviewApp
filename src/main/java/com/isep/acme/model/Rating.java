@@ -1,7 +1,6 @@
 package com.isep.acme.model;
 
 
-
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -18,7 +17,8 @@ public class Rating {
     @Column(nullable = false)
     private Double rate;
 
-    protected Rating(){}
+    protected Rating() {
+    }
 
     public Rating(Long idRating, long version, Double rate) {
         this.idRating = Objects.requireNonNull(idRating);

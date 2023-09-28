@@ -16,7 +16,8 @@ public class AggregatedRating {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true)
     private Product product;
 
-    protected AggregatedRating() {}
+    protected AggregatedRating() {
+    }
 
     public AggregatedRating(double average, Product product) {
         this.average = average;

@@ -8,7 +8,8 @@ public class CreateReviewDTO {
 
     private Double rating;
 
-    public CreateReviewDTO(){}
+    public CreateReviewDTO() {
+    }
 
     public CreateReviewDTO(String reviewText) {
         this.reviewText = reviewText;

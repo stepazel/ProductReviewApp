@@ -11,7 +11,7 @@ import com.isep.acme.repositories.ProductRepository;
 import java.util.Optional;
 
 @Service
-public class AggregatedRatingServiceImpl implements AggregatedRatingService{
+public class AggregatedRatingServiceImpl implements AggregatedRatingService {
 
     @Autowired
     AggregatedRatingRepository arRepository;
@@ -26,11 +26,11 @@ public class AggregatedRatingServiceImpl implements AggregatedRatingService{
     ProductService productService;
 
     @Override
-    public AggregatedRating save( String sku ) {
+    public AggregatedRating save(String sku) {
 
-        Optional<Product> product = pRepository.findBySku( sku );
+        Optional<Product> product = pRepository.findBySku(sku);
 
-        if (product.isEmpty()){
+        if (product.isEmpty()) {
             return null;
         }
 
@@ -40,11 +40,10 @@ public class AggregatedRatingServiceImpl implements AggregatedRatingService{
         Optional<AggregatedRating> r = arRepository.findByProductId(product.get());
         AggregatedRating aggregateF;
 
-        if(r.isPresent()) {
-            r.get().setAverage( average );
+        if (r.isPresent()) {
+            r.get().setAverage(average);
             aggregateF = arRepository.save(r.get());
-        }
-        else {
+        } else {
             AggregatedRating f = new AggregatedRating(average, product.get());
             aggregateF = arRepository.save(f);
         }

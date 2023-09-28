@@ -16,7 +16,6 @@ public class UploadFileResponse {
     }
 
 
-
     public String getFileName() {
         return fileName;
     }

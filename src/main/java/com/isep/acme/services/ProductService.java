@@ -10,7 +10,7 @@ public interface ProductService {
 
     Optional<ProductDTO> findBySku(final String sku);
 
-    Optional<Product> getProductBySku( final String sku );
+    Optional<Product> getProductBySku(final String sku);
 
     Iterable<ProductDTO> findByDesignation(final String designation);
 

@@ -10,7 +10,7 @@ public class ImageDTO {
 
     private Long productID;
 
-    public ImageDTO(Long id, Long productID){
+    public ImageDTO(Long id, Long productID) {
 
         this.id = id;
         this.productID = productID;
@@ -33,5 +33,7 @@ public class ImageDTO {
         this.id = id;
     }
 
-    public Iterable<ImageDTO> getImageProduct(){return service.getImageProduct();}
+    public Iterable<ImageDTO> getImageProduct() {
+        return service.getImageProduct();
+    }
 }

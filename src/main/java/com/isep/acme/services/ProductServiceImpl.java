@@ -19,7 +19,7 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository repository;
 
     @Override
-    public Optional<Product> getProductBySku( final String sku ) {
+    public Optional<Product> getProductBySku(final String sku) {
 
         return repository.findBySku(sku);
     }
@@ -28,10 +28,10 @@ public class ProductServiceImpl implements ProductService {
     public Optional<ProductDTO> findBySku(String sku) {
         final Optional<Product> product = repository.findBySku(sku);
 
-        if( product.isEmpty() )
+        if (product.isEmpty())
             return Optional.empty();
         else
-            return Optional.of( product.get().toDto() );
+            return Optional.of(product.get().toDto());
     }
 
 
@@ -39,7 +39,7 @@ public class ProductServiceImpl implements ProductService {
     public Iterable<ProductDTO> findByDesignation(final String designation) {
         Iterable<Product> p = repository.findByDesignation(designation);
         List<ProductDTO> pDto = new ArrayList();
-        for (Product pd:p) {
+        for (Product pd : p) {
             pDto.add(pd.toDto());
         }
 
@@ -50,7 +50,7 @@ public class ProductServiceImpl implements ProductService {
     public Iterable<ProductDTO> getCatalog() {
         Iterable<Product> p = repository.findAll();
         List<ProductDTO> pDto = new ArrayList();
-        for (Product pd:p) {
+        for (Product pd : p) {
             pDto.add(pd.toDto());
         }
 
@@ -77,15 +77,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO updateBySku(String sku, Product product) {
-        
+
         final Optional<Product> productToUpdate = repository.findBySku(sku);
 
-        if( productToUpdate.isEmpty() ) return null;
+        if (productToUpdate.isEmpty()) return null;
 
         productToUpdate.get().updateProduct(product);
 
         Product productUpdated = repository.save(productToUpdate.get());
-        
+
         return productUpdated.toDto();
     }
 
