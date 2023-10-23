@@ -5,6 +5,7 @@ import com.isep.acme.controllers.ResourceNotFoundException;
 import java.lang.IllegalArgumentException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.isep.acme.model.*;
@@ -24,6 +25,7 @@ public class ReviewServiceImpl implements ReviewService {
     ReviewRepository repository;
 
     @Autowired
+    @Qualifier("ProductRepositoryAlias")
     ProductRepository pRepository;
 
     @Autowired
