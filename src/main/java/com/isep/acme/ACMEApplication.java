@@ -18,6 +18,7 @@ import java.awt.image.BufferedImage;
 public class ACMEApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(ACMEApplication.class, args);
     }
 

@@ -1,6 +1,7 @@
 package com.isep.acme.bootstrapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,7 @@ import com.isep.acme.repositories.ProductRepository;
 //@Profile("bootstrap")
 public class ProductBootstrapper implements CommandLineRunner {
 
+    @Qualifier("ProductRepositoryAlias")
     @Autowired
     private ProductRepository pRepo;
 

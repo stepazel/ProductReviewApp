@@ -1,6 +1,7 @@
 package com.isep.acme.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.isep.acme.model.AggregatedRating;
@@ -17,6 +18,7 @@ public class AggregatedRatingServiceImpl implements AggregatedRatingService {
     AggregatedRatingRepository arRepository;
 
     @Autowired
+    @Qualifier("ProductRepositoryAlias")
     private ProductRepository pRepository;
 
     @Autowired

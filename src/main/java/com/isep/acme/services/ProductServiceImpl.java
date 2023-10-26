@@ -6,6 +6,7 @@ import com.isep.acme.model.ProductDetailDTO;
 import com.isep.acme.repositories.ProductRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,8 +16,12 @@ import java.util.Optional;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    @Autowired
-    private ProductRepository repository;
+    private final ProductRepository repository;
+
+    // TODO get this value from config
+    public ProductServiceImpl(@Qualifier("ProductRepositoryAlias") ProductRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public Optional<Product> getProductBySku(final String sku) {
