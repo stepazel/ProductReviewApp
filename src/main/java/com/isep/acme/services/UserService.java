@@ -1,7 +1,7 @@
 package com.isep.acme.services;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,13 +16,17 @@ import java.util.Optional;
 
 
 @Service
-@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
-    @Autowired
     private final UserRepository userRepo;
-    @Autowired
     private final UserViewMapper userViewMapper;
+
+    public UserService(
+            @Qualifier("UserRepositoryAlias")
+            UserRepository userRepo, UserViewMapper userViewMapper) {
+        this.userRepo = userRepo;
+        this.userViewMapper = userViewMapper;
+    }
 
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {

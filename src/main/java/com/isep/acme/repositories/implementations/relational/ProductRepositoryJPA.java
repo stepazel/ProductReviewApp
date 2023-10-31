@@ -1,4 +1,4 @@
-package com.isep.acme.repositories.implementations;
+package com.isep.acme.repositories.implementations.relational;
 
 import com.isep.acme.model.Product;
 import org.springframework.data.jpa.repository.Modifying;

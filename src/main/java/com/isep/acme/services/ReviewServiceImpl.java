@@ -21,6 +21,7 @@ import java.util.Optional;
 @Service
 public class ReviewServiceImpl implements ReviewService {
 
+    @Qualifier("ReviewRepositoryAlias")
     @Autowired
     ReviewRepository repository;
 
@@ -28,6 +29,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Qualifier("ProductRepositoryAlias")
     ProductRepository pRepository;
 
+    @Qualifier("UserRepositoryAlias")
     @Autowired
     UserRepository uRepository;
 

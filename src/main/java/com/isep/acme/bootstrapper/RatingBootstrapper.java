@@ -1,6 +1,7 @@
 package com.isep.acme.bootstrapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +11,7 @@ import com.isep.acme.repositories.RatingRepository;
 @Component
 public class RatingBootstrapper implements CommandLineRunner {
 
+    @Qualifier("RatingRepositoryAlias")
     @Autowired
     private RatingRepository repository;
 

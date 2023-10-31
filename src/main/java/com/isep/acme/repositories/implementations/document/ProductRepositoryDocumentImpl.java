@@ -1,4 +1,4 @@
-package com.isep.acme.repositories.implementations;
+package com.isep.acme.repositories.implementations.document;
 
 import com.isep.acme.model.Product;
 import com.isep.acme.repositories.ProductRepository;

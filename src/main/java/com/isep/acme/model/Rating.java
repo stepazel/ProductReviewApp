@@ -1,6 +1,8 @@
 package com.isep.acme.model;
 
 
+import com.isep.acme.model.graph.RatingNeo4j;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -36,5 +38,9 @@ public class Rating {
 
     public void setRate(Double rate) {
         this.rate = rate;
+    }
+
+    public RatingNeo4j toGraphModel() {
+        return new RatingNeo4j();
     }
 }

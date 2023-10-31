@@ -9,7 +9,7 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -43,7 +43,6 @@ import static java.lang.String.format;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
-@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserRepository userRepo;
@@ -59,6 +58,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Value("${springdoc.swagger-ui.path}")
     private String swaggerPath;
+
+
+    public SecurityConfig(@Qualifier("UserRepositoryAlias") UserRepository userRepo) {
+        this.userRepo = userRepo;
+    }
 
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {

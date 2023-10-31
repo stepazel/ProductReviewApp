@@ -1,6 +1,7 @@
 package com.isep.acme.bootstrapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +16,7 @@ import com.isep.acme.repositories.UserRepository;
 public class UserBootstrapper implements CommandLineRunner {
 
     @Autowired
+    @Qualifier("UserRepositoryAlias")
     private UserRepository userRepo;
 
     @Autowired

@@ -1,5 +1,6 @@
 package com.isep.acme.model;
 
+import com.isep.acme.model.graph.UserNeo4j;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -86,6 +87,10 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public UserNeo4j toGraphModel() {
+        return new UserNeo4j();
     }
 }
 

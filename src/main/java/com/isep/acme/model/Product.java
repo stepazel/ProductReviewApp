@@ -1,5 +1,7 @@
 package com.isep.acme.model;
 
+import com.isep.acme.model.graph.ProductNeo4j;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -104,6 +106,10 @@ public class Product {
 
     public ProductDTO toDto() {
         return new ProductDTO(this.sku, this.designation);
+    }
+
+    public ProductNeo4j toGraphModel() {
+        return new ProductNeo4j(getSku(), getDesignation(), getDescription());
     }
 /*
     public List<Review> getReview() {
