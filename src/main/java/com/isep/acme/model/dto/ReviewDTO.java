@@ -1,33 +1,34 @@
-package com.isep.acme.model;
+package com.isep.acme.model.dto;
 
 import java.time.LocalDate;
 
 public class ReviewDTO {
 
-    private Long idReview;
-    private String reviewText;
+    private Long      idReview;
+    private String    reviewText;
     private LocalDate publishingDate;
-    private String approvalStatus;
-    private String funFact;
-    private Double rating;
-    private Integer vote;
+    private String    approvalStatus;
+    private String    funFact;
+    private Double    rating;
+    private Integer   vote;
 
-    public ReviewDTO(Long idReview, String reviewText, LocalDate publishingDate, String approvalStatus, String funFact, Double rating, Integer vote) {
-        this.idReview = idReview;
-        this.reviewText = reviewText;
+    public ReviewDTO(Long idReview, String reviewText, LocalDate publishingDate, String approvalStatus,
+                     String funFact, Double rating, Integer vote) {
+        this.idReview       = idReview;
+        this.reviewText     = reviewText;
         this.publishingDate = publishingDate;
         this.approvalStatus = approvalStatus;
-        this.funFact = funFact;
-        this.rating = rating;
-        this.vote = vote;
-    }
-
-    public void setIdReview(Long idReview) {
-        this.idReview = idReview;
+        this.funFact        = funFact;
+        this.rating         = rating;
+        this.vote           = vote;
     }
 
     public Long getIdReview() {
         return this.idReview;
+    }
+
+    public void setIdReview(Long idReview) {
+        this.idReview = idReview;
     }
 
     public String getReviewText() {

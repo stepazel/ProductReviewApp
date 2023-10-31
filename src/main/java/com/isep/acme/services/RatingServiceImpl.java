@@ -1,16 +1,17 @@
 package com.isep.acme.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.isep.acme.model.Rating;
 import com.isep.acme.repositories.RatingRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
 public class RatingServiceImpl implements RatingService {
 
+    @Qualifier("RatingRepositoryAlias")
     @Autowired
     RatingRepository repository;
 

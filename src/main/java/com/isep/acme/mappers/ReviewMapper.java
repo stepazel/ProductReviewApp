@@ -1,4 +1,7 @@
-package com.isep.acme.model;
+package com.isep.acme.mappers;
+
+import com.isep.acme.model.Review;
+import com.isep.acme.model.dto.ReviewDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +9,9 @@ import java.util.List;
 public class ReviewMapper {
 
     public static ReviewDTO toDto(Review review) {
-        return new ReviewDTO(review.getIdReview(), review.getReviewText(), review.getPublishingDate(), review.getApprovalStatus(), review.getFunFact(), review.getRating().getRate(), review.getUpVote().size());
+        return new ReviewDTO(review.getIdReview(), review.getReviewText(), review.getPublishingDate(),
+                review.getApprovalStatus(), review.getFunFact(), review.getRating().getRate(),
+                review.getUpVote().size());
     }
 
     public static List<ReviewDTO> toDtoList(List<Review> review) {

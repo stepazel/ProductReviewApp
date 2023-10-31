@@ -1,29 +1,41 @@
 package com.isep.acme.model;
 
+import com.isep.acme.model.document.ReviewMongo;
+import com.isep.acme.model.graph.ReviewNeo4j;
+import lombok.Getter;
+
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Review {
 
+    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idReview;
 
+    @Getter
     @Version
     private long version;
 
+    @Getter
     @Column(nullable = false)
     private String approvalStatus;
 
+    @Getter
     @Column(nullable = false)
     private String reviewText;
 
+    @Getter
     @ElementCollection
     @Column(nullable = true)
     private List<Vote> upVote;
 
+    @Getter
     @ElementCollection
     @Column(nullable = true)
     private List<Vote> downVote;
@@ -31,16 +43,20 @@ public class Review {
     @Column(nullable = true)
     private String report;
 
+    @Getter
     @Column(nullable = false)
     private LocalDate publishingDate;
 
+    @Getter
     @Column(nullable = false)
     private String funFact;
 
+    @Getter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
+    @Getter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -51,16 +67,19 @@ public class Review {
     protected Review() {
     }
 
-    public Review(final Long idReview, final long version, final String approvalStatus, final String reviewText, final LocalDate publishingDate, final String funFact) {
+    public Review(final Long idReview, final long version, final String approvalStatus, final String reviewText,
+                  final LocalDate publishingDate, final String funFact) {
         this.idReview = Objects.requireNonNull(idReview);
-        this.version = Objects.requireNonNull(version);
+        this.version  = Objects.requireNonNull(version);
         setApprovalStatus(approvalStatus);
         setReviewText(reviewText);
         setPublishingDate(publishingDate);
         setFunFact(funFact);
     }
 
-    public Review(final Long idReview, final long version, final String approvalStatus, final String reviewText, final List<Vote> upVote, final List<Vote> downVote, final String report, final LocalDate publishingDate, final String funFact, Product product, Rating rating, User user) {
+    public Review(final Long idReview, final long version, final String approvalStatus, final String reviewText,
+                  final List<Vote> upVote, final List<Vote> downVote, final String report,
+                  final LocalDate publishingDate, final String funFact, Product product, Rating rating, User user) {
         this(idReview, version, approvalStatus, reviewText, publishingDate, funFact);
 
         setUpVote(upVote);
@@ -69,10 +88,10 @@ public class Review {
         setProduct(product);
         setRating(rating);
         setUser(user);
-
     }
 
-    public Review(final String reviewText, LocalDate publishingDate, Product product, String funFact, Rating rating, User user) {
+    public Review(final String reviewText, LocalDate publishingDate, Product product, String funFact, Rating rating,
+                  User user) {
         setReviewText(reviewText);
         setProduct(product);
         setPublishingDate(publishingDate);
@@ -80,32 +99,37 @@ public class Review {
         setFunFact(funFact);
         setRating(rating);
         setUser(user);
-        this.upVote = new ArrayList<>();
+        this.upVote   = new ArrayList<>();
         this.downVote = new ArrayList<>();
     }
 
-    public Long getIdReview() {
-        return idReview;
+    public Review(final String approvalStatus, final String reviewText, final List<Vote> upVote,
+                  final List<Vote> downVote, final String report, final LocalDate publishingDate,
+                  final String funFact, Product product, Rating rating, User user) {
+        this(approvalStatus, reviewText, publishingDate, funFact);
+        setUpVote(upVote);
+        setDownVote(downVote);
+        setReport(report);
+        setProduct(product);
+        setRating(rating);
+        setUser(user);
     }
 
-    public String getApprovalStatus() {
-        return approvalStatus;
+    public Review(String approvalStatus, String reviewText, LocalDate publishingDate, String funFact) {
+        setApprovalStatus(approvalStatus);
+        setReviewText(reviewText);
+        setPublishingDate(publishingDate);
+        setFunFact(funFact);
     }
 
     public Boolean setApprovalStatus(String approvalStatus) {
 
-        if (approvalStatus.equalsIgnoreCase("pending") ||
-                approvalStatus.equalsIgnoreCase("approved") ||
-                approvalStatus.equalsIgnoreCase("rejected")) {
+        if (approvalStatus.equalsIgnoreCase("pending") || approvalStatus.equalsIgnoreCase("approved") || approvalStatus.equalsIgnoreCase("rejected")) {
 
             this.approvalStatus = approvalStatus;
             return true;
         }
         return false;
-    }
-
-    public String getReviewText() {
-        return reviewText;
     }
 
     public void setReviewText(String reviewText) {
@@ -120,26 +144,11 @@ public class Review {
     }
 
     public void setReport(String report) {
-        if (report.length() > 2048) {
-            throw new IllegalArgumentException("Report must not be greater than 2048 characters.");
-        }
         this.report = report;
-    }
-
-    public LocalDate getPublishingDate() {
-        return publishingDate;
     }
 
     public void setPublishingDate(LocalDate publishingDate) {
         this.publishingDate = publishingDate;
-    }
-
-    public long getVersion() {
-        return version;
-    }
-
-    public String getFunFact() {
-        return funFact;
     }
 
     public void setFunFact(String funFact) {
@@ -148,14 +157,6 @@ public class Review {
 
     public void setProduct(Product product) {
         this.product = product;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public User getUser() {
-        return user;
     }
 
     public void setUser(User user) {
@@ -173,16 +174,8 @@ public class Review {
         this.rating = rating;
     }
 
-    public List<Vote> getUpVote() {
-        return upVote;
-    }
-
     public void setUpVote(List<Vote> upVote) {
         this.upVote = upVote;
-    }
-
-    public List<Vote> getDownVote() {
-        return downVote;
     }
 
     public void setDownVote(List<Vote> downVote) {
@@ -211,6 +204,18 @@ public class Review {
             return true;
         }
         return false;
+    }
+
+    public ReviewNeo4j toGraphModel() {
+        var review = new ReviewNeo4j(0, approvalStatus, reviewText, upVote, downVote, report, publishingDate, funFact
+                , product, rating, user);
+        review.setId(idReview);
+        return review;
+    }
+
+    public ReviewMongo toDocumentModel() {
+        return new ReviewMongo(approvalStatus, reviewText, upVote, downVote, report, publishingDate, funFact, product
+                , rating, user);
     }
 
     public int getCountOfVotes() {

@@ -1,8 +1,8 @@
 package com.isep.acme.services;
 
-import java.util.Optional;
-
 import com.isep.acme.model.Rating;
+
+import java.util.Optional;
 
 public interface RatingService {
 

@@ -1,4 +1,4 @@
-package com.isep.acme.model;
+package com.isep.acme.model.dto;
 
 import com.isep.acme.services.ImageService;
 
@@ -6,13 +6,13 @@ public class ImageDTO {
 
 
     private ImageService service;
-    private Long id;
+    private Long         id;
 
     private Long productID;
 
     public ImageDTO(Long id, Long productID) {
 
-        this.id = id;
+        this.id        = id;
         this.productID = productID;
 
     }
