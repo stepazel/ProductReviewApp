@@ -1,8 +1,12 @@
 package com.isep.acme.model;
 
 
+import com.isep.acme.model.graph.AggregatedRatingNeo4j;
+import lombok.Getter;
+
 import javax.persistence.*;
 
+@Getter
 @Entity
 public class AggregatedRating {
 
@@ -24,23 +28,21 @@ public class AggregatedRating {
         this.product = product;
     }
 
-    public double getAverage() {
-        return average;
-    }
-
     public void setAverage(double average) {
         this.average = average;
-    }
-
-    public Product getProduct() {
-        return product;
     }
 
     public void setProduct(Product product) {
         this.product = product;
     }
 
-    public Long getAggregatedId() {
-        return aggregatedId;
+    public AggregatedRatingNeo4j toGraphModel() {
+        var aggregatedRating =  new AggregatedRatingNeo4j(average, product);
+        aggregatedRating.setId(aggregatedId);
+        return aggregatedRating;
+    }
+
+    public void setAggregatedId(Long aggregatedId) {
+        this.aggregatedId = aggregatedId;
     }
 }

@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public interface ReviewRepositoryNeo4j extends Neo4jRepository<ReviewNeo4j, Long> {
 
-    @Query("MATCH (p:Product {sku: $sku})-[:REVIEWED]->(r:Review) RETURN r")
+    @Query("MATCH (r:Review)-[:REVIEWED]->(p:Product {sku: $sku}) RETURN r")
     Optional<List<ReviewNeo4j>> findByProduct(@Param("sku") String productSku);
 
     Optional<ReviewNeo4j> findById(Long id);
