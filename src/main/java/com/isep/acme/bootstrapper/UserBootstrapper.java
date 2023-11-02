@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.Ordered;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +14,7 @@ import com.isep.acme.repositories.UserRepository;
 
 @Component
 @Profile("bootstrap")
-public class UserBootstrapper implements CommandLineRunner {
+public class UserBootstrapper implements CommandLineRunner, Ordered {
 
     @Autowired
     @Qualifier("UserRepositoryAlias")
@@ -24,7 +25,7 @@ public class UserBootstrapper implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
+        // 13 users
         //admin
         if (userRepo.findByUsername("admin1@mail.com").isEmpty()) {
             User admin1 = new User("admin1@mail.com", encoder.encode("AdminPW1"),
@@ -110,4 +111,8 @@ public class UserBootstrapper implements CommandLineRunner {
 
     }
 
+    @Override
+    public int getOrder() {
+        return 1;
+    }
 }

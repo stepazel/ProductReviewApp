@@ -21,12 +21,12 @@ public class ProductRepositoryGraphImpl implements ProductRepository {
 
     @Override
     public List<Product> findByDesignation(String designation) {
-        return productRepositoryNeo4j.findByDesignation(designation).stream().map(ProductNeo4j::ToDomainEntity).collect(Collectors.toList());
+        return productRepositoryNeo4j.findByDesignation(designation).stream().map(ProductNeo4j::toDomainEntity).collect(Collectors.toList());
     }
 
     @Override
     public Optional<Product> findBySku(String sku) {
-        return productRepositoryNeo4j.findById(sku).map(ProductNeo4j::ToDomainEntity);
+        return productRepositoryNeo4j.findById(sku).map(ProductNeo4j::toDomainEntity);
     }
 
     @Override
@@ -55,12 +55,12 @@ public class ProductRepositoryGraphImpl implements ProductRepository {
 
     @Override
     public Iterable<Product> findAll() {
-        return productRepositoryNeo4j.findAll().stream().map(ProductNeo4j::ToDomainEntity).collect(Collectors.toList());
+        return productRepositoryNeo4j.findAll().stream().map(ProductNeo4j::toDomainEntity).collect(Collectors.toList());
     }
 
     @Override
     public Product save(Product product) {
         var neo4jProduct = new ProductNeo4j(product.sku, product.getDesignation(), product.getDescription());
-        return productRepositoryNeo4j.save(neo4jProduct).ToDomainEntity();
+        return productRepositoryNeo4j.save(neo4jProduct).toDomainEntity();
     }
 }

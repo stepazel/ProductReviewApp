@@ -1,9 +1,6 @@
 package com.isep.acme.property;
 
-import com.isep.acme.repositories.ProductRepository;
-import com.isep.acme.repositories.RatingRepository;
-import com.isep.acme.repositories.ReviewRepository;
-import com.isep.acme.repositories.UserRepository;
+import com.isep.acme.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -33,5 +30,15 @@ public class DIConfiguration {
     @Bean
     public UserRepository UserRepositoryAlias(@Value("${app.database.type}") String dbType) {
         return (UserRepository) context.getBean("userRepository" + dbType);
+    }
+
+    @Bean
+    public AggregatedRatingRepository AggregatedRatingRepositoryAlias(@Value("${app.database.type}") String dbType) {
+        return (AggregatedRatingRepository) context.getBean("aggregatedRatingRepository" + dbType);
+    }
+
+    @Bean
+    public ImageRepository ImageRepositoryAlias(@Value("${app.database.type}") String dbType) {
+        return (ImageRepository) context.getBean("imageRepository" + dbType);
     }
 }

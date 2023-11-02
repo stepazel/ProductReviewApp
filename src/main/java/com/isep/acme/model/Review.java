@@ -1,5 +1,8 @@
 package com.isep.acme.model;
 
+import com.isep.acme.model.graph.ReviewNeo4j;
+import lombok.Getter;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.*;
@@ -7,23 +10,29 @@ import java.util.*;
 @Entity
 public class Review {
 
+    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idReview;
 
+    @Getter
     @Version
     private long version;
 
+    @Getter
     @Column(nullable = false)
     private String approvalStatus;
 
+    @Getter
     @Column(nullable = false)
     private String reviewText;
 
+    @Getter
     @ElementCollection
     @Column(nullable = true)
     private List<Vote> upVote;
 
+    @Getter
     @ElementCollection
     @Column(nullable = true)
     private List<Vote> downVote;
@@ -31,16 +40,20 @@ public class Review {
     @Column(nullable = true)
     private String report;
 
+    @Getter
     @Column(nullable = false)
     private LocalDate publishingDate;
 
+    @Getter
     @Column(nullable = false)
     private String funFact;
 
+    @Getter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
+    @Getter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -84,14 +97,6 @@ public class Review {
         this.downVote = new ArrayList<>();
     }
 
-    public Long getIdReview() {
-        return idReview;
-    }
-
-    public String getApprovalStatus() {
-        return approvalStatus;
-    }
-
     public Boolean setApprovalStatus(String approvalStatus) {
 
         if (approvalStatus.equalsIgnoreCase("pending") ||
@@ -102,10 +107,6 @@ public class Review {
             return true;
         }
         return false;
-    }
-
-    public String getReviewText() {
-        return reviewText;
     }
 
     public void setReviewText(String reviewText) {
@@ -120,26 +121,11 @@ public class Review {
     }
 
     public void setReport(String report) {
-        if (report.length() > 2048) {
-            throw new IllegalArgumentException("Report must not be greater than 2048 characters.");
-        }
         this.report = report;
-    }
-
-    public LocalDate getPublishingDate() {
-        return publishingDate;
     }
 
     public void setPublishingDate(LocalDate publishingDate) {
         this.publishingDate = publishingDate;
-    }
-
-    public long getVersion() {
-        return version;
-    }
-
-    public String getFunFact() {
-        return funFact;
     }
 
     public void setFunFact(String funFact) {
@@ -148,14 +134,6 @@ public class Review {
 
     public void setProduct(Product product) {
         this.product = product;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public User getUser() {
-        return user;
     }
 
     public void setUser(User user) {
@@ -173,16 +151,8 @@ public class Review {
         this.rating = rating;
     }
 
-    public List<Vote> getUpVote() {
-        return upVote;
-    }
-
     public void setUpVote(List<Vote> upVote) {
         this.upVote = upVote;
-    }
-
-    public List<Vote> getDownVote() {
-        return downVote;
     }
 
     public void setDownVote(List<Vote> downVote) {
@@ -211,5 +181,11 @@ public class Review {
             return true;
         }
         return false;
+    }
+
+    public ReviewNeo4j toGraphModel() {
+        var review = new ReviewNeo4j(0, approvalStatus, reviewText, upVote, downVote, report, publishingDate, funFact, product, rating, user);
+        review.setId(idReview);
+        return review;
     }
 }

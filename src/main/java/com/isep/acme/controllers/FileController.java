@@ -33,6 +33,7 @@ public class FileController {
     private FileStorageService fileStorageService;
 
     @Autowired
+    @Qualifier("ImageRepositoryAlias")
     private ImageRepository iRepo;
 
     @Autowired

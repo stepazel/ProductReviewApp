@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -90,7 +91,7 @@ public class User implements UserDetails {
     }
 
     public UserNeo4j toGraphModel() {
-        return new UserNeo4j();
+        return new UserNeo4j(userId, username, password, fullName, nif, morada, authorities.stream().map(Role::toGraphModel).collect(Collectors.toSet()));
     }
 }
 

@@ -15,6 +15,7 @@ import java.util.Optional;
 public class AggregatedRatingServiceImpl implements AggregatedRatingService {
 
     @Autowired
+    @Qualifier("AggregatedRatingRepositoryAlias")
     AggregatedRatingRepository arRepository;
 
     @Autowired

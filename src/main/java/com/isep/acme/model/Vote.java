@@ -1,5 +1,7 @@
 package com.isep.acme.model;
 
+import com.isep.acme.model.graph.VoteNeo4j;
+
 import javax.persistence.Embeddable;
 
 import java.util.Objects;
@@ -46,6 +48,10 @@ public class Vote {
     @Override
     public int hashCode() {
         return Objects.hash(vote, userID);
+    }
+
+    public VoteNeo4j toGraphModel() {
+        return new VoteNeo4j(vote, userID);
     }
 
 }

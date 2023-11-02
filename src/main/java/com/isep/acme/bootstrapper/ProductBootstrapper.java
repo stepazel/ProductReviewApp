@@ -3,6 +3,7 @@ package com.isep.acme.bootstrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 
 import com.isep.acme.model.Product;
@@ -10,7 +11,7 @@ import com.isep.acme.repositories.ProductRepository;
 
 @Component
 //@Profile("bootstrap")
-public class ProductBootstrapper implements CommandLineRunner {
+public class ProductBootstrapper implements CommandLineRunner, Ordered {
 
     @Qualifier("ProductRepositoryAlias")
     @Autowired
@@ -67,5 +68,10 @@ public class ProductBootstrapper implements CommandLineRunner {
             Product p12 = new Product("g4f7e85f4g54", " chair ", " comfortable ");
             pRepo.save(p12);
         }
+    }
+
+    @Override
+    public int getOrder() {
+        return 2;
     }
 }

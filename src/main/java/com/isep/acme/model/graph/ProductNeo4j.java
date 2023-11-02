@@ -40,7 +40,7 @@ public class ProductNeo4j {
         return this.description;
     }
 
-    public Product ToDomainEntity() {
+    public Product toDomainEntity() {
         return new Product(this.sku, this.GetDesignation(), this.GetDescription());
     }
 }

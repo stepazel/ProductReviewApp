@@ -1,21 +1,22 @@
 package com.isep.acme.model.graph;
 
-import com.isep.acme.model.Product;
-import com.isep.acme.model.Rating;
-import com.isep.acme.model.User;
-import com.isep.acme.model.Vote;
+import com.isep.acme.model.*;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.neo4j.core.schema.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 @Node("Review")
 public class ReviewNeo4j {
 
     @Getter
+    @Setter
     @Id
     @GeneratedValue
     private Long id;
@@ -30,18 +31,16 @@ public class ReviewNeo4j {
 
     @Relationship(type = "VOTED", direction = Relationship.Direction.INCOMING)
     @Property
-    private List<Vote> votes;
-
-    private List<Vote> downVotes = new ArrayList<Vote>();
-
-    private List<Vote> upVotes = new ArrayList<Vote>();
+    private List<VoteNeo4j> votes = new ArrayList<>();
 
     @Property
     private String report;
 
+    @Getter
     @Property
     private LocalDate publishingDate;
 
+    @Getter
     @Property
     private String funFact;
 
@@ -79,6 +78,18 @@ public class ReviewNeo4j {
 
     }
 
+    public ReviewNeo4j(String approvalStatus, String reviewText, List<Vote> votes, String report, LocalDate publishingDate, String funFact, ProductNeo4j product, UserNeo4j user, RatingNeo4j rating) {
+        this.approvalStatus = approvalStatus;
+        this.reviewText = reviewText;
+        this.votes = votes.stream().map(Vote::toGraphModel).collect(Collectors.toList());
+        this.report = report;
+        this.publishingDate = publishingDate;
+        this.funFact = funFact;
+        this.product = product;
+        this.user = user;
+        this.rating = rating;
+    }
+
     public ReviewNeo4j(final String reviewText, LocalDate publishingDate, Product product, String funFact, Rating rating, User user) {
         setReviewText(reviewText);
         setProduct(product);
@@ -114,14 +125,7 @@ public class ReviewNeo4j {
     }
 
     public void setReport(String report) {
-        if (report.length() > 2048) {
-            throw new IllegalArgumentException("Report must not be greater than 2048 characters.");
-        }
         this.report = report;
-    }
-
-    public LocalDate getPublishingDate() {
-        return publishingDate;
     }
 
     public void setPublishingDate(LocalDate publishingDate) {
@@ -131,10 +135,6 @@ public class ReviewNeo4j {
 //    public long getVersion() {
 //        return version;
 //    }
-
-    public String getFunFact() {
-        return funFact;
-    }
 
     public void setFunFact(String funFact) {
         this.funFact = funFact;
@@ -151,7 +151,7 @@ public class ReviewNeo4j {
     public RatingNeo4j getRating() {
         if (rating == null) {
 //            return new RatingNeo4j(0.0);
-            return new RatingNeo4j();
+            return new RatingNeo4j(0.0);
         }
         return rating;
     }
@@ -160,43 +160,29 @@ public class ReviewNeo4j {
         this.rating = rating.toGraphModel();
     }
 
-    public List<Vote> getUpVote() {
-        return upVotes;
-    }
 
     public void setUpVote(List<Vote> upVotes) {
-        this.upVotes = upVotes;
+        this.votes.addAll(upVotes.stream().map(Vote::toGraphModel).collect(Collectors.toList()));
     }
 
-    public List<Vote> getDownVote() {
-        return downVotes;
-    }
 
     public void setDownVote(List<Vote> downVotes) {
-        this.downVotes = downVotes;
+        this.votes.addAll(downVotes.stream().map(Vote::toGraphModel).collect(Collectors.toList()));
     }
 
-    public boolean addUpVote(Vote upVote) {
-
-        if (!this.approvalStatus.equals("approved"))
-            return false;
-
-        if (!this.upVotes.contains(upVote)) {
-            this.upVotes.add(upVote);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean addDownVote(Vote downVote) {
-
-        if (!this.approvalStatus.equals("approved"))
-            return false;
-
-        if (!this.downVotes.contains(downVote)) {
-            this.downVotes.add(downVote);
-            return true;
-        }
-        return false;
+    public Review toDomainModel() {
+        return new Review(
+                id,
+                0,
+                approvalStatus,
+                reviewText,
+                votes.stream().filter(voteNeo4j -> Objects.equals(voteNeo4j.getVote(), "upVote")).map(VoteNeo4j::toDomainModel).collect(Collectors.toList()),
+                votes.stream().filter(voteNeo4j -> Objects.equals(voteNeo4j.getVote(), "downVote")).map(VoteNeo4j::toDomainModel).collect(Collectors.toList()),
+                report,
+                publishingDate,
+                funFact,
+                product.toDomainEntity(),
+                rating.toDomainEntity(),
+                user.toDomainEntity());
     }
 }

@@ -5,7 +5,7 @@ import com.isep.acme.model.User;
 import java.util.Optional;
 
 public interface UserRepository {
-    <S extends User> S save(S entity);
+    User  save(User entity);
 
     Optional<User> findById(Long userId);
 

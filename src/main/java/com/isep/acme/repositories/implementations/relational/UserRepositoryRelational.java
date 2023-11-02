@@ -15,7 +15,7 @@ public class UserRepositoryRelational implements UserRepository {
     }
 
     @Override
-    public <S extends User> S save(S entity) {
+    public User save(User entity) {
         return userRepositoryJPA.save(entity);
     }
 
