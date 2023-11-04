@@ -18,7 +18,6 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository repository;
 
-    // TODO get this value from config
     public ProductServiceImpl(@Qualifier("ProductRepositoryAlias") ProductRepository repository) {
         this.repository = repository;
     }
