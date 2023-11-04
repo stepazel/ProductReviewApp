@@ -23,7 +23,7 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Review> review = new ArrayList<Review>(); */
 
-    protected Product() {
+    public Product() {
     }
 
     public Product(final Long productID, final String sku) {

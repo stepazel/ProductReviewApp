@@ -39,7 +39,7 @@ public class User implements UserDetails {
 /*    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Review> review = new ArrayList<Review>(); */
 
-    protected User() {
+    public User() {
     }
 
     public User(final String username, final String password) {

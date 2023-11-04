@@ -212,4 +212,8 @@ public class Review {
         }
         return false;
     }
+
+    public int getCountOfVotes() {
+        return downVote.size() + upVote.size();
+    }
 }
