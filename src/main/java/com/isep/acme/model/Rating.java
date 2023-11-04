@@ -17,7 +17,7 @@ public class Rating {
     @Column(nullable = false)
     private Double rate;
 
-    protected Rating() {
+    public Rating() {
     }
 
     public Rating(Long idRating, long version, Double rate) {
