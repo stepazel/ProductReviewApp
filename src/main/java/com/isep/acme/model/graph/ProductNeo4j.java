@@ -2,7 +2,10 @@ package com.isep.acme.model.graph;
 
 
 import com.isep.acme.model.Product;
-import org.springframework.data.neo4j.core.schema.*;
+import org.springframework.data.neo4j.core.schema.Id;
+import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Property;
+import org.springframework.data.neo4j.core.schema.Relationship;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +23,10 @@ public class ProductNeo4j {
     private final String description;
 
     @Relationship(type = "REVIEWED", direction = Relationship.Direction.INCOMING)
-    private List<ReviewNeo4j> reviewNeo4js = new ArrayList<>();
+    private final List<ReviewNeo4j> reviewNeo4js = new ArrayList<>();
 
     public ProductNeo4j(String sku, String designation, String description) {
-        this.sku = sku;
+        this.sku         = sku;
         this.designation = designation;
         this.description = description;
     }

@@ -17,8 +17,9 @@ public class ReviewRepositoryGraphImpl implements ReviewRepository {
 
     private final ProductRepositoryNeo4j productRepositoryNeo4j;
 
-    public ReviewRepositoryGraphImpl(ReviewRepositoryNeo4j reviewRepositoryNeo4j, ProductRepositoryNeo4j productRepositoryNeo4j) {
-        this.reviewRepositoryNeo4j = reviewRepositoryNeo4j;
+    public ReviewRepositoryGraphImpl(ReviewRepositoryNeo4j reviewRepositoryNeo4j,
+                                     ProductRepositoryNeo4j productRepositoryNeo4j) {
+        this.reviewRepositoryNeo4j  = reviewRepositoryNeo4j;
         this.productRepositoryNeo4j = productRepositoryNeo4j;
     }
 
@@ -45,8 +46,10 @@ public class ReviewRepositoryGraphImpl implements ReviewRepository {
     @Override
     public Optional<List<Review>> findByProductIdStatus(Product product, String status) {
         List<ReviewNeo4j> byProductSkuAndStatus = reviewRepositoryNeo4j.findByProductSkuAndStatus(product.sku, status);
-//        return byProductSkuAndStatus.map(reviewNeo4js -> reviewNeo4js.stream().map(ReviewNeo4j::toDomainModel).collect(Collectors.toList()));
-//        return Optional.of(byProductSkuAndStatus.stream().map(ReviewNeo4j::toDomainModel).collect(Collectors.toList()));
+        //        return byProductSkuAndStatus.map(reviewNeo4js -> reviewNeo4js.stream().map
+        //        (ReviewNeo4j::toDomainModel).collect(Collectors.toList()));
+        //        return Optional.of(byProductSkuAndStatus.stream().map(ReviewNeo4j::toDomainModel).collect
+        //        (Collectors.toList()));
         return Optional.of(byProductSkuAndStatus.stream().map(reviewNeo4j -> reviewRepositoryNeo4j.findById(reviewNeo4j.getId()).get().toDomainModel()).collect(Collectors.toList()));
     }
 

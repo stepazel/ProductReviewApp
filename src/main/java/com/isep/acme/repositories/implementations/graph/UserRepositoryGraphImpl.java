@@ -18,10 +18,10 @@ public class UserRepositoryGraphImpl implements UserRepository {
 
     @Override
     public User save(User entity) {
-        var user = entity.toGraphModel();
+        var user      = entity.toGraphModel();
         var userNeo5j = userRepositoryNeo4j.save(user);
-                var hm = userNeo5j.toDomainEntity();
-                return hm;
+        var hm        = userNeo5j.toDomainEntity();
+        return hm;
     }
 
     @Override

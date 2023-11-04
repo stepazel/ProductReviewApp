@@ -22,23 +22,24 @@ public class ReviewBootstrapper implements CommandLineRunner, Ordered {
 
     private final RatingRepository ratingRepository;
 
-    public ReviewBootstrapper(@Qualifier("ReviewRepositoryAlias") ReviewRepository reviewRepository,
-                              @Qualifier("ProductRepositoryAlias") ProductRepository productRepository,
-                              @Qualifier("UserRepositoryAlias") UserRepository userRepository,
-                              @Qualifier("RatingRepositoryAlias") RatingRepository ratingRepository) {
-        this.reviewRepository = reviewRepository;
+    public ReviewBootstrapper(@Qualifier("ReviewRepositoryAlias") ReviewRepository reviewRepository, @Qualifier(
+            "ProductRepositoryAlias") ProductRepository productRepository,
+                              @Qualifier("UserRepositoryAlias") UserRepository userRepository, @Qualifier(
+                                      "RatingRepositoryAlias") RatingRepository ratingRepository) {
+        this.reviewRepository  = reviewRepository;
         this.productRepository = productRepository;
-        this.userRepository = userRepository;
-        this.ratingRepository = ratingRepository;
+        this.userRepository    = userRepository;
+        this.ratingRepository  = ratingRepository;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        var user = userRepository.findByUsername("admin1@mail.com").get();
+        var user    = userRepository.findByUsername("admin1@mail.com").get();
         var product = productRepository.findBySku("vgb576hgb675").get();
-        var rating = ratingRepository.findByRate(1.0).get();
-        var review = new Review("very good review", LocalDate.now(), product, "this is created automatically", rating, user);
-//        var createdReview = reviewRepository.save(review);
+        var rating  = ratingRepository.findByRate(1.0).get();
+        var review = new Review("very good review", LocalDate.now(), product, "this is created automatically", rating
+                , user);
+        //        var createdReview = reviewRepository.save(review);
     }
 
     @Override

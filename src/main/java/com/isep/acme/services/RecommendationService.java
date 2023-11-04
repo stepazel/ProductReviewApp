@@ -1,6 +1,6 @@
 package com.isep.acme.services;
 
-import com.isep.acme.model.ReviewDTO;
+import com.isep.acme.model.dto.ReviewDTO;
 
 import java.util.List;
 

@@ -16,9 +16,8 @@ import java.util.Optional;
 public interface UserRepositoryJPA extends CrudRepository<User, Long> {
 
     @Override
-    @Caching(evict = {
-            @CacheEvict(key = "#p0.userId", condition = "#p0.userId != null"),
-            @CacheEvict(key = "#p0.username", condition = "#p0.username != null")})
+    @Caching(evict = {@CacheEvict(key = "#p0.userId", condition = "#p0.userId != null"), @CacheEvict(key = "#p0" +
+            ".username", condition = "#p0.username != null")})
     <S extends User> S save(S entity);
 
     @Override

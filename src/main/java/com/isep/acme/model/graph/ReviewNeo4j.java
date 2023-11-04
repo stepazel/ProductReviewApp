@@ -58,7 +58,8 @@ public class ReviewNeo4j {
     protected ReviewNeo4j() {
     }
 
-    public ReviewNeo4j(final long version, final String approvalStatus, final String reviewText, final LocalDate publishingDate, final String funFact) {
+    public ReviewNeo4j(final long version, final String approvalStatus, final String reviewText,
+                       final LocalDate publishingDate, final String funFact) {
         this.id = null;
         setApprovalStatus(approvalStatus);
         setReviewText(reviewText);
@@ -66,7 +67,10 @@ public class ReviewNeo4j {
         setFunFact(funFact);
     }
 
-    public ReviewNeo4j(final long version, final String approvalStatus, final String reviewText, final List<Vote> upVote, final List<Vote> downVote, final String report, final LocalDate publishingDate, final String funFact, Product product, Rating rating, User user) {
+    public ReviewNeo4j(final long version, final String approvalStatus, final String reviewText,
+                       final List<Vote> upVote, final List<Vote> downVote, final String report,
+                       final LocalDate publishingDate, final String funFact, Product product, Rating rating,
+                       User user) {
         this(version, approvalStatus, reviewText, publishingDate, funFact);
 
         setUpVote(upVote);
@@ -78,19 +82,22 @@ public class ReviewNeo4j {
 
     }
 
-    public ReviewNeo4j(String approvalStatus, String reviewText, List<Vote> votes, String report, LocalDate publishingDate, String funFact, ProductNeo4j product, UserNeo4j user, RatingNeo4j rating) {
+    public ReviewNeo4j(String approvalStatus, String reviewText, List<Vote> votes, String report,
+                       LocalDate publishingDate, String funFact, ProductNeo4j product, UserNeo4j user,
+                       RatingNeo4j rating) {
         this.approvalStatus = approvalStatus;
-        this.reviewText = reviewText;
-        this.votes = votes.stream().map(Vote::toGraphModel).collect(Collectors.toList());
-        this.report = report;
+        this.reviewText     = reviewText;
+        this.votes          = votes.stream().map(Vote::toGraphModel).collect(Collectors.toList());
+        this.report         = report;
         this.publishingDate = publishingDate;
-        this.funFact = funFact;
-        this.product = product;
-        this.user = user;
-        this.rating = rating;
+        this.funFact        = funFact;
+        this.product        = product;
+        this.user           = user;
+        this.rating         = rating;
     }
 
-    public ReviewNeo4j(final String reviewText, LocalDate publishingDate, Product product, String funFact, Rating rating, User user) {
+    public ReviewNeo4j(final String reviewText, LocalDate publishingDate, Product product, String funFact,
+                       Rating rating, User user) {
         setReviewText(reviewText);
         setProduct(product);
         setPublishingDate(publishingDate);
@@ -103,9 +110,7 @@ public class ReviewNeo4j {
 
     public Boolean setApprovalStatus(String approvalStatus) {
 
-        if (approvalStatus.equalsIgnoreCase("pending") ||
-                approvalStatus.equalsIgnoreCase("approved") ||
-                approvalStatus.equalsIgnoreCase("rejected")) {
+        if (approvalStatus.equalsIgnoreCase("pending") || approvalStatus.equalsIgnoreCase("approved") || approvalStatus.equalsIgnoreCase("rejected")) {
 
             this.approvalStatus = approvalStatus;
             return true;
@@ -132,9 +137,9 @@ public class ReviewNeo4j {
         this.publishingDate = publishingDate;
     }
 
-//    public long getVersion() {
-//        return version;
-//    }
+    //    public long getVersion() {
+    //        return version;
+    //    }
 
     public void setFunFact(String funFact) {
         this.funFact = funFact;
@@ -150,7 +155,7 @@ public class ReviewNeo4j {
 
     public RatingNeo4j getRating() {
         if (rating == null) {
-//            return new RatingNeo4j(0.0);
+            //            return new RatingNeo4j(0.0);
             return new RatingNeo4j(0.0);
         }
         return rating;
@@ -171,18 +176,7 @@ public class ReviewNeo4j {
     }
 
     public Review toDomainModel() {
-        return new Review(
-                id,
-                0,
-                approvalStatus,
-                reviewText,
-                votes.stream().filter(voteNeo4j -> Objects.equals(voteNeo4j.getVote(), "upVote")).map(VoteNeo4j::toDomainModel).collect(Collectors.toList()),
-                votes.stream().filter(voteNeo4j -> Objects.equals(voteNeo4j.getVote(), "downVote")).map(VoteNeo4j::toDomainModel).collect(Collectors.toList()),
-                report,
-                publishingDate,
-                funFact,
-                product.toDomainEntity(),
-                rating.toDomainEntity(),
-                user.toDomainEntity());
+        return new Review(id, 0, approvalStatus, reviewText,
+                votes.stream().filter(voteNeo4j -> Objects.equals(voteNeo4j.getVote(), "upVote")).map(VoteNeo4j::toDomainModel).collect(Collectors.toList()), votes.stream().filter(voteNeo4j -> Objects.equals(voteNeo4j.getVote(), "downVote")).map(VoteNeo4j::toDomainModel).collect(Collectors.toList()), report, publishingDate, funFact, product.toDomainEntity(), rating.toDomainEntity(), user.toDomainEntity());
     }
 }

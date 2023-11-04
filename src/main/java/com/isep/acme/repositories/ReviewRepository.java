@@ -1,8 +1,5 @@
 package com.isep.acme.repositories;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-
 import com.isep.acme.model.Product;
 import com.isep.acme.model.Review;
 import com.isep.acme.model.User;

@@ -2,12 +2,11 @@ package com.isep.acme.repositories.implementations.graph;
 
 import com.isep.acme.model.Product;
 import com.isep.acme.model.graph.ProductNeo4j;
-
-import java.util.List;
-
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 
 public interface ProductRepositoryNeo4j extends Neo4jRepository<ProductNeo4j, String> {

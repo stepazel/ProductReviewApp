@@ -2,7 +2,10 @@ package com.isep.acme.model.graph;
 
 import com.isep.acme.model.Vote;
 import lombok.Getter;
-import org.springframework.data.neo4j.core.schema.*;
+import org.springframework.data.neo4j.core.schema.GeneratedValue;
+import org.springframework.data.neo4j.core.schema.Id;
+import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Property;
 
 @Node("Vote")
 public class VoteNeo4j {
@@ -24,7 +27,7 @@ public class VoteNeo4j {
     }
 
     public VoteNeo4j(String vote, Long userID) {
-        this.vote = vote;
+        this.vote   = vote;
         this.userID = userID;
     }
 

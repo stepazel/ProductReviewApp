@@ -36,6 +36,17 @@ public class ProductRepositoryGraphImpl implements ProductRepository {
     }
 
     @Override
+    public Iterable<Product> getCatalogDetails() {
+        return null;
+    }
+
+    @Override
+    public Optional<Product> getDetails(String sku) {
+        // it is not used
+        return Optional.empty();
+    }
+
+    @Override
     public void deleteBySku(String sku) {
         productRepositoryNeo4j.deleteById(sku);
     }
@@ -44,7 +55,7 @@ public class ProductRepositoryGraphImpl implements ProductRepository {
     public Product updateBySku(String sku) {
         // ignore this.. it is not used
         return new Product(sku);
-//        return productRepositoryGraph.updateProduct();
+        //        return productRepositoryGraph.updateProduct();
     }
 
     @Override

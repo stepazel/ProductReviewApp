@@ -2,7 +2,6 @@ package com.isep.acme.services;
 
 
 import net.sourceforge.barbecue.Barcode;
-
 import net.sourceforge.barbecue.BarcodeFactory;
 import net.sourceforge.barbecue.BarcodeImageHandler;
 

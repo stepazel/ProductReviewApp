@@ -1,5 +1,8 @@
 package com.isep.acme.model;
 
+import com.isep.acme.model.document.ProductMongo;
+import com.isep.acme.model.dto.ProductDTO;
+import com.isep.acme.model.dto.ProductDetailDTO;
 import com.isep.acme.model.graph.ProductNeo4j;
 
 import javax.persistence.*;
@@ -9,13 +12,11 @@ import java.util.Objects;
 public class Product {
 
 
+    @Column(nullable = false, unique = true)
+    public  String sku;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long productID;
-
-    @Column(nullable = false, unique = true)
-    public String sku;
-
+    private Long   productID;
     @Column(nullable = false)
     private String designation;
 
@@ -47,17 +48,6 @@ public class Product {
         this(sku);
         setDescription(description);
         setDesignation(designation);
-    }
-
-    public void setSku(String sku) {
-        if (sku == null || sku.isBlank()) {
-            throw new IllegalArgumentException("SKU is a mandatory attribute of Product.");
-        }
-        if (sku.length() != 12) {
-            throw new IllegalArgumentException("SKU must be 12 characters long.");
-        }
-
-        this.sku = sku;
     }
 
     public String getDesignation() {
@@ -94,6 +84,16 @@ public class Product {
         return sku;
     }
 
+    public void setSku(String sku) {
+        if (sku == null || sku.isBlank()) {
+            throw new IllegalArgumentException("SKU is a mandatory attribute of Product.");
+        }
+        if (sku.length() != 12) {
+            throw new IllegalArgumentException("SKU must be 12 characters long.");
+        }
+
+        this.sku = sku;
+    }
 
     public void updateProduct(Product p) {
         setDesignation(p.designation);
@@ -110,6 +110,14 @@ public class Product {
 
     public ProductNeo4j toGraphModel() {
         return new ProductNeo4j(getSku(), getDesignation(), getDescription());
+    }
+
+    public ProductMongo toDocumentModel() {
+        return new ProductMongo(getSku(), getDesignation(), getDescription());
+    }
+
+    public ProductDetailDTO toDetailDto() {
+        return new ProductDetailDTO(this.sku, this.designation, this.description);
     }
 /*
     public List<Review> getReview() {

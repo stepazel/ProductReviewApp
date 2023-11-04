@@ -1,10 +1,6 @@
 package com.isep.acme.repositories.implementations.graph;
 
-import com.isep.acme.model.Product;
-import com.isep.acme.model.Review;
-import com.isep.acme.model.graph.ProductNeo4j;
 import com.isep.acme.model.graph.ReviewNeo4j;
-import com.isep.acme.model.graph.UserNeo4j;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;

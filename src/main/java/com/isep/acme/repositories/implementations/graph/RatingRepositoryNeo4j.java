@@ -1,6 +1,5 @@
 package com.isep.acme.repositories.implementations.graph;
 
-import com.isep.acme.model.Rating;
 import com.isep.acme.model.graph.RatingNeo4j;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;

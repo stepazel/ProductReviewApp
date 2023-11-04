@@ -17,10 +17,10 @@ public class RatingNeo4j {
 
     public RatingNeo4j(Long idRating, Double rate) {
         this.idRating = idRating;
-        this.rate = rate;
+        this.rate     = rate;
     }
 
-    public RatingNeo4j(){}
+    public RatingNeo4j() {}
 
     public RatingNeo4j(Double rate) {
         this.rate = rate;

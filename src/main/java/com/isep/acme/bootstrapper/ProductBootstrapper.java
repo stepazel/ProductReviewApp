@@ -1,13 +1,12 @@
 package com.isep.acme.bootstrapper;
 
+import com.isep.acme.model.Product;
+import com.isep.acme.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
-
-import com.isep.acme.model.Product;
-import com.isep.acme.repositories.ProductRepository;
 
 @Component
 //@Profile("bootstrap")

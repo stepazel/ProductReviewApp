@@ -14,8 +14,7 @@ public class ProductRepositoryRelational implements ProductRepository {
     private final ProductRepositoryJPA repositoryA;
 
     @Autowired
-    public ProductRepositoryRelational(ProductRepositoryJPA productRepositoryJPA)
-    {
+    public ProductRepositoryRelational(ProductRepositoryJPA productRepositoryJPA) {
         this.repositoryA = productRepositoryJPA;
     }
 
@@ -32,6 +31,16 @@ public class ProductRepositoryRelational implements ProductRepository {
     @Override
     public Optional<Product> getCatalog() {
         return this.repositoryA.getCatalog();
+    }
+
+    @Override
+    public Optional<Product> getDetails(String sku) {
+        return this.repositoryA.getDetails(sku);
+    }
+
+    @Override
+    public Iterable<Product> getCatalogDetails() {
+        return this.repositoryA.getCatalogDetails();
     }
 
     @Override

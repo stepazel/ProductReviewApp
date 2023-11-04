@@ -1,10 +1,10 @@
 package com.isep.acme.model;
 
+import com.isep.acme.model.document.RoleMongo;
 import com.isep.acme.model.graph.RoleNeo4j;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-
 import lombok.Value;
+import org.springframework.security.core.GrantedAuthority;
 
 @Value
 @AllArgsConstructor
@@ -17,9 +17,13 @@ public class Role implements GrantedAuthority {
 
     public static final String RegisteredUser = "RegisteredUser";
 
-    private String authority;
+    String authority;
 
     public RoleNeo4j toGraphModel() {
         return new RoleNeo4j(this.authority);
+    }
+
+    public RoleMongo toDocumentModel() {
+        return new RoleMongo(this.authority);
     }
 }

@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Component("reviewRepositoryRelational")
 public class ReviewRepositoryRelational implements ReviewRepository {
-    private ReviewRepositoryJPA reviewRepositoryJPA;
+    private final ReviewRepositoryJPA reviewRepositoryJPA;
 
     public ReviewRepositoryRelational(ReviewRepositoryJPA reviewRepositoryJPA) {
         this.reviewRepositoryJPA = reviewRepositoryJPA;

@@ -19,7 +19,13 @@ public interface ProductRepositoryJPA extends CrudRepository<Product, Long> {
     @Query("SELECT p FROM Product p WHERE p.sku=:sku AND p.description=:description")
     Optional<Product> getCatalog();
 
-    //Obtain the details of products -> Destails: show sku, designation and description of all products
+    //Obtain the catalog of products -> CatalogDetails: show sku, designation and description of all products
+    @Query("SELECT p FROM Product p WHERE p.sku=:sku AND p.description=:description")
+    Iterable<Product> getCatalogDetails();
+
+    //Obtain the details of a product -> Destails: show sku, designation and description of all products
+    @Query("SELECT p FROM Product p WHERE p.sku=:sku AND p.description=:description AND p.designation=:designation")
+    Optional<Product> getDetails(@Param("sku") String sku);
 
     //Delete the product when given the SKU
     @Transactional

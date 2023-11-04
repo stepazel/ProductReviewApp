@@ -1,11 +1,14 @@
 package com.isep.acme.model;
 
+import com.isep.acme.model.document.ReviewMongo;
 import com.isep.acme.model.graph.ReviewNeo4j;
 import lombok.Getter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Review {
@@ -64,16 +67,19 @@ public class Review {
     protected Review() {
     }
 
-    public Review(final Long idReview, final long version, final String approvalStatus, final String reviewText, final LocalDate publishingDate, final String funFact) {
+    public Review(final Long idReview, final long version, final String approvalStatus, final String reviewText,
+                  final LocalDate publishingDate, final String funFact) {
         this.idReview = Objects.requireNonNull(idReview);
-        this.version = Objects.requireNonNull(version);
+        this.version  = Objects.requireNonNull(version);
         setApprovalStatus(approvalStatus);
         setReviewText(reviewText);
         setPublishingDate(publishingDate);
         setFunFact(funFact);
     }
 
-    public Review(final Long idReview, final long version, final String approvalStatus, final String reviewText, final List<Vote> upVote, final List<Vote> downVote, final String report, final LocalDate publishingDate, final String funFact, Product product, Rating rating, User user) {
+    public Review(final Long idReview, final long version, final String approvalStatus, final String reviewText,
+                  final List<Vote> upVote, final List<Vote> downVote, final String report,
+                  final LocalDate publishingDate, final String funFact, Product product, Rating rating, User user) {
         this(idReview, version, approvalStatus, reviewText, publishingDate, funFact);
 
         setUpVote(upVote);
@@ -82,10 +88,10 @@ public class Review {
         setProduct(product);
         setRating(rating);
         setUser(user);
-
     }
 
-    public Review(final String reviewText, LocalDate publishingDate, Product product, String funFact, Rating rating, User user) {
+    public Review(final String reviewText, LocalDate publishingDate, Product product, String funFact, Rating rating,
+                  User user) {
         setReviewText(reviewText);
         setProduct(product);
         setPublishingDate(publishingDate);
@@ -93,15 +99,32 @@ public class Review {
         setFunFact(funFact);
         setRating(rating);
         setUser(user);
-        this.upVote = new ArrayList<>();
+        this.upVote   = new ArrayList<>();
         this.downVote = new ArrayList<>();
+    }
+
+    public Review(final String approvalStatus, final String reviewText, final List<Vote> upVote,
+                  final List<Vote> downVote, final String report, final LocalDate publishingDate,
+                  final String funFact, Product product, Rating rating, User user) {
+        this(approvalStatus, reviewText, publishingDate, funFact);
+        setUpVote(upVote);
+        setDownVote(downVote);
+        setReport(report);
+        setProduct(product);
+        setRating(rating);
+        setUser(user);
+    }
+
+    public Review(String approvalStatus, String reviewText, LocalDate publishingDate, String funFact) {
+        setApprovalStatus(approvalStatus);
+        setReviewText(reviewText);
+        setPublishingDate(publishingDate);
+        setFunFact(funFact);
     }
 
     public Boolean setApprovalStatus(String approvalStatus) {
 
-        if (approvalStatus.equalsIgnoreCase("pending") ||
-                approvalStatus.equalsIgnoreCase("approved") ||
-                approvalStatus.equalsIgnoreCase("rejected")) {
+        if (approvalStatus.equalsIgnoreCase("pending") || approvalStatus.equalsIgnoreCase("approved") || approvalStatus.equalsIgnoreCase("rejected")) {
 
             this.approvalStatus = approvalStatus;
             return true;
@@ -184,8 +207,14 @@ public class Review {
     }
 
     public ReviewNeo4j toGraphModel() {
-        var review = new ReviewNeo4j(0, approvalStatus, reviewText, upVote, downVote, report, publishingDate, funFact, product, rating, user);
+        var review = new ReviewNeo4j(0, approvalStatus, reviewText, upVote, downVote, report, publishingDate, funFact
+                , product, rating, user);
         review.setId(idReview);
         return review;
+    }
+
+    public ReviewMongo toDocumentModel() {
+        return new ReviewMongo(approvalStatus, reviewText, upVote, downVote, report, publishingDate, funFact, product
+                , rating, user);
     }
 }

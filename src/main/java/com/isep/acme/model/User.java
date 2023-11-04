@@ -1,5 +1,6 @@
 package com.isep.acme.model;
 
+import com.isep.acme.model.document.UserMongo;
 import com.isep.acme.model.graph.UserNeo4j;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +8,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -50,7 +52,8 @@ public class User implements UserDetails {
     }
 
 
-    public User(final String username, final String password, final String fullName, final String nif, final String morada) {
+    public User(final String username, final String password, final String fullName, final String nif,
+                final String morada) {
         this.username = username;
         this.password = password;
         this.fullName = fullName;
@@ -91,7 +94,13 @@ public class User implements UserDetails {
     }
 
     public UserNeo4j toGraphModel() {
-        return new UserNeo4j(userId, username, password, fullName, nif, morada, authorities.stream().map(Role::toGraphModel).collect(Collectors.toSet()));
+        return new UserNeo4j(userId, username, password, fullName, nif, morada,
+                authorities.stream().map(Role::toGraphModel).collect(Collectors.toSet()));
+    }
+
+    public UserMongo toDocumentModel() {
+        return new UserMongo(username, password, fullName, nif, morada,
+                authorities.stream().map(Role::toDocumentModel).collect(Collectors.toSet()));
     }
 }
 

@@ -10,7 +10,7 @@ import org.springframework.data.neo4j.core.schema.Relationship;
 public class RoleNeo4j {
     @Id
     @Property
-    private String authority;
+    private final String authority;
 
     @Relationship(type = "IS_ASSIGNED_TO", direction = Relationship.Direction.INCOMING)
     private UserNeo4j user;

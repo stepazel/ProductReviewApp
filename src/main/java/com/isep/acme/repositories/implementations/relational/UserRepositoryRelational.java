@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Component("userRepositoryRelational")
 public class UserRepositoryRelational implements UserRepository {
-    private UserRepositoryJPA userRepositoryJPA;
+    private final UserRepositoryJPA userRepositoryJPA;
 
     public UserRepositoryRelational(UserRepositoryJPA userRepositoryJPA) {
         this.userRepositoryJPA = userRepositoryJPA;
