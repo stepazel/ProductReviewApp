@@ -21,7 +21,7 @@ import java.util.Optional;
 @Service
 public class ReviewServiceImpl implements ReviewService {
 
-    @Autowired
+    final
     ReviewRepository repository;
 
     @Autowired
@@ -39,6 +39,10 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Autowired
     RestService restService;
+
+    public ReviewServiceImpl(ReviewRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public Iterable<Review> getAll() {
