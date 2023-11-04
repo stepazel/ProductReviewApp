@@ -1,5 +1,6 @@
 package com.isep.acme.controllers;
 
+import com.isep.acme.model.CreateProductDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
@@ -62,9 +63,9 @@ class ProductController {
     @Operation(summary = "creates a product")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<ProductDTO> create(@RequestBody Product manager) {
+    public ResponseEntity<ProductDTO> create(@RequestBody CreateProductDTO createProductDTO) {
         try {
-            final ProductDTO product = service.create(manager);
+            final ProductDTO product = service.create(createProductDTO);
             return new ResponseEntity<ProductDTO>(product, HttpStatus.CREATED);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Product must have a unique SKU.");
