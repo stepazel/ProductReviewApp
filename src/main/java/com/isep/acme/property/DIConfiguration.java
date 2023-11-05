@@ -1,5 +1,6 @@
 package com.isep.acme.property;
 
+import com.isep.acme.services.SKUGenerator;
 import com.isep.acme.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,5 +41,10 @@ public class DIConfiguration {
     @Bean
     public ImageRepository ImageRepositoryAlias(@Value("${app.database.type}") String dbType) {
         return (ImageRepository) context.getBean("imageRepository" + dbType);
+    }
+
+    @Bean
+    public SKUGenerator SKUGeneratorAlias(@Value("${app.sku-generator}") String qualifier) {
+        return (SKUGenerator) context.getBean("SKUGenerator" + qualifier);
     }
 }

@@ -5,7 +5,6 @@ import com.isep.acme.model.Product;
 import com.isep.acme.model.dto.ProductDTO;
 import com.isep.acme.model.dto.ProductDetailDTO;
 import com.isep.acme.repositories.ProductRepository;
-
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +19,9 @@ public class ProductServiceImpl implements ProductService {
 
     private final SKUGenerator skuGenerator;
 
-    public ProductServiceImpl(@Qualifier("ProductRepositoryAlias") ProductRepository repository, SKUGenerator skuGenerator) {
-        this.repository = repository;
+    public ProductServiceImpl(@Qualifier("ProductRepositoryAlias") ProductRepository repository, @Qualifier(
+            "SKUGeneratorAlias") SKUGenerator skuGenerator) {
+        this.repository   = repository;
         this.skuGenerator = skuGenerator;
     }
 
@@ -84,7 +84,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO create(final CreateProductDTO createProductDTO) {
-        final Product p = new Product(skuGenerator.generateNew(), createProductDTO.getDesignation(), createProductDTO.getDescription());
+        final Product p = new Product(skuGenerator.generateNew(createProductDTO.getDesignation()),
+                createProductDTO.getDesignation(), createProductDTO.getDescription());
         return repository.save(p).toDto();
     }
 
