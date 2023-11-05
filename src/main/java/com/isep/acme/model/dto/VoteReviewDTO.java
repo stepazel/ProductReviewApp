@@ -1,14 +1,14 @@
-package com.isep.acme.model;
+package com.isep.acme.model.dto;
 
 public class VoteReviewDTO {
 
-    private Long userID;
+    private Long   userID;
     private String vote;
 
 
     public VoteReviewDTO(Long userID, String vote) {
         this.userID = userID;
-        this.vote = vote;
+        this.vote   = vote;
     }
 
     public Long getUserID() {

@@ -1,13 +1,12 @@
 package com.isep.acme.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
-
 import com.isep.acme.model.AggregatedRating;
 import com.isep.acme.model.Product;
 import com.isep.acme.repositories.AggregatedRatingRepository;
 import com.isep.acme.repositories.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
@@ -15,17 +14,15 @@ import java.util.Optional;
 public class AggregatedRatingServiceImpl implements AggregatedRatingService {
 
     @Autowired
+    @Qualifier("AggregatedRatingRepositoryAlias")
     AggregatedRatingRepository arRepository;
-
+    @Autowired
+    ReviewService              rService;
+    @Autowired
+    ProductService             productService;
     @Autowired
     @Qualifier("ProductRepositoryAlias")
     private ProductRepository pRepository;
-
-    @Autowired
-    ReviewService rService;
-
-    @Autowired
-    ProductService productService;
 
     @Override
     public AggregatedRating save(String sku) {
@@ -40,7 +37,7 @@ public class AggregatedRatingServiceImpl implements AggregatedRatingService {
 
 
         Optional<AggregatedRating> r = arRepository.findByProductId(product.get());
-        AggregatedRating aggregateF;
+        AggregatedRating           aggregateF;
 
         if (r.isPresent()) {
             r.get().setAverage(average);

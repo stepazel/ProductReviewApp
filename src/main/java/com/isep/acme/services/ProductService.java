@@ -4,8 +4,10 @@ import java.util.Optional;
 
 import com.isep.acme.model.CreateProductDTO;
 import com.isep.acme.model.Product;
-import com.isep.acme.model.ProductDTO;
-import com.isep.acme.model.ProductDetailDTO;
+import com.isep.acme.model.dto.ProductDTO;
+import com.isep.acme.model.dto.ProductDetailDTO;
+
+import java.util.Optional;
 
 public interface ProductService {
 
@@ -17,7 +19,9 @@ public interface ProductService {
 
     Iterable<ProductDTO> getCatalog();
 
-    ProductDetailDTO getDetails(final String sku);
+    Iterable<ProductDetailDTO> getCatalogDetails();
+
+    Optional<ProductDetailDTO> getDetails(final String sku);
 
     ProductDTO create(CreateProductDTO createProductDTO);
 

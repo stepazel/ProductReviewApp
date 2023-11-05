@@ -8,9 +8,6 @@ import javax.validation.constraints.NotNull;
 @Data
 public class AuthenticationRequest {
 
-    @NotNull
-    @Email
-    String username;
-    @NotNull
-    String password;
+    @NotNull @Email String username;
+    @NotNull        String password;
 }

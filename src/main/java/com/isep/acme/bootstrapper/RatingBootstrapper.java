@@ -1,15 +1,17 @@
 package com.isep.acme.bootstrapper;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
-
 import com.isep.acme.model.Rating;
 import com.isep.acme.repositories.RatingRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.Ordered;
+import org.springframework.stereotype.Component;
 
 @Component
-public class RatingBootstrapper implements CommandLineRunner {
+public class RatingBootstrapper implements CommandLineRunner, Ordered {
 
+    @Qualifier("RatingRepositoryAlias")
     @Autowired
     private RatingRepository repository;
 
@@ -65,5 +67,10 @@ public class RatingBootstrapper implements CommandLineRunner {
             Rating rate5 = new Rating(5.0);
             repository.save(rate5);
         }
+    }
+
+    @Override
+    public int getOrder() {
+        return 3;
     }
 }
