@@ -35,8 +35,8 @@ public class UserNeo4j {
     @Property
     private final String morada;
 
-    @Relationship(type = "VOTED", direction = Relationship.Direction.OUTGOING)
-    private final List<ReviewNeo4j> reviews = new ArrayList<>();
+//    @Relationship(type = "VOTED", direction = Relationship.Direction.OUTGOING)
+//    private final List<ReviewNeo4j> reviews = new ArrayList<>();
 
 
     public UserNeo4j(Long userId, String username, String password, String fullName, String nif, String morada,

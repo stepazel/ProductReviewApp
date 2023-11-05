@@ -22,8 +22,8 @@ public class ProductNeo4j {
     @Property()
     private final String description;
 
-    @Relationship(type = "REVIEWED", direction = Relationship.Direction.INCOMING)
-    private final List<ReviewNeo4j> reviewNeo4js = new ArrayList<>();
+//    @Relationship(type = "REVIEWED", direction = Relationship.Direction.INCOMING)
+//    private final List<ReviewNeo4j> reviewNeo4js = new ArrayList<>();
 
     public ProductNeo4j(String sku, String designation, String description) {
         this.sku         = sku;
