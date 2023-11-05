@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class ReviewMongo {
 
     @Id
-    private String id;
+    private Long id;
 
     private String approvalStatus;
     private String reviewText;
@@ -47,11 +47,10 @@ public class ReviewMongo {
     public ReviewMongo() {
     }
 
-    public ReviewMongo(final String approvalStatus, final String reviewText, final List<Vote> upVote,
+    public ReviewMongo(Long id, final String approvalStatus, final String reviewText, final List<Vote> upVote,
                        final List<Vote> downVote, final String report, final LocalDate publishingDate,
                        final String funFact, Product product, Rating rating, User user) {
-        this(approvalStatus, reviewText, publishingDate, funFact);
-
+        this(id, approvalStatus, reviewText, publishingDate, funFact);
         setUpVote(upVote);
         setDownVote(downVote);
         setReport(report);
@@ -60,7 +59,8 @@ public class ReviewMongo {
         setUser(user.toDocumentModel());
     }
 
-    public ReviewMongo(String approvalStatus, String reviewText, LocalDate publishingDate, String funFact) {
+    public ReviewMongo(Long id, String approvalStatus, String reviewText, LocalDate publishingDate, String funFact) {
+        this.id = id;
         setApprovalStatus(approvalStatus);
         setReviewText(reviewText);
         setPublishingDate(publishingDate);
@@ -68,7 +68,7 @@ public class ReviewMongo {
     }
 
     public Review toDomainModel() {
-        return new Review(approvalStatus, reviewText,
+        return new Review(id, 0, approvalStatus, reviewText,
                 votes.stream().filter(voteMongo -> "upVote".equals(voteMongo.getVote())).map(VoteMongo::toDomainModel).collect(Collectors.toList()), votes.stream().filter(voteMongo -> "downVote".equals(voteMongo.getVote())).map(VoteMongo::toDomainModel).collect(Collectors.toList()), report, publishingDate, funFact, product.toDomainEntity(), rating.toDomainEntity(), user.toDomainEntity());
     }
 

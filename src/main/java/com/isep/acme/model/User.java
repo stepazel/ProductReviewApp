@@ -20,6 +20,7 @@ public class User implements UserDetails {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @Getter
     @GeneratedValue
     private Long userId;
 
@@ -99,7 +100,7 @@ public class User implements UserDetails {
     }
 
     public UserMongo toDocumentModel() {
-        return new UserMongo(username, password, fullName, nif, morada,
+        return new UserMongo(userId, username, password, fullName, nif, morada,
                 authorities.stream().map(Role::toDocumentModel).collect(Collectors.toSet()));
     }
 }
