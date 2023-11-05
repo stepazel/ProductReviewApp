@@ -18,10 +18,8 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository repository;
 
-    public ProductServiceImpl(@Qualifier("ProductRepositoryAlias") ProductRepository repository) {
     private final SKUGenerator skuGenerator;
 
-    // TODO get this value from config
     public ProductServiceImpl(@Qualifier("ProductRepositoryAlias") ProductRepository repository, SKUGenerator skuGenerator) {
         this.repository = repository;
         this.skuGenerator = skuGenerator;
@@ -43,8 +41,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Iterable<ProductDTO> findByDesignation(final String designation) {
-        Iterable<Product> p    = repository.findByDesignation(designation);
-        List<ProductDTO>  pDto = new ArrayList<>();
+        Iterable<Product> p = repository.findByDesignation(designation);
+        List<ProductDTO> pDto = new ArrayList<>();
         for (Product pd : p) {
             pDto.add(pd.toDto());
         }
@@ -54,8 +52,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Iterable<ProductDTO> getCatalog() {
-        Iterable<Product> p    = repository.findAll();
-        List<ProductDTO>  pDto = new ArrayList<>();
+        Iterable<Product> p = repository.findAll();
+        List<ProductDTO> pDto = new ArrayList<>();
         for (Product pd : p) {
             pDto.add(pd.toDto());
         }
@@ -65,7 +63,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Iterable<ProductDetailDTO> getCatalogDetails() {
-        Iterable<Product>      p    = repository.findAll();
+        Iterable<Product> p = repository.findAll();
         List<ProductDetailDTO> pDto = new ArrayList<>();
 
         for (Product pd : p) {

@@ -1,6 +1,7 @@
 package com.isep.acme.tests.unit;
 
 import com.isep.acme.model.*;
+import com.isep.acme.model.dto.VoteReviewDTO;
 import com.isep.acme.repositories.ReviewRepository;
 import com.isep.acme.services.ReviewServiceImpl;
 import org.junit.jupiter.api.Test;

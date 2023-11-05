@@ -39,7 +39,7 @@ public class ReviewBootstrapper implements CommandLineRunner, Ordered {
         var rating  = ratingRepository.findByRate(1.0).get();
         var review = new Review("very good review", LocalDate.now(), product, "this is created automatically", rating
                 , user);
-        //        var createdReview = reviewRepository.save(review);
+//            var createdReview = reviewRepository.save(review);
     }
 
     @Override

@@ -1,8 +1,8 @@
 package com.isep.acme.services;
 
 import com.isep.acme.model.Review;
-import com.isep.acme.model.ReviewDTO;
-import com.isep.acme.model.ReviewMapper;
+import com.isep.acme.model.dto.ReviewDTO;
+import com.isep.acme.mappers.ReviewMapper;
 import com.isep.acme.repositories.ReviewRepository;
 
 import java.util.ArrayList;

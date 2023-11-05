@@ -21,8 +21,7 @@ import java.util.Optional;
 @Service
 public class ReviewServiceImpl implements ReviewService {
 
-    @Qualifier("ReviewRepositoryAlias")
-    @Autowired
+    final
     ReviewRepository repository;
 
     @Autowired
@@ -41,6 +40,10 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Autowired
     RestService restService;
+
+    public ReviewServiceImpl(@Qualifier("ReviewRepositoryAlias") ReviewRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public Iterable<Review> getAll() {
