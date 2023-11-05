@@ -1,9 +1,10 @@
 package com.isep.acme.services;
 
 import com.isep.acme.model.Review;
-import com.isep.acme.model.ReviewDTO;
-import com.isep.acme.model.ReviewMapper;
+import com.isep.acme.model.dto.ReviewDTO;
+import com.isep.acme.mappers.ReviewMapper;
 import com.isep.acme.repositories.ReviewRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.List;
 public class RecommendationServicePopularImpl implements RecommendationService {
     private final ReviewRepository reviewRepository;
 
-    public RecommendationServicePopularImpl(ReviewRepository reviewRepository) {
+    public RecommendationServicePopularImpl(@Qualifier("ReviewRepositoryAlias") ReviewRepository reviewRepository) {
         this.reviewRepository = reviewRepository;
     }
 

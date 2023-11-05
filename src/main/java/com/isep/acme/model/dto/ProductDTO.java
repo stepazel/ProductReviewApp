@@ -1,14 +1,12 @@
-package com.isep.acme.model;
+package com.isep.acme.model.dto;
 
-public class ProductDetailDTO {
+public class ProductDTO {
     private String sku;
     private String designation;
-    private String description;
 
-    public ProductDetailDTO(String sku, String designation, String description) {
-        this.sku = sku;
+    public ProductDTO(String sku, String designation) {
+        this.sku         = sku;
         this.designation = designation;
-        this.description = description;
     }
 
     public String getSku() {
@@ -25,13 +23,5 @@ public class ProductDetailDTO {
 
     public void setDesignation(String designation) {
         this.designation = designation;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 }

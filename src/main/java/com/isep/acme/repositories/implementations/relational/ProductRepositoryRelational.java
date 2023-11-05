@@ -1,4 +1,4 @@
-package com.isep.acme.repositories.implementations;
+package com.isep.acme.repositories.implementations.relational;
 
 import com.isep.acme.model.Product;
 import com.isep.acme.repositories.ProductRepository;
@@ -9,13 +9,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Component("productRepositoryRelational")
-public class ProductRepositoryImpl implements ProductRepository {
+public class ProductRepositoryRelational implements ProductRepository {
 
     private final ProductRepositoryJPA repositoryA;
 
     @Autowired
-    public ProductRepositoryImpl(ProductRepositoryJPA productRepositoryJPA)
-    {
+    public ProductRepositoryRelational(ProductRepositoryJPA productRepositoryJPA) {
         this.repositoryA = productRepositoryJPA;
     }
 
@@ -32,6 +31,16 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public Optional<Product> getCatalog() {
         return this.repositoryA.getCatalog();
+    }
+
+    @Override
+    public Optional<Product> getDetails(String sku) {
+        return this.repositoryA.getDetails(sku);
+    }
+
+    @Override
+    public Iterable<Product> getCatalogDetails() {
+        return this.repositoryA.getCatalogDetails();
     }
 
     @Override

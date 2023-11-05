@@ -1,5 +1,7 @@
-package com.isep.acme.model;
+package com.isep.acme.mappers;
 
+import com.isep.acme.model.User;
+import com.isep.acme.model.dto.UserView;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

@@ -1,5 +1,6 @@
 package com.isep.acme;
 
+import com.isep.acme.mappers.ReviewMapper;
 import com.isep.acme.model.*;
 import com.isep.acme.repositories.ReviewRepository;
 import com.isep.acme.services.RecommendationServicePopularImpl;

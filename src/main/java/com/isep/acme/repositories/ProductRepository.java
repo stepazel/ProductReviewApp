@@ -1,12 +1,7 @@
 package com.isep.acme.repositories;
 
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.isep.acme.model.Product;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +12,10 @@ public interface ProductRepository {
     Optional<Product> findBySku(String sku);
 
     Optional<Product> getCatalog();
+
+    Iterable<Product> getCatalogDetails();
+
+    Optional<Product> getDetails(@Param("sku") String sku);
 
     void deleteBySku(@Param("sku") String sku);
 

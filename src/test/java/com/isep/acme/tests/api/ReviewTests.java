@@ -1,8 +1,8 @@
 package com.isep.acme.tests.api;
 
 
-import com.isep.acme.model.CreateReviewDTO;
-import com.isep.acme.model.ReviewDTO;
+import com.isep.acme.model.dto.CreateReviewDTO;
+import com.isep.acme.model.dto.ReviewDTO;
 import com.isep.acme.repositories.ProductRepository;
 import com.isep.acme.repositories.UserRepository;
 import org.junit.jupiter.api.Assertions;
@@ -24,7 +24,7 @@ public class ReviewTests {
     private final RestTemplate restTemplate;
 
     @Autowired
-    public ReviewTests(UserRepository userRepository, @Qualifier("productRepositoryRelational") ProductRepository productRepository, RestTemplateBuilder restTemplateBuilder) {
+    public ReviewTests(@Qualifier("UserRepositoryAlias") UserRepository userRepository, @Qualifier("ProductRepositoryAlias") ProductRepository productRepository, RestTemplateBuilder restTemplateBuilder) {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.restTemplate = restTemplateBuilder.build();

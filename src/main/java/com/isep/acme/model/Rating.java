@@ -1,6 +1,10 @@
 package com.isep.acme.model;
 
 
+import com.isep.acme.model.document.RatingMongo;
+import com.isep.acme.model.graph.RatingNeo4j;
+import lombok.Getter;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -9,11 +13,12 @@ public class Rating {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
     private Long idRating;
 
-    @Version
     private long version;
 
+    @Getter
     @Column(nullable = false)
     private Double rate;
 
@@ -22,7 +27,7 @@ public class Rating {
 
     public Rating(Long idRating, long version, Double rate) {
         this.idRating = Objects.requireNonNull(idRating);
-        this.version = Objects.requireNonNull(version);
+        this.version  = Objects.requireNonNull(version);
         setRate(rate);
     }
 
@@ -30,11 +35,15 @@ public class Rating {
         setRate(rate);
     }
 
-    public Double getRate() {
-        return rate;
-    }
-
     public void setRate(Double rate) {
         this.rate = rate;
+    }
+
+    public RatingNeo4j toGraphModel() {
+        return new RatingNeo4j(idRating, rate);
+    }
+
+    public RatingMongo toDocumentModel() {
+        return new RatingMongo(rate);
     }
 }

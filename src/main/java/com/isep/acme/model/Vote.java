@@ -1,13 +1,17 @@
 package com.isep.acme.model;
 
-import javax.persistence.Embeddable;
+import com.isep.acme.model.document.VoteMongo;
+import com.isep.acme.model.graph.VoteNeo4j;
+import lombok.Getter;
 
+import javax.persistence.Embeddable;
 import java.util.Objects;
 
+@Getter
 @Embeddable
 public class Vote {
     private String vote;
-    private Long userID;
+    private Long   userID;
 
 
     protected Vote() {
@@ -15,20 +19,12 @@ public class Vote {
     }
 
     public Vote(String vote, Long userID) {
-        this.vote = vote;
+        this.vote   = vote;
         this.userID = userID;
-    }
-
-    public String getVote() {
-        return vote;
     }
 
     public void setVote(String vote) {
         this.vote = vote;
-    }
-
-    public Long getUserID() {
-        return userID;
     }
 
     public void setUserID(Long userID) {
@@ -37,8 +33,10 @@ public class Vote {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Vote vote1 = (Vote) o;
         return vote.equals(vote1.vote) && userID.equals(vote1.userID);
     }
@@ -46,6 +44,14 @@ public class Vote {
     @Override
     public int hashCode() {
         return Objects.hash(vote, userID);
+    }
+
+    public VoteNeo4j toGraphModel() {
+        return new VoteNeo4j(vote, userID);
+    }
+
+    public VoteMongo toDocumentModel() {
+        return new VoteMongo(vote, userID);
     }
 
 }

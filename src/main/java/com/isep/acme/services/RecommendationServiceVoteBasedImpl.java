@@ -1,12 +1,12 @@
 package com.isep.acme.services;
 
 import com.isep.acme.model.Review;
-import com.isep.acme.model.ReviewDTO;
-import com.isep.acme.model.ReviewMapper;
+import com.isep.acme.model.dto.ReviewDTO;
+import com.isep.acme.mappers.ReviewMapper;
 import com.isep.acme.model.Vote;
 import com.isep.acme.repositories.ReviewRepository;
 import com.isep.acme.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -14,10 +14,13 @@ import java.util.stream.Collectors;
 
 @Service("recommendationServiceVoteBased")
 public class RecommendationServiceVoteBasedImpl implements RecommendationService {
-    @Autowired
-    private UserRepository   userRepository;
-    @Autowired
-    private ReviewRepository reviewRepository;
+    private final UserRepository   userRepository;
+    private final ReviewRepository reviewRepository;
+
+    public RecommendationServiceVoteBasedImpl(@Qualifier("UserRepositoryAlias") UserRepository userRepository, @Qualifier("ReviewRepositoryAlias") ReviewRepository reviewRepository) {
+        this.userRepository = userRepository;
+        this.reviewRepository = reviewRepository;
+    }
 
     /**
      * If the user votes at least fifty percent as me (this means matching upvotes and downvotes), all reviews of the

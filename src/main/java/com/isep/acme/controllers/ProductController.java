@@ -1,6 +1,10 @@
 package com.isep.acme.controllers;
 
-import com.isep.acme.model.CreateProductDTO;
+import com.isep.acme.model.Product;
+import com.isep.acme.model.dto.ProductDTO;
+import com.isep.acme.model.dto.ProductDetailDTO;
+import com.isep.acme.services.ProductService;
+import com.isep.acme.model.dto.CreateProductDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
@@ -10,13 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
-import com.isep.acme.model.Product;
-import com.isep.acme.model.ProductDTO;
-
-import com.isep.acme.services.ProductService;
-
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Optional;
 
@@ -37,6 +34,26 @@ class ProductController {
         final var products = service.getCatalog();
 
         return ResponseEntity.ok().body(products);
+    }
+
+    @Operation(summary = "gets catalog with details, i.e. all products")
+    @GetMapping(value = "/details")
+    public ResponseEntity<Iterable<ProductDetailDTO>> getCatalogWithDetails() {
+        final var products = service.getCatalogDetails();
+
+        return ResponseEntity.ok().body(products);
+    }
+
+    @Operation(summary = "gets the details of a product by sku")
+    @GetMapping(value = "/details/{sku}")
+    public ResponseEntity<ProductDetailDTO> getDetails(@PathVariable("sku") final String sku) {
+
+        final Optional<ProductDetailDTO> product = service.getDetails(sku);
+
+        if (product.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found.");
+        else
+            return ResponseEntity.ok().body(product.get());
     }
 
     @Operation(summary = "finds product by sku")
@@ -74,7 +91,8 @@ class ProductController {
 
     @Operation(summary = "updates a product")
     @PatchMapping(value = "/{sku}")
-    public ResponseEntity<ProductDTO> Update(@PathVariable("sku") final String sku, @RequestBody final Product product) {
+    public ResponseEntity<ProductDTO> Update(@PathVariable("sku") final String sku,
+                                             @RequestBody final Product product) {
 
         final ProductDTO productDTO = service.updateBySku(sku, product);
 
