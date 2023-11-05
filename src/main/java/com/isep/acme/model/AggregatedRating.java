@@ -44,7 +44,7 @@ public class AggregatedRating {
     }
 
     public AggregatedRatingMongo toDocumentModel() {
-        return new AggregatedRatingMongo(average, product);
+        return new AggregatedRatingMongo(aggregatedId, average, product);
     }
 
     public void setAggregatedId(Long aggregatedId) {

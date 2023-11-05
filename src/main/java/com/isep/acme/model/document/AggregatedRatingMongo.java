@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class AggregatedRatingMongo {
 
     @Id
-    private String id;
+    private Long id;
 
     private double average;
 
@@ -20,14 +20,15 @@ public class AggregatedRatingMongo {
     public AggregatedRatingMongo() {
     }
 
-    public AggregatedRatingMongo(double average, Product product) {
+    public AggregatedRatingMongo(Long id, double average, Product product) {
+        this.id      = id;
         this.average = average;
         this.product = product.toDocumentModel();
     }
 
     public AggregatedRating toDomainEntity() {
         var ar = new AggregatedRating(average, product.toDomainEntity());
-        ar.setAggregatedId(Long.valueOf(id));
+        ar.setAggregatedId(id);
         return ar;
     }
 }

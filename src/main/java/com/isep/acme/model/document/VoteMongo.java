@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class VoteMongo {
 
     @Id
-    private String id;
+    private Long id;
 
     @Getter
     private String vote;
@@ -19,6 +19,12 @@ public class VoteMongo {
     }
 
     public VoteMongo(String vote, Long userID) {
+        this.vote   = vote;
+        this.userID = userID;
+    }
+
+    public VoteMongo(Long id, String vote, Long userID) {
+        this.id     = id;
         this.vote   = vote;
         this.userID = userID;
     }
