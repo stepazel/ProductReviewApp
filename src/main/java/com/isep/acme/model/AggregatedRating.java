@@ -1,8 +1,5 @@
 package com.isep.acme.model;
 
-
-import com.isep.acme.model.document.AggregatedRatingMongo;
-import com.isep.acme.model.graph.AggregatedRatingNeo4j;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -35,16 +32,6 @@ public class AggregatedRating {
 
     public void setProduct(Product product) {
         this.product = product;
-    }
-
-    public AggregatedRatingNeo4j toGraphModel() {
-        var aggregatedRating = new AggregatedRatingNeo4j(average, product);
-        aggregatedRating.setId(aggregatedId);
-        return aggregatedRating;
-    }
-
-    public AggregatedRatingMongo toDocumentModel() {
-        return new AggregatedRatingMongo(average, product);
     }
 
     public void setAggregatedId(Long aggregatedId) {

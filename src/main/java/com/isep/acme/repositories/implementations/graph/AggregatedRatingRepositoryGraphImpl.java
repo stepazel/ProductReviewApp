@@ -1,5 +1,6 @@
 package com.isep.acme.repositories.implementations.graph;
 
+import com.isep.acme.mappers.AggregatedRatingMapper;
 import com.isep.acme.model.AggregatedRating;
 import com.isep.acme.model.Product;
 import com.isep.acme.model.graph.AggregatedRatingNeo4j;
@@ -28,6 +29,6 @@ public class AggregatedRatingRepositoryGraphImpl implements AggregatedRatingRepo
 
     @Override
     public AggregatedRating save(AggregatedRating aggregatedRating) {
-        return aggregatedRatingRepositoryNeo4j.save(aggregatedRating.toGraphModel()).toDomainEntity();
+        return aggregatedRatingRepositoryNeo4j.save(AggregatedRatingMapper.toGraphModel(aggregatedRating)).toDomainEntity();
     }
 }

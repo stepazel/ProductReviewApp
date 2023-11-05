@@ -1,5 +1,6 @@
 package com.isep.acme.repositories.implementations.document;
 
+import com.isep.acme.mappers.AggregatedRatingMapper;
 import com.isep.acme.model.AggregatedRating;
 import com.isep.acme.model.Product;
 import com.isep.acme.model.document.AggregatedRatingMongo;
@@ -24,6 +25,6 @@ public class AggregatedRatingRepositoryDocumentImpl implements AggregatedRatingR
 
     @Override
     public AggregatedRating save(AggregatedRating aggregatedRating) {
-        return aggregatedRatingRepositoryMongo.save(aggregatedRating.toDocumentModel()).toDomainEntity();
+        return aggregatedRatingRepositoryMongo.save(AggregatedRatingMapper.toDocumentModel(aggregatedRating)).toDomainEntity();
     }
 }
