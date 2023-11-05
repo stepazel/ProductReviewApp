@@ -1,5 +1,6 @@
 package com.isep.acme.services;
 
+import com.isep.acme.mappers.ProductMapper;
 import com.isep.acme.model.dto.CreateProductDTO;
 import com.isep.acme.model.Product;
 import com.isep.acme.model.dto.ProductDTO;
@@ -35,7 +36,7 @@ public class ProductServiceImpl implements ProductService {
     public Optional<ProductDTO> findBySku(String sku) {
         final Optional<Product> product = repository.findBySku(sku);
 
-        return product.map(Product::toDto);
+        return product.map(ProductMapper::toDto);
     }
 
 
@@ -44,7 +45,7 @@ public class ProductServiceImpl implements ProductService {
         Iterable<Product> p = repository.findByDesignation(designation);
         List<ProductDTO> pDto = new ArrayList<>();
         for (Product pd : p) {
-            pDto.add(pd.toDto());
+            pDto.add(ProductMapper.toDto(pd));
         }
 
         return pDto;
@@ -55,7 +56,7 @@ public class ProductServiceImpl implements ProductService {
         Iterable<Product> p = repository.findAll();
         List<ProductDTO> pDto = new ArrayList<>();
         for (Product pd : p) {
-            pDto.add(pd.toDto());
+            pDto.add(ProductMapper.toDto(pd));
         }
 
         return pDto;
@@ -67,7 +68,7 @@ public class ProductServiceImpl implements ProductService {
         List<ProductDetailDTO> pDto = new ArrayList<>();
 
         for (Product pd : p) {
-            pDto.add(pd.toDetailDto());
+            pDto.add(ProductMapper.toDetailDto(pd));
         }
 
         return pDto;
@@ -86,7 +87,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductDTO create(final CreateProductDTO createProductDTO) {
         final Product p = new Product(skuGenerator.generateNew(createProductDTO.getDesignation()),
                 createProductDTO.getDesignation(), createProductDTO.getDescription());
-        return repository.save(p).toDto();
+        return ProductMapper.toDto(repository.save(p));
     }
 
     @Override
@@ -101,7 +102,7 @@ public class ProductServiceImpl implements ProductService {
 
         Product productUpdated = repository.save(productToUpdate.get());
 
-        return productUpdated.toDto();
+        return ProductMapper.toDto(productUpdated);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.isep.acme.model.document;
 
+import com.isep.acme.mappers.ProductMapper;
 import com.isep.acme.model.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -55,7 +56,7 @@ public class ReviewMongo {
         setUpVote(upVote);
         setDownVote(downVote);
         setReport(report);
-        setProduct(product.toDocumentModel());
+        setProduct(ProductMapper.toDocumentModel(product));
         setRating(rating.toDocumentModel());
         setUser(user.toDocumentModel());
     }

@@ -1,17 +1,13 @@
 package com.isep.acme.model;
 
-import com.isep.acme.model.document.ProductMongo;
-import com.isep.acme.model.dto.ProductDTO;
-import com.isep.acme.model.dto.ProductDetailDTO;
-import com.isep.acme.model.graph.ProductNeo4j;
+import lombok.Getter;
 
 import javax.persistence.*;
 import java.util.Objects;
 
+@Getter
 @Entity
 public class Product {
-
-
     @Column(nullable = false, unique = true)
     public  String sku;
     @Id
@@ -22,9 +18,6 @@ public class Product {
 
     @Column(nullable = false)
     private String description;
-    /*
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<Review> review = new ArrayList<Review>(); */
 
     public Product() {
     }
@@ -50,10 +43,6 @@ public class Product {
         setDesignation(designation);
     }
 
-    public String getDesignation() {
-        return designation;
-    }
-
     public void setDesignation(String designation) {
         if (designation == null || designation.isBlank()) {
             throw new IllegalArgumentException("Designation is a mandatory attribute of Product.");
@@ -62,10 +51,6 @@ public class Product {
             throw new IllegalArgumentException("Designation must not be greater than 50 characters.");
         }
         this.designation = designation;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public void setDescription(String description) {
@@ -78,10 +63,6 @@ public class Product {
         }
 
         this.description = description;
-    }
-
-    public String getSku() {
-        return sku;
     }
 
     public void setSku(String sku) {
@@ -99,34 +80,5 @@ public class Product {
         setDesignation(p.designation);
         setDescription(p.description);
     }
-
-    public Long getProductID() {
-        return productID;
-    }
-
-    public ProductDTO toDto() {
-        return new ProductDTO(this.sku, this.designation);
-    }
-
-    public ProductNeo4j toGraphModel() {
-        return new ProductNeo4j(getSku(), getDesignation(), getDescription());
-    }
-
-    public ProductMongo toDocumentModel() {
-        return new ProductMongo(getSku(), getDesignation(), getDescription());
-    }
-
-    public ProductDetailDTO toDetailDto() {
-        return new ProductDetailDTO(this.sku, this.designation, this.description);
-    }
-/*
-    public List<Review> getReview() {
-        return review;
-    }
-
-    public void setReview(List<Review> review) {
-        this.review = review;
-    }
-*/
 
 }

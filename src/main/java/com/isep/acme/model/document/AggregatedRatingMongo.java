@@ -1,5 +1,6 @@
 package com.isep.acme.model.document;
 
+import com.isep.acme.mappers.ProductMapper;
 import com.isep.acme.model.AggregatedRating;
 import com.isep.acme.model.Product;
 import org.springframework.data.annotation.Id;
@@ -22,7 +23,7 @@ public class AggregatedRatingMongo {
 
     public AggregatedRatingMongo(double average, Product product) {
         this.average = average;
-        this.product = product.toDocumentModel();
+        this.product = ProductMapper.toDocumentModel(product);
     }
 
     public AggregatedRating toDomainEntity() {

@@ -1,5 +1,6 @@
 package com.isep.acme.model.graph;
 
+import com.isep.acme.mappers.ProductMapper;
 import com.isep.acme.model.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -146,7 +147,7 @@ public class ReviewNeo4j {
     }
 
     public void setProduct(Product product) {
-        this.product = product.toGraphModel();
+        this.product = ProductMapper.toGraphModel(product);
     }
 
     public void setUser(User user) {

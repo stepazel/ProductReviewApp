@@ -1,5 +1,6 @@
 package com.isep.acme.model.graph;
 
+import com.isep.acme.mappers.ProductMapper;
 import com.isep.acme.model.AggregatedRating;
 import com.isep.acme.model.Product;
 import lombok.Getter;
@@ -24,7 +25,7 @@ public class AggregatedRatingNeo4j {
 
     public AggregatedRatingNeo4j(double average, Product product) {
         this.average = average;
-        this.product = product.toGraphModel();
+        this.product = ProductMapper.toGraphModel(product);
     }
 
     public AggregatedRating toDomainEntity() {
