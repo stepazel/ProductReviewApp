@@ -2,6 +2,7 @@ package com.isep.acme.property;
 
 import com.isep.acme.services.SKUGenerator;
 import com.isep.acme.repositories.*;
+import com.isep.acme.services.RecommendationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -46,5 +47,10 @@ public class DIConfiguration {
     @Bean
     public SKUGenerator SKUGeneratorAlias(@Value("${app.sku-generator}") String qualifier) {
         return (SKUGenerator) context.getBean("SKUGenerator" + qualifier);
+    }
+
+    @Bean
+    public RecommendationService RecommendationServiceAlias(@Value("${app.recommendation-algorithm}") String qualifier) {
+        return (RecommendationService) context.getBean("recommendationService" + qualifier);
     }
 }

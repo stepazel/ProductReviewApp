@@ -1,20 +1,20 @@
 package com.isep.acme.tests;
 
-import com.isep.acme.services.SKUGeneratorFirstImpl;
+import com.isep.acme.services.SKUGeneratorRandomPatternImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class SKUGeneratorTests {
-    private final SKUGeneratorFirstImpl skuGeneratorFirst;
+    private final SKUGeneratorRandomPatternImpl skuGeneratorFirst;
 
     SKUGeneratorTests() {
-        skuGeneratorFirst = new SKUGeneratorFirstImpl();
+        skuGeneratorFirst = new SKUGeneratorRandomPatternImpl();
     }
 
     @Test
     void firstGeneratorTest() {
-        var sku = skuGeneratorFirst.generateNew();
+        var sku = skuGeneratorFirst.generateNew("test - this parameter is not needed");
         assert sku.length() == 11;
 
         assert Character.isLetter(sku.charAt(1));
