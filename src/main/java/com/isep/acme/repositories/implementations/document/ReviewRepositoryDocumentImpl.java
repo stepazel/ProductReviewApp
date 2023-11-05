@@ -5,6 +5,7 @@ import com.isep.acme.model.Review;
 import com.isep.acme.model.User;
 import com.isep.acme.model.document.ReviewMongo;
 import com.isep.acme.repositories.ReviewRepository;
+import com.isep.acme.services.UniqueSequenceService;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,13 +14,15 @@ import java.util.stream.Collectors;
 
 @Component("reviewRepositoryDocument")
 public class ReviewRepositoryDocumentImpl implements ReviewRepository {
-    private final ReviewRepositoryMongo reviewRepositoryMongo;
-
+    private final ReviewRepositoryMongo  reviewRepositoryMongo;
+    private final UniqueSequenceService  uniqueSequenceService;
     private final ProductRepositoryMongo productRepositoryMongo;
 
     public ReviewRepositoryDocumentImpl(ReviewRepositoryMongo reviewRepositoryMongo,
+                                        UniqueSequenceService uniqueSequenceService,
                                         ProductRepositoryMongo productRepositoryMongo) {
         this.reviewRepositoryMongo  = reviewRepositoryMongo;
+        this.uniqueSequenceService  = uniqueSequenceService;
         this.productRepositoryMongo = productRepositoryMongo;
     }
 
@@ -60,6 +63,7 @@ public class ReviewRepositoryDocumentImpl implements ReviewRepository {
 
     @Override
     public Review save(Review review) {
+        review.setIdReview(uniqueSequenceService.getNextSequence("review"));
         return reviewRepositoryMongo.save(review.toDocumentModel()).toDomainModel();
     }
 

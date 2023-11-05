@@ -3,6 +3,7 @@ package com.isep.acme.model;
 import com.isep.acme.model.document.ReviewMongo;
 import com.isep.acme.model.graph.ReviewNeo4j;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ import java.util.Objects;
 public class Review {
 
     @Getter
+    @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idReview;
@@ -214,7 +216,7 @@ public class Review {
     }
 
     public ReviewMongo toDocumentModel() {
-        return new ReviewMongo(approvalStatus, reviewText, upVote, downVote, report, publishingDate, funFact, product
-                , rating, user);
+        return new ReviewMongo(idReview, approvalStatus, reviewText, upVote, downVote, report, publishingDate,
+                funFact, product, rating, user);
     }
 }

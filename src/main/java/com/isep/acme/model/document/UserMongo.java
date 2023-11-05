@@ -17,14 +17,14 @@ import java.util.stream.Collectors;
 public class UserMongo {
 
     @Id
-    private String userId;
+    private Long userId;
 
     private String username;
     private String password;
     private String fullName;
     private String nif;
     private String morada;
-    
+
     private Set<RoleMongo>    roles = new HashSet<>();
     @DBRef
     private List<ReviewMongo> reviews;
@@ -32,7 +32,8 @@ public class UserMongo {
     public UserMongo() {
     }
 
-    public UserMongo(String username, String password, String fullName, String nif, String morada) {
+    public UserMongo(Long userId, String username, String password, String fullName, String nif, String morada) {
+        this.userId   = userId;
         this.username = username;
         this.password = password;
         this.fullName = fullName;
@@ -41,8 +42,9 @@ public class UserMongo {
         this.roles    = new HashSet<>();
     }
 
-    public UserMongo(String username, String password, String fullName, String nif, String morada,
+    public UserMongo(Long userId, String username, String password, String fullName, String nif, String morada,
                      Set<RoleMongo> roles) {
+        this.userId   = userId;
         this.username = username;
         this.password = password;
         this.fullName = fullName;
@@ -54,6 +56,7 @@ public class UserMongo {
     public User toDomainEntity() {
         User user = new User(username, password, fullName, nif, morada);
         user.setAuthorities(roles.stream().map(RoleMongo::toDomainEntity).filter(Objects::nonNull).collect(Collectors.toSet()));
+        user.setUserId(userId);
         return user;
     }
 }
