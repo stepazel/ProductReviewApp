@@ -1,6 +1,6 @@
 package com.isep.acme.services;
 
-import com.isep.acme.model.CreateProductDTO;
+import com.isep.acme.model.dto.CreateProductDTO;
 import com.isep.acme.model.Product;
 import com.isep.acme.model.dto.ProductDTO;
 import com.isep.acme.model.dto.ProductDetailDTO;

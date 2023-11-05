@@ -1,4 +1,4 @@
-package com.isep.acme.model;
+package com.isep.acme.model.dto;
 
 import lombok.Getter;
 

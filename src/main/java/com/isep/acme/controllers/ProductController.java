@@ -4,7 +4,7 @@ import com.isep.acme.model.Product;
 import com.isep.acme.model.dto.ProductDTO;
 import com.isep.acme.model.dto.ProductDetailDTO;
 import com.isep.acme.services.ProductService;
-import com.isep.acme.model.CreateProductDTO;
+import com.isep.acme.model.dto.CreateProductDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
