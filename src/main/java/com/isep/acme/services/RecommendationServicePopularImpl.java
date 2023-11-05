@@ -4,10 +4,12 @@ import com.isep.acme.model.Review;
 import com.isep.acme.model.ReviewDTO;
 import com.isep.acme.model.ReviewMapper;
 import com.isep.acme.repositories.ReviewRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service("recommendationServicePopular")
 public class RecommendationServicePopularImpl implements RecommendationService {
     private final ReviewRepository reviewRepository;
 

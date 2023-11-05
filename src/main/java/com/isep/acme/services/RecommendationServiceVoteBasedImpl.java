@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Service
+@Service("recommendationServiceVoteBased")
 public class RecommendationServiceVoteBasedImpl implements RecommendationService {
     @Autowired
     private UserRepository   userRepository;
@@ -62,9 +62,11 @@ public class RecommendationServiceVoteBasedImpl implements RecommendationService
             if (!currentUserVotes.containsKey(review.getIdReview())) {
                 continue;
             }
-            String currentUserVoteType = currentUserVotes.get(review.getIdReview());
-            List<Long> upVoters = review.getUpVote().stream().map(Vote::getUserID).collect(Collectors.toList());
-            List<Long> downVoters = review.getDownVote().stream().map(Vote::getUserID).collect(Collectors.toList());
+            String     currentUserVoteType = currentUserVotes.get(review.getIdReview());
+            List<Long> upVoters            =
+                    review.getUpVote().stream().map(Vote::getUserID).collect(Collectors.toList());
+            List<Long> downVoters          =
+                    review.getDownVote().stream().map(Vote::getUserID).collect(Collectors.toList());
 
             List<Long> similarVoters   = "upVote".equals(currentUserVoteType) ? upVoters : downVoters;
             List<Long> differentVoters = "upVote".equals(currentUserVoteType) ? downVoters : upVoters;

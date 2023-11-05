@@ -20,6 +20,6 @@ public class DIConfiguration {
 
     @Bean
     public RecommendationService RecommendationServiceAlias(@Value("${app.recommendation-algorithm}") String qualifier) {
-        return (RecommendationService) context.getBean("RecommendationService" + qualifier);
+        return (RecommendationService) context.getBean("recommendationService" + qualifier);
     }
 }
