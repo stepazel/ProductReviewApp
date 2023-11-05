@@ -35,4 +35,7 @@ build/
 ### VS Code ###
 .vscode/
 
+### Visual paradigm temp files ###
+*.vpp.bak*
+*.vpp.lck
 
