@@ -8,4 +8,6 @@ public interface RatingRepository {
     Rating save(Rating rating);
 
     Optional<Rating> findByRate(Double rate);
+
+    Iterable<Rating> findAll();
 }

@@ -6,6 +6,7 @@ import com.isep.acme.repositories.RatingRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component("ratingRepositoryGraph")
 public class RatingRepositoryGraphImpl implements RatingRepository {
@@ -22,7 +23,11 @@ public class RatingRepositoryGraphImpl implements RatingRepository {
 
     @Override
     public Optional<Rating> findByRate(Double rate) {
-        var hmm = ratingRepositoryNeo4j.findByRate(rate);
-        return hmm.map(RatingNeo4j::toDomainEntity);
+        return ratingRepositoryNeo4j.findByRate(rate).map(RatingNeo4j::toDomainEntity);
+    }
+
+    @Override
+    public Iterable<Rating> findAll() {
+        return ratingRepositoryNeo4j.findAll().stream().map(RatingNeo4j::toDomainEntity).collect(Collectors.toList());
     }
 }

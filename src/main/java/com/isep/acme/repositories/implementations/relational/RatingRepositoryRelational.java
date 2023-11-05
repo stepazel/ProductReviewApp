@@ -23,4 +23,9 @@ public class RatingRepositoryRelational implements RatingRepository {
     public Optional<Rating> findByRate(Double rate) {
         return ratingRepositoryJPA.findByRate(rate);
     }
+
+    @Override
+    public Iterable<Rating> findAll() {
+        return ratingRepositoryJPA.findAll();
+    }
 }

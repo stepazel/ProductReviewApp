@@ -6,6 +6,7 @@ import com.isep.acme.repositories.RatingRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component("ratingRepositoryDocument")
 public class RatingRepositoryDocumentImpl implements RatingRepository {
@@ -22,8 +23,12 @@ public class RatingRepositoryDocumentImpl implements RatingRepository {
 
     @Override
     public Optional<Rating> findByRate(Double rate) {
-        var hmm = ratingRepositoryMongo.findByRate(rate);
-        return hmm.map(RatingMongo::toDomainEntity);
+        return ratingRepositoryMongo.findByRate(rate).map(RatingMongo::toDomainEntity);
+    }
+
+    @Override
+    public Iterable<Rating> findAll() {
+        return ratingRepositoryMongo.findAll().stream().map(RatingMongo::toDomainEntity).collect(Collectors.toList());
     }
 }
 
