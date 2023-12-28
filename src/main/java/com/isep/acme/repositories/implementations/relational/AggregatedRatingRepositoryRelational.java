@@ -22,6 +22,6 @@ public class AggregatedRatingRepositoryRelational implements AggregatedRatingRep
 
     @Override
     public AggregatedRating save(AggregatedRating aggregatedRating) {
-        return aggregatedRatingRepositoryJPA.save(aggregatedRating);
+        return aggregatedRatingRepositoryJPA.save(aggregatedRating.toJpaModel()).toDomainEntity();
     }
 }

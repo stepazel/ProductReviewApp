@@ -1,8 +1,6 @@
-package com.isep.acme.model;
+package com.isep.acme.model.jpa;
 
-import com.isep.acme.model.document.VoteMongo;
-import com.isep.acme.model.graph.VoteNeo4j;
-import com.isep.acme.model.jpa.VoteJpa;
+import com.isep.acme.model.Vote;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,11 +12,11 @@ import java.util.Objects;
 @Getter
 @Embeddable
 @NoArgsConstructor
-public class Vote {
+public class VoteJpa {
     private String vote;
     private Long   userID;
 
-    public Vote(String vote, Long userID) {
+    public VoteJpa(String vote, Long userID) {
         this.vote   = vote;
         this.userID = userID;
     }
@@ -29,7 +27,7 @@ public class Vote {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-        Vote vote1 = (Vote) o;
+        VoteJpa vote1 = (VoteJpa) o;
         return vote.equals(vote1.vote) && userID.equals(vote1.userID);
     }
 
@@ -38,15 +36,7 @@ public class Vote {
         return Objects.hash(vote, userID);
     }
 
-    public VoteNeo4j toGraphModel() {
-        return new VoteNeo4j(vote, userID);
-    }
-
-    public VoteMongo toDocumentModel() {
-        return new VoteMongo(vote, userID);
-    }
-
-    public VoteJpa toJpaModel() {
-        return new VoteJpa(vote, userID);
+    public Vote toDomainEntity() {
+        return new Vote(vote, userID);
     }
 }

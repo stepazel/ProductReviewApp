@@ -16,11 +16,11 @@ public class ImageRepositoryRelational implements ImageRepository {
 
     @Override
     public Iterable<ProdImage> findAll() {
-        return imageRepositoryJPA.findAll();
+        return null;
     }
 
     @Override
     public Optional<ProdImage> findById(Long id) {
-        return imageRepositoryJPA.findById(id);
+        return Optional.empty();
     }
 }

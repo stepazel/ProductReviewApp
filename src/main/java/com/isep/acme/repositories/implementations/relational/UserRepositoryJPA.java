@@ -2,6 +2,7 @@ package com.isep.acme.repositories.implementations.relational;
 
 import com.isep.acme.controllers.ResourceNotFoundException;
 import com.isep.acme.model.User;
+import com.isep.acme.model.jpa.UserJpa;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -13,20 +14,20 @@ import java.util.Optional;
 
 @Repository
 @CacheConfig(cacheNames = "users")
-public interface UserRepositoryJPA extends CrudRepository<User, Long> {
+public interface UserRepositoryJPA extends CrudRepository<UserJpa, Long> {
 
     @Override
     @Caching(evict = {@CacheEvict(key = "#p0.userId", condition = "#p0.userId != null"), @CacheEvict(key = "#p0" +
-            ".username", condition = "#p0.username != null")})
-    <S extends User> S save(S entity);
+                                                                                                           ".username", condition = "#p0.username != null")})
+    <S extends UserJpa> S save(S entity);
 
     @Override
     @Cacheable
-    Optional<User> findById(Long userId);
+    Optional<UserJpa> findById(Long userId);
 
     @Cacheable
     default User getById(final Long userId) {
-        final Optional<User> optionalUser = findById(userId);
+        final Optional<UserJpa> optionalUser = findById(userId);
 
         if (optionalUser.isEmpty()) {
             throw new ResourceNotFoundException(User.class, userId);
@@ -34,7 +35,7 @@ public interface UserRepositoryJPA extends CrudRepository<User, Long> {
         if (!optionalUser.get().isEnabled()) {
             throw new ResourceNotFoundException(User.class, userId);
         }
-        return optionalUser.get();
+        return optionalUser.get().toDomainEntity();
     }
 
     @Cacheable

@@ -1,44 +1,49 @@
-package com.isep.acme.model;
+package com.isep.acme.model.jpa;
 
-import com.isep.acme.model.document.ProductMongo;
-import com.isep.acme.model.dto.ProductDTO;
-import com.isep.acme.model.dto.ProductDetailDTO;
-import com.isep.acme.model.graph.ProductNeo4j;
-import com.isep.acme.model.jpa.ProductJpa;
+import com.isep.acme.model.Product;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.util.Objects;
 
-
 @Getter
-@NoArgsConstructor
-public class Product {
+@Entity
+public class ProductJpa {
 
+
+    @Column(nullable = false, unique = true)
     public  String sku;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long   productID;
+    @Column(nullable = false)
     private String designation;
+
+    @Column(nullable = false)
     private String description;
     /*
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Review> review = new ArrayList<Review>(); */
 
-    public Product(final Long productID, final String sku) {
+    public ProductJpa() {
+    }
+
+    public ProductJpa(final Long productID, final String sku) {
         this.productID = Objects.requireNonNull(productID);
         setSku(sku);
     }
 
-    public Product(final Long productID, final String sku, final String designation, final String description) {
+    public ProductJpa(final Long productID, final String sku, final String designation, final String description) {
         this(productID, sku);
         setDescription(description);
         setDesignation(designation);
     }
 
-    public Product(final String sku) {
+    public ProductJpa(final String sku) {
         setSku(sku);
     }
 
-    public Product(final String sku, final String designation, final String description) {
+    public ProductJpa(final String sku, final String designation, final String description) {
         this(sku);
         setDescription(description);
         setDesignation(designation);
@@ -77,32 +82,16 @@ public class Product {
         this.sku = sku;
     }
 
-    public void updateProduct(Product p) {
+    public void updateProduct(ProductJpa p) {
         setDesignation(p.designation);
         setDescription(p.description);
     }
 
-    public ProductDTO toDto() {
-        return new ProductDTO(this.sku, this.designation);
+    public Product toDomainEntity() {
+        return new Product(productID, sku, designation, description);
     }
 
-    public ProductNeo4j toGraphModel() {
-        return new ProductNeo4j(getSku(), getDesignation(), getDescription());
-    }
-
-    public ProductMongo toDocumentModel() {
-        return new ProductMongo(getSku(), getDesignation(), getDescription());
-    }
-
-    public ProductJpa toJpaModel() {
-        return new ProductJpa(getSku(), getDesignation(), getDescription());
-    }
-    
-    public ProductDetailDTO toDetailDto() {
-        return new ProductDetailDTO(getSku(), getDesignation(), getDescription());
-    }
-
-/*
+    /*
     public List<Review> getReview() {
         return review;
     }

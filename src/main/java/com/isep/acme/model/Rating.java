@@ -3,42 +3,29 @@ package com.isep.acme.model;
 
 import com.isep.acme.model.document.RatingMongo;
 import com.isep.acme.model.graph.RatingNeo4j;
+import com.isep.acme.model.jpa.RatingJpa;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.util.Objects;
 
-@Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Rating {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Getter
-    @Setter
-    private Long idRating;
-
-    private long version;
-
-    @Getter
-    @Column(nullable = false)
+    private Long   idRating;
+    private long   version;
     private Double rate;
-
-    public Rating() {
-    }
 
     public Rating(Long idRating, long version, Double rate) {
         this.idRating = Objects.requireNonNull(idRating);
-        this.version  = Objects.requireNonNull(version);
+        this.version  = version;
         setRate(rate);
     }
 
     public Rating(Double rate) {
         setRate(rate);
-    }
-
-    public void setRate(Double rate) {
-        this.rate = rate;
     }
 
     public RatingNeo4j toGraphModel() {
@@ -47,5 +34,9 @@ public class Rating {
 
     public RatingMongo toDocumentModel() {
         return new RatingMongo(idRating, rate);
+    }
+    
+    public RatingJpa toJpaModel() {
+        return new RatingJpa(idRating, rate);
     }
 }

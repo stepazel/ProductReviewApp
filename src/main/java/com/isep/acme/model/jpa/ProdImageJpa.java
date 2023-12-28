@@ -1,23 +1,38 @@
-package com.isep.acme.model;
+package com.isep.acme.model.jpa;
 
 import com.isep.acme.model.dto.ImageDTO;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.annotation.Resource;
 import javax.persistence.*;
 
-@Setter
-@NoArgsConstructor
-public class ProdImage {
+@Entity
+public class ProdImageJpa {
 
+    @Id
+    @GeneratedValue
     private Long id;
-    private Product product;
+
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "product_id")
+    private ProductJpa product;
+
+    @Lob
     private Resource image;
 
-    public ProdImage(Product product, Resource image) {
+
+    public ProdImageJpa(ProductJpa product, Resource image) {
         setProduct(product);
         //addImage(image);;
+
+    }
+
+
+    public ProdImageJpa() {
+
+    }
+
+    private void setProduct(ProductJpa product) {
     }
 
 

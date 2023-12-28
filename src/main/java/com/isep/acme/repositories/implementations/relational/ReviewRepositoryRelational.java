@@ -3,11 +3,13 @@ package com.isep.acme.repositories.implementations.relational;
 import com.isep.acme.model.Product;
 import com.isep.acme.model.Review;
 import com.isep.acme.model.User;
+import com.isep.acme.model.jpa.ReviewJpa;
 import com.isep.acme.repositories.ReviewRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 @Component("reviewRepositoryRelational")
 public class ReviewRepositoryRelational implements ReviewRepository {
@@ -44,21 +46,23 @@ public class ReviewRepositoryRelational implements ReviewRepository {
 
     @Override
     public Iterable<Review> findAll() {
-        return reviewRepositoryJPA.findAll();
+        return StreamSupport.stream(reviewRepositoryJPA.findAll().spliterator(), false)
+                            .map(ReviewJpa::toDomainEntity)
+                            .collect(java.util.stream.Collectors.toList());
     }
 
     @Override
     public Review save(Review review) {
-        return reviewRepositoryJPA.save(review);
+        return reviewRepositoryJPA.save(review.toJpaModel()).toDomainEntity();
     }
 
     @Override
     public Optional<Review> findById(Long reviewID) {
-        return reviewRepositoryJPA.findById(reviewID);
+        return reviewRepositoryJPA.findById(reviewID).map(ReviewJpa::toDomainEntity);
     }
 
     @Override
     public void delete(Review r) {
-        reviewRepositoryJPA.delete(r);
+        reviewRepositoryJPA.delete(r.toJpaModel());
     }
 }

@@ -3,37 +3,23 @@ package com.isep.acme.model;
 
 import com.isep.acme.model.document.AggregatedRatingMongo;
 import com.isep.acme.model.graph.AggregatedRatingNeo4j;
+import com.isep.acme.model.jpa.AggregatedRatingJpa;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.*;
-
+@Setter
 @Getter
-@Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class AggregatedRating {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long aggregatedId;
-
-    @Column()
-    private double average;
-
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true)
+    private Long    aggregatedId;
+    private double  average;
     private Product product;
-
-    protected AggregatedRating() {
-    }
 
     public AggregatedRating(double average, Product product) {
         this.average = average;
-        this.product = product;
-    }
-
-    public void setAverage(double average) {
-        this.average = average;
-    }
-
-    public void setProduct(Product product) {
         this.product = product;
     }
 
@@ -47,7 +33,7 @@ public class AggregatedRating {
         return new AggregatedRatingMongo(aggregatedId, average, product);
     }
 
-    public void setAggregatedId(Long aggregatedId) {
-        this.aggregatedId = aggregatedId;
+    public AggregatedRatingJpa toJpaModel() {
+        return new AggregatedRatingJpa(average, product);
     }
 }
