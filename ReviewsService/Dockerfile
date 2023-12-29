@@ -1,13 +1,17 @@
-# Use an official OpenJDK runtime as a base image
-FROM openjdk:21
+# syntax=docker/dockerfile:1.4
+FROM eclipse-temurin:19-jdk-alpine as build
+WORKDIR /workspace/app
 
-# Set the working directory in the container
-WORKDIR /app
+COPY mvnw .
+COPY .mvn .mvn
+COPY pom.xml .
+COPY src src
 
-# Copy the compiled classes into the container
-COPY target/classes /app/classes
+RUN --mount=type=cache,target=/root/.m2 ./mvnw install -DskipTests
+RUN mkdir -p target/extracted && (java -Djarmode=layertools -jar target/*.jar extract --destination target/extracted)
 
-EXPOSE 8080
-
-# Specify the entry point
-CMD ["java", "-cp", "/app/classes", "com.isep.acme.ACMEApplication"]
+FROM eclipse-temurin:19-jdk-alpine
+VOLUME /tmp
+ARG EXTRACTED=/workspace/app/target/*.jar
+COPY --from=build ${EXTRACTED} app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
