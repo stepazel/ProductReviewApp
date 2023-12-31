@@ -3,12 +3,7 @@
   <component name="CompilerConfiguration">
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
-      <profile name="Maven default annotation processors profile" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-      </profile>
-      <profile name="Annotation profile for Votes" enabled="true">
+      <profile name="Annotation profile for ACME" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -19,17 +14,14 @@
         </processorPath>
         <module name="ACME" />
         <module name="Votes" />
+        <module name="ProductsService" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="ProductsService" target="21" />
-      <module name="ReviewsService" target="21" />
-      <module name="VotesService" target="21" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="ACME" options="-parameters -parameters" />
+      <module name="ProductsService" options="-parameters -parameters" />
       <module name="Votes" options="-parameters -parameters" />
     </option>
   </component>

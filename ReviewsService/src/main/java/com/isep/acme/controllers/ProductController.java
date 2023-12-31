@@ -1,5 +1,9 @@
 package com.isep.acme.controllers;
 
+import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+import com.azure.messaging.servicebus.ServiceBusMessage;
+import com.azure.messaging.servicebus.ServiceBusReceiverClient;
+import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.isep.acme.model.Product;
 import com.isep.acme.model.dto.ProductDTO;
 import com.isep.acme.model.dto.ProductDetailDTO;
@@ -10,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +29,23 @@ import java.util.Optional;
 class ProductController {
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
-    @Autowired
-    private ProductService service;
+    private final ProductService service;
+    private final ServiceBusSenderClient senderClient;
+    private final ServiceBusReceiverClient receiverClient;
+
+    public ProductController(ProductService service, @Value("${azure.servicebus.connection-string}") String connectionString){
+        this.service = service;
+        this.senderClient = new ServiceBusClientBuilder()
+                .connectionString(connectionString)
+                .sender()
+                .queueName("productReviewQueue")
+                .buildClient();
+        this.receiverClient = new ServiceBusClientBuilder()
+                .connectionString(connectionString)
+                .receiver()
+                .queueName("productReviewQueue")
+                .buildClient();
+    }
 
 
     @Operation(summary = "gets catalog, i.e. all products")
@@ -59,6 +79,13 @@ class ProductController {
     @Operation(summary = "finds product by sku")
     @GetMapping(value = "/{sku}")
     public ResponseEntity<ProductDTO> getProductBySku(@PathVariable("sku") final String sku) {
+        senderClient.sendMessage(new ServiceBusMessage("Hello, world!"));
+        System.out.print("Sent a message to queue");
+        senderClient.close();
+
+        var message = receiverClient.receiveMessages(1).iterator().next();
+        System.out.printf("Message received: %s from queue: %s%n", message.getBody(), receiverClient.getEntityPath());
+        receiverClient.close();
 
         final Optional<ProductDTO> product = service.findBySku(sku);
 
