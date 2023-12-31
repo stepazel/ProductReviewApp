@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
@@ -30,6 +31,8 @@ class ProductController {
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     private final ProductService service;
+    private final String productServiceUrl = "http://localhost:8081/";
+    private final RestTemplate restTemplate = new RestTemplate();
     private final ServiceBusSenderClient senderClient;
     private final ServiceBusReceiverClient receiverClient;
 
@@ -51,8 +54,19 @@ class ProductController {
     @Operation(summary = "gets catalog, i.e. all products")
     @GetMapping
     public ResponseEntity<Iterable<ProductDTO>> getCatalog() {
-        final var products = service.getCatalog();
+        // create a get request to http://localhost:8081
+        var response = this.restTemplate.getForObject(this.productServiceUrl, String.class);
 
+        // TODO co chci udelat je ze tento modul bude pouze dummy.. vsechny requesty pujdou na localhost:8081 (products service)
+        // tohle muze klidne vracet string
+        // v tom ProductsService modulu pak budu mit v podstate tent ocontroller, service, domain modely, JPA modely a repository
+        // nejdriv vyzkouset PoC na teto (getCatalog) metode a pak to rozsirit na vsechny ostatni!!
+
+
+        final var products = service.getCatalog();
+//        final var response = this.restTemplate.getForObject(this.productServiceUrl, Iterable.class);
+
+        //
         return ResponseEntity.ok().body(products);
     }
 
@@ -79,13 +93,13 @@ class ProductController {
     @Operation(summary = "finds product by sku")
     @GetMapping(value = "/{sku}")
     public ResponseEntity<ProductDTO> getProductBySku(@PathVariable("sku") final String sku) {
-        senderClient.sendMessage(new ServiceBusMessage("Hello, world!"));
-        System.out.print("Sent a message to queue");
-        senderClient.close();
-
-        var message = receiverClient.receiveMessages(1).iterator().next();
-        System.out.printf("Message received: %s from queue: %s%n", message.getBody(), receiverClient.getEntityPath());
-        receiverClient.close();
+//        senderClient.sendMessage(new ServiceBusMessage("Hello, world!"));
+//        System.out.print("Sent a message to queue");
+//        senderClient.close();
+//
+//        var message = receiverClient.receiveMessages(1).iterator().next();
+//        System.out.printf("Message received: %s from queue: %s%n", message.getBody(), receiverClient.getEntityPath());
+//        receiverClient.close();
 
         final Optional<ProductDTO> product = service.findBySku(sku);
 
