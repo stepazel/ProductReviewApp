@@ -1,0 +1,75 @@
+@startuml
+!theme plain
+
+Component ProductService {
+    Port "8081" as port8081
+    component "Product Controller" as ProductCtrl <<class>>
+    component "Product Service" as ProductSvc <<interface>>
+    component "Product Service Impl" as ProductSvcImpl <<class>>
+    component "SKU Generator" as SKUGeneratorI <<interface>>
+    component "SKU Generator Impl (Hash)" as SKUGenerator <<class>>
+    component "SKU Generator Impl (Random)" as SKUGeneratorRandom <<class>>
+    component "Product DTO" as ProductDTO <<class>>
+    component "Product Model" as ProductModel<<class>>
+    component "Product Model Mongo" as ProductModelMongo <<class>>
+    component "Product Model JPA" as ProductModelJPA <<class>>
+    component "Product Model Neo4j" as ProductModelNeo4j <<class>>
+    component "Product Repository" as ProductRepo <<interface>>
+    component "Product Repository Document" as ProductRepoDoc <<class>>
+    component "Product Repository Mongo" as ProductRepoMongo <<interface>>
+    component "Product Repository Relational" as ProductRepoRel <<class>>
+    component "Product Repository JPA" as ProductRepoJPA <<interface>>
+    component "Product Repository Graph" as ProductRepoGraph <<class>>
+    component "Product Repository Neo4j" as ProductRepoNeo4j <<interface>>
+    component "MongoDB Driver" as MongoDriver <<driver>>
+    component "Neo4j Driver" as Neo4jDriver <<driver>>
+    component "H2 Driver" as H2Driver <<driver>>
+    Port "27017" as portMongo
+    Port "7687" as portNeo4j
+}
+
+database "Product Database" as ProductDB <<database>>
+
+port8081 -up-> "REST API" : exposes
+
+ProductCtrl -up- port8081
+
+ProductSvcImpl -up-> SKUGeneratorI : uses
+ProductSvcImpl -down-> ProductSvc : implements
+
+ProductRepoDoc -down-> ProductRepo : implements
+ProductRepoDoc -down-> ProductRepoMongo : uses
+ProductRepoMongo -down-> ProductModelMongo : manipulates
+
+SKUGeneratorI <-down- SKUGenerator : implements
+SKUGeneratorI <-down- SKUGeneratorRandom : implements
+
+ProductRepoRel -down-> ProductRepo : implements
+ProductRepoRel -down-> ProductRepoJPA : uses
+ProductRepoJPA -down-> ProductModelJPA : manipulates
+
+ProductRepoGraph -down-> ProductRepo : implements
+ProductRepoGraph -down-> ProductRepoNeo4j : uses
+ProductRepoNeo4j -down-> ProductModelNeo4j : manipulates
+
+ProductRepoDoc -right-> MongoDriver : uses
+ProductRepoRel -down-> H2Driver : uses
+ProductRepoGraph -down-> Neo4jDriver : uses
+
+ProductSvcImpl -down-> ProductModel : manipulates
+ProductRepo -down-> ProductModel : manipulates
+
+ProductCtrl -down-> ProductSvcImpl : uses
+ProductCtrl -down-> ProductDTO : data transfer
+ProductSvcImpl -down-> ProductDTO : data transfer
+ProductSvcImpl -down-> ProductRepo : interacts with
+
+H2Driver -down-> ProductDB : persists to
+
+MongoDriver -up-> portMongo : connects to
+Neo4jDriver -up-> portNeo4j : connects to
+
+portMongo -up-> ProductDB : persists to
+portNeo4j -up-> ProductDB : persists to
+
+@enduml

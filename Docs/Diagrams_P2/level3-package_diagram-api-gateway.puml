@@ -1,0 +1,32 @@
+@startuml
+!theme plain
+
+package "ApiGateway" {
+    package "Authentication"
+    package "Controller"
+    package "Mapper"
+    package "Service"
+    package "DTO"
+    package "Model" {
+        package "Document Models"
+        package "Relational Models"
+        package "Graph Models"
+    }
+    package "Repository" {
+        package "Relational"
+        package "Graph"
+        package "Document"
+    }
+}
+
+[Controller] ..> [Authentication]
+[Controller] ..> [Service]
+[Controller] ..> [DTO]
+[Authentication] ..> [Mapper]
+[Service] .up.> [Mapper]
+[Authentication] ..> [DTO]
+[Service] .u.> [Repository]
+[Repository] ..> Model
+Model ..> [DTO]
+
+@enduml

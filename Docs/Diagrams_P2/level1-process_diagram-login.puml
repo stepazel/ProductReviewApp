@@ -1,0 +1,15 @@
+@startuml
+!theme plain
+
+title Login Process
+
+actor "User" as User
+participant ":API Gateway" as Gateway #lightBlue
+database "User Database" as UserDB #grey
+
+User -> Gateway : Request Login
+Gateway -> UserDB : Validate Credentials
+UserDB --> Gateway : Authentication Result
+Gateway --> User : Login Response
+
+@enduml

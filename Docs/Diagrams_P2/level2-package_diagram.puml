@@ -1,0 +1,17 @@
+@startuml
+!theme plain
+
+package "HTTP client"
+package "Product Review App" {
+  package "API Gateway"
+  package "Product Service"
+  package "Review Service"
+  package "Vote Service"
+}
+
+[HTTP client] ..> [API Gateway]
+[API Gateway] ..> [Product Service]
+[API Gateway] ..> [Review Service]
+[API Gateway] ..> [Vote Service]
+
+@enduml

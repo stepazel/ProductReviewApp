@@ -1,0 +1,78 @@
+@startuml
+!theme plain
+
+Component VoteService {
+    Port "8082" as port8082
+    component "Vote Controller" as VoteCtrl <<class>>
+
+    component "Vote Service" as VoteSvc <<interface>>
+    component "Vote Service Impl" as VoteSvcImpl <<class>>
+
+    component "Vote DTO" as VoteDTO <<class>>
+
+    component "Vote Model" as VoteModel <<class>>
+    component "Vote Model Mongo" as VoteModelMongo <<class>>
+
+    component "Vote Model JPA" as VoteModelJPA <<class>>
+
+    component "Vote Model Neo4j" as VoteModelNeo4j <<class>>
+
+    component "Vote Repository" as VoteRepo <<interface>>
+    component "Vote Repository Document" as VoteRepoDocument <<class>>
+    component "Vote Repository Mongo" as VoteRepoMongo <<interface>>
+
+    component "Vote Repository Relational" as VoteRepoRelational <<class>>
+    component "Vote Repository JPA" as VoteRepoJPA <<interface>>
+
+    component "Vote Repository Graph" as VoteRepoGraph <<class>>
+    component "Vote Repository Neo4j" as VoteRepoNeo4j <<interface>>
+
+    component "MongoDB Driver" as MongoDriver <<driver>>
+    component "Neo4j Driver" as Neo4jDriver <<driver>>
+    component "H2 Driver" as H2Driver <<driver>>
+
+
+    Port "27017" as portMongo
+    Port "7687" as portNeo4j
+}
+
+database "Vote Database" as VoteDB <<database>>
+
+port8082 -up- "REST API" : exposes
+
+VoteCtrl -up- port8082
+
+VoteSvcImpl -up-> VoteSvc : implements
+
+VoteCtrl -down-> VoteSvcImpl : uses
+VoteCtrl -down-> VoteDTO : data transfer
+VoteSvcImpl -down-> VoteDTO : data transfer
+VoteSvcImpl -down-> VoteModel : manipulates
+
+VoteRepoDocument -down-> VoteRepo : implements
+VoteRepoRelational -down-> VoteRepo : implements
+VoteRepoGraph -down-> VoteRepo : implements
+
+VoteRepoDocument -right-> VoteRepoMongo : uses
+VoteRepoRelational -right-> VoteRepoJPA : uses
+VoteRepoGraph -right-> VoteRepoNeo4j : uses
+
+VoteSvcImpl -down-> VoteRepo : interacts with
+VoteRepo -down-> VoteModel : manipulates
+VoteRepoMongo -down-> VoteModelMongo : manipulates
+VoteRepoJPA -down-> VoteModelJPA : manipulates
+VoteRepoNeo4j -down-> VoteModelNeo4j : manipulates
+
+VoteRepoDocument -up-> MongoDriver : persists to
+VoteRepoRelational -up-> H2Driver : persists to
+VoteRepoGraph -up-> Neo4jDriver : persists to
+
+H2Driver -up-> VoteDB : persists to
+
+MongoDriver -down-> portMongo : connects to
+Neo4jDriver -down-> portNeo4j : connects to
+
+portMongo -down-> VoteDB : persists to
+portNeo4j -down-> VoteDB : persists to
+
+@enduml

@@ -1,0 +1,71 @@
+@startuml
+!theme plain
+
+autonumber
+
+title Product Publishing Workflow (C2 Level)
+
+actor "Initiating Product Manager" as InitiatingPM #Yellow
+actor "Approving Product Managers" as ApprovingPM #Blue
+participant ":API Gateway" as Gateway #lightBlue
+box "Product Microservice" #lightGreen
+    participant "Product Controller" as ProductCtrl #YellowGreen
+    participant "Product Service" as ProductService #YellowGreen
+    participant "Approval Service" as ApprovalSvc #YellowGreen
+end box
+participant "RabbitMQ" as Broker #orange
+
+' Product Creation
+InitiatingPM -> Gateway : Request to Create Product
+activate Gateway
+Gateway -> ProductCtrl : Route Request
+activate ProductCtrl
+ProductCtrl -> ProductService : Initiate Product Creation
+activate ProductService
+ProductService --> ProductCtrl : Return Creation Status
+deactivate ProductService
+ProductCtrl --> Gateway : Product Creation Routed
+deactivate ProductCtrl
+Gateway --> InitiatingPM : Product Creation Acknowledged
+deactivate Gateway
+
+' Product Approval Process
+loop Approval from Other Managers
+    ApprovingPM -> Gateway : Request Pending Products
+    activate Gateway
+    Gateway -> ApprovalSvc : Forward Request
+    activate ApprovalSvc
+    ApprovalSvc --> Gateway : Return List of Pending Products
+    deactivate ApprovalSvc
+    Gateway --> ApprovingPM : Display Pending Products
+    deactivate Gateway
+
+    ApprovingPM -> Gateway : Submit Approval/Denial
+    activate Gateway
+    Gateway -> ApprovalSvc : Process Response
+    activate ApprovalSvc
+    ApprovalSvc --> Gateway : Return Processing Result
+    deactivate ApprovalSvc
+    Gateway --> ApprovingPM : Approval/Denial Processed
+    deactivate Gateway
+end
+
+' Notification of Final Status
+ProductService -> Gateway : Query Approval Status
+activate ProductService
+activate Gateway
+alt All Approvals Received
+    ProductService -> Broker : Notify of Product Published
+    activate Broker
+    Broker --> Gateway : Published Event Notification
+    Gateway --> InitiatingPM : Confirm Publishing
+else Approval Denied or Insufficient Approvals
+    ProductService -> Broker : Notify of Product Denied/Status Pending
+    Broker --> Gateway : Denied/Pending Event Notification
+    Gateway --> InitiatingPM : Confirm Denial/Status Pending
+end
+deactivate ProductService
+deactivate Broker
+deactivate Gateway
+
+@enduml

@@ -1,0 +1,27 @@
+@startuml
+!theme plain
+
+autonumber
+
+title Product Publishing Workflow
+
+actor "Initiating Product Manager" as InitiatingPM #Yellow
+actor "Approving Product Managers" as ApprovingPM #Blue
+participant ":API Gateway" as Gateway #lightBlue
+participant ":Product Microservice" as ProductMicroservice #lightGreen
+
+InitiatingPM -> Gateway : Request to Publish Product
+activate Gateway
+Gateway -> ProductMicroservice : Initiate Product Publishing Process
+activate ProductMicroservice
+
+loop Approval Process
+    ApprovingPM -> Gateway : Approval/Denial Actions
+    Gateway -> ProductMicroservice : Update Approval Status
+end
+
+Gateway --> InitiatingPM : Confirm Publishing Outcome
+deactivate Gateway
+deactivate ProductMicroservice
+
+@enduml
