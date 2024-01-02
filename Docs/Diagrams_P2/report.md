@@ -444,125 +444,185 @@ diagrams have been included:
 ### Level 1 Diagrams
 
 #### Use Cases
+
 ![Use Cases](level1-use_case.png)
+
 *Overview of system use cases, depicting interactions between users and the system.*
 
 #### Logical View
+
 ![Logical View](level1-component_diagram.png)
+
 *High-level component diagram showing the main components of the system.*
 
 #### Process View - Product Publishing
+
 ![Process View - Product Publishing](level1-process_diagram-product_publishing.png)
+
 *Process flow for publishing a product, illustrating steps from creation to publication.*
 
 #### Process View - Review Publishing
+
 ![Process View - Review Publishing](level1-process_diagram-review_publishing.png)
+
 *Process flow for publishing a review, detailing the steps involved in review submission and approval.*
 
 #### Process View - Logging In
+
 ![Process View - Logging In](level1-process_diagram-login.png)
+
 *Illustrates the login process, from user authentication to access grant.*
 
 ### Level 2 Diagrams
 
 #### Logic View
+
 ![Logic View](level2-component_diagram.png)
+
 *Detailed component diagram showcasing the architecture's logical structure.*
 
 #### Deployment View
+
 ![Deployment View](level2-deployment_diagram.png)
+
 *Deployment diagram showing how the system components are distributed across servers and environments.*
 
 #### Packages View
+
 ![Packages View](level2-package_diagram.png)
+
 *Package diagram representing the organization of system components into packages.*
 
 #### Process View - Product Publishing
+
 ![Process View - Product Publishing](level2-process_diagram-product_publishing.png)
+
 *Detailed process flow for product publishing, including interactions with different system components.*
 
 #### Process View - Review Publishing
+
 ![Process View - Review Publishing](level2-process_diagram-review_publishing.png)
+
 *Expanded view of the review publishing process, highlighting interactions and decision points.*
 
 #### Process View - Logging In
+
 ![Process View - Logging In](level2-process_diagram-login.png)
+
 *In-depth illustration of the login process, showing detailed interactions and steps.*
 
 ### Level 3 Diagrams
 
 #### Logic View - api-gateway
+
 ![Logic View - api-gateway](level3-component_diagram-api-gateway.png)
+
 *Component diagram focusing on the API Gateway, detailing its internal structure and connections.*
 
 #### Logic View - product-service
+
 ![Logic View - product-service](level3-component_diagram-product.png)
+
 *Component diagram of the Product Service, showing its internal components and their relationships.*
 
 #### Logic View - review-service
+
 ![Logic View - review-service](level3-component_diagram-review.png)
+
 *Detailed structure of the Review Service, highlighting its components and interactions.*
 
 #### Logic View - vote-service
+
 ![Logic View - vote-service](level3-component_diagram-vote.png)
+
 *Component diagram of the Vote Service, illustrating its architecture and component interactions.*
 
 #### Packages View - api-gateway
+
 ![Packages View - api-gateway](level3-package_diagram-api-gateway.png)
+
 *Package organization within the API Gateway, showcasing its modular structure.*
 
 #### Packages View - product-service
+
 ![Packages View - product-service](level3-package_diagram-product.png)
+
 *Illustrates the package structure of the Product Service, detailing its organizational layout.*
 
 #### Packages View - review-service
+
 ![Packages View - review-service](level3-package_diagram-review.png)
+
 *Package diagram for the Review Service, showing how its components are grouped.*
 
 #### Packages View - vote-service
+
 ![Packages View - vote-service](level3-package_diagram-vote.png)
+
 *Shows the package organization of the Vote Service, detailing its modular structure.*
 
 #### Logic + Packages - api-gateway
+
 ![Logic + Packages - api-gateway](level3-package-component_diagram-api-gateway.png)
+
 *Combined package and component view of the API Gateway, providing a comprehensive architecture overview.*
 
 #### Logic + Packages - product-service
+
 ![Logic + Packages - product-service](level3-package-component_diagram-product.png)
+
 *Integration of package and component diagrams for the Product Service, for a holistic view of its architecture.*
 
 #### Logic + Packages - review-service
+
 ![Logic + Packages - review-service](level3-package-component_diagram-review.png)
+
 *Combines component and package diagrams for the Review Service, offering a detailed architectural perspective.*
 
 #### Logic + Packages - vote-service
+
 ![Logic + Packages - vote-service](level3-package-component_diagram-vote.png)
+
 *Comprehensive diagram integrating both package and component views of the Vote Service.*
 
 #### Mapping - api-gateway
+
 ![Mapping - api-gateway](level3-mapping_diagram-api-gateway.png)
+
 *Mapping diagram for the API Gateway, showing how its components are interconnected.*
 
 #### Mapping - product-service
+
 ![Mapping - product-service](level3-mapping_diagram-product.png)
+
 *Depicts the mapping and relationships between components within the Product Service.*
 
 #### Mapping - review-service
+
 ![Mapping - review-service](level3-mapping_diagram-review.png)
+
 *Illustrates the mapping and interactions of the components in the Review Service.*
 
 #### Mapping - vote-service
+
 ![Mapping - vote-service](level3-mapping_diagram-vote.png)
+
 *Mapping diagram for the Vote Service, showcasing component interactions and connections.*
 
 #### Process View - Product Publishing
+
 ![Process View - Product Publishing](level3-process_diagram-product_publishing.png)
+
 *Detailed process flow diagram for product publishing in the context of the Product Service.*
 
 #### Process View - Review Publishing
+
 ![Process View - Review Publishing](level3-process_diagram-review_publishing.png)
+
 *In-depth process flow for the review publishing mechanism within the Review Service.*
 
 #### Process View - Logging In
+
 ![Process View - Logging In](level3-process_diagram-login.png)
+
 *Detailed process flow diagram illustrating the login mechanism, focusing on user authentication and access control.*
