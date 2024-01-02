@@ -1,0 +1,12 @@
+@startuml
+!theme plain
+
+component "HTTPS Clients" as Clients
+component "Product Review App" as ProductReview
+
+Clients --( "Review API" : HTTPS requests
+ProductReview -up- "Review API" : HTTPS requests
+
+"NumbersApi" )-up- ProductReview : HTTPS requests
+
+@enduml

@@ -1,0 +1,92 @@
+@startuml
+!theme plain
+
+Component VoteService {
+    Port "8082" as port8082
+    Package Controller {
+        component "Vote Controller" as VoteCtrl <<class>>
+    }
+    Package Service {
+        component "Vote Service" as VoteSvc <<interface>>
+        component "Vote Service Impl" as VoteSvcImpl <<class>>
+    }
+    Package DTO {
+        component "Vote DTO" as VoteDTO <<class>>
+    }
+    Package Model {
+        component "Vote Model" as VoteModel <<class>>
+        Package "document" as DocumentModel {
+            component "Vote Model Mongo" as VoteModelMongo <<class>>
+        }
+        Package "relational" as RelationalModel {
+            component "Vote Model JPA" as VoteModelJPA <<class>>
+        }
+        Package "graph" as GraphModel {
+            component "Vote Model Neo4j" as VoteModelNeo4j <<class>>
+        }
+    }
+    Package Repository {
+        component "Vote Repository" as VoteRepo <<interface>>
+        Package "document" as DocumentRepo {
+            component "Vote Repository Document" as VoteRepoDocument <<class>>
+            component "Vote Repository Mongo" as VoteRepoMongo <<interface>>
+        }
+        Package "relational" as RelationalRepo {
+            component "Vote Repository Relational" as VoteRepoRelational <<class>>
+            component "Vote Repository JPA" as VoteRepoJPA <<interface>>
+        }
+        Package "graph" as GraphRepo {
+            component "Vote Repository Graph" as VoteRepoGraph <<class>>
+            component "Vote Repository Neo4j" as VoteRepoNeo4j <<interface>>
+        }
+    }
+    Package "DB Driver" {
+        component "MongoDB Driver" as MongoDriver <<driver>>
+        component "Neo4j Driver" as Neo4jDriver <<driver>>
+        component "H2 Driver" as H2Driver <<driver>>
+    }
+
+    Port "27017" as portMongo
+    Port "7687" as portNeo4j
+}
+
+database "Vote Database" as VoteDB <<database>>
+
+port8082 -up- "REST API" : exposes
+
+VoteCtrl -up- port8082
+
+VoteSvcImpl -up-> VoteSvc : implements
+
+VoteCtrl -down-> VoteSvcImpl : uses
+VoteCtrl -down-> VoteDTO : data transfer
+VoteSvcImpl -right-> VoteDTO : data transfer
+VoteSvcImpl -down-> VoteModel : manipulates
+
+VoteRepoDocument -up-> VoteRepo : implements
+VoteRepoRelational -up-> VoteRepo : implements
+VoteRepoGraph -up-> VoteRepo : implements
+
+VoteRepoDocument -right-> VoteRepoMongo : uses
+VoteRepoRelational -right-> VoteRepoJPA : uses
+VoteRepoGraph -right-> VoteRepoNeo4j : uses
+
+VoteSvcImpl -down-> VoteRepo : interacts with
+VoteRepo -up-> VoteModel : manipulates
+VoteRepoMongo -up-> VoteModelMongo : manipulates
+VoteRepoJPA -up-> VoteModelJPA : manipulates
+VoteRepoNeo4j -up-> VoteModelNeo4j : manipulates
+
+VoteRepoDocument -down-> MongoDriver : persists to
+VoteRepoRelational -down-> H2Driver : persists to
+VoteRepoGraph -down-> Neo4jDriver : persists to
+
+H2Driver -down-> VoteDB : persists to
+
+MongoDriver -down-> portMongo : connects to
+Neo4jDriver -down-> portNeo4j : connects to
+
+portMongo -down-> VoteDB : persists to
+portNeo4j -down-> VoteDB : persists to
+
+@enduml

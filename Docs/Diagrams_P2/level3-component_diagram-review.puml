@@ -1,0 +1,123 @@
+@startuml
+!theme plain
+
+Component ReviewService {
+    Port "8083" as port8083
+
+    component "Review Controller" as ReviewCtrl <<class>>
+
+    component "Review Service" as ReviewSvc <<interface>>
+    component "Review Service Impl" as ReviewSvcImpl <<class>>
+    component "Rating Service" as RatingSvc <<interface>>
+    component "Rating Service Impl" as RatingSvcImpl <<class>>
+
+    component "Review DTO" as ReviewDTO <<class>>
+    component "Rating DTO" as RatingDTO <<class>>
+
+    component "Review Mapper" as ReviewMapper <<class>>
+
+    component "Review Model" as ReviewModel <<class>>
+    component "Rating Model" as RatingModel <<class>>
+    component "Review Model Mongo" as ReviewModelMongo <<class>>
+    component "Rating Model Mongo" as RatingModelMongo <<class>>
+
+    component "Review Model JPA" as ReviewModelJPA <<class>>
+    component "Rating Model JPA" as RatingModelJPA <<class>>
+
+    component "Review Model Neo4j" as ReviewModelNeo4j <<class>>
+    component "Rating Model Neo4j" as RatingModelNeo4j <<class>>
+
+
+    component "Rating Repository" as RatingRepo <<interface>>
+    component "Review Repository" as ReviewRepo <<interface>>
+    component "Review Repository Mongo" as ReviewRepoMongo <<interface>>
+    component "Review Repository Document" as ReviewRepoDocument <<class>>
+    component "Rating Repository Mongo" as RatingRepoMongo <<interface>>
+    component "Rating Repository Document" as RatingRepoDocument <<class>>
+
+    component "Review Repository JPA" as ReviewRepoJPA <<interface>>
+    component "Review Repository Relational" as ReviewRepoRelational <<class>>
+    component "Rating Repository JPA" as RatingRepoJPA <<interface>>
+    component "Rating Repository Relational" as RatingRepoRelational <<class>>
+
+    component "Review Repository Neo4j" as ReviewRepoNeo4j <<interface>>
+    component "Review Repository Graph" as ReviewRepoGraph <<class>>
+    component "Rating Repository Neo4j" as RatingRepoNeo4j <<interface>>
+    component "Rating Repository Graph" as RatingRepoGraph <<class>>
+
+    component "MongoDB Driver" as MongoDriver <<driver>>
+    component "Neo4j Driver" as Neo4jDriver <<driver>>
+    component "H2 Driver" as H2Driver <<driver>>
+
+
+    Port "27017" as portMongo
+    Port "7687" as portNeo4j
+}
+
+database "Review Database" as ReviewDB <<database>>
+
+port8083 -up- "REST API" : exposes
+
+ReviewCtrl -up- port8083
+
+RatingSvcImpl -down-> RatingSvc : implements
+ReviewSvcImpl -down-> ReviewSvc : implements
+ReviewSvcImpl -down-> ReviewMapper : uses
+
+ReviewCtrl -down-> ReviewSvcImpl : uses
+ReviewCtrl -down-> RatingSvcImpl : uses
+ReviewCtrl -down-> ReviewDTO : manipulates
+ReviewCtrl -down-> RatingDTO : manipulates
+ReviewSvcImpl -down-> ReviewDTO : data transfer
+RatingSvcImpl -down-> RatingDTO : data transfer
+
+
+ReviewRepoRelational -down-> ReviewRepo : implements
+ReviewRepoDocument -down-> ReviewRepo : implements
+ReviewRepoGraph -left-> ReviewRepo : implements
+
+RatingRepoRelational -down-> RatingRepo : implements
+RatingRepoDocument -down-> RatingRepo : implements
+RatingRepoGraph -down-> RatingRepo : implements
+
+ReviewRepoDocument -down-> ReviewRepoMongo : uses
+ReviewRepoRelational -down-> ReviewRepoJPA : uses
+ReviewRepoGraph -down-> ReviewRepoNeo4j : uses
+
+RatingRepoDocument -down-> RatingRepoMongo : uses
+RatingRepoRelational -down-> RatingRepoJPA : uses
+RatingRepoGraph -down-> RatingRepoNeo4j : uses
+
+ReviewSvcImpl -left-> ReviewRepo : interacts with
+ReviewRepo -down-> ReviewModel : manipulates
+ReviewRepoMongo -down-> ReviewModelMongo : manipulates
+ReviewRepoJPA -down-> ReviewModelJPA : manipulates
+ReviewRepoNeo4j -down-> ReviewModelNeo4j : manipulates
+
+RatingSvcImpl -down-> RatingRepo : interacts with
+RatingRepo -down-> RatingModel : manipulates
+RatingRepoMongo -down-> RatingModelMongo : manipulates
+RatingRepoJPA -left-> RatingModelJPA : manipulates
+RatingRepoNeo4j -down-> RatingModelNeo4j : manipulates
+
+ReviewRepoDocument -down--> MongoDriver : uses
+RatingRepoDocument -down--> MongoDriver : uses
+ReviewRepoGraph -down--> Neo4jDriver : uses
+RatingRepoGraph -down--> Neo4jDriver : uses
+ReviewRepoRelational -down--> H2Driver : uses
+RatingRepoRelational -down--> H2Driver : uses
+
+H2Driver -down-> ReviewDB : persists to
+
+MongoDriver -up-> portMongo : connects to
+Neo4jDriver -up-> portNeo4j : connects to
+
+portMongo -up-> ReviewDB : persists to
+portNeo4j -up-> ReviewDB : persists to
+
+ReviewSvcImpl -down-> "Numbers API" : uses
+
+ReviewSvcImpl -down--> ReviewModel : interacts with
+RatingSvcImpl -down--> RatingModel : interacts with
+
+@enduml

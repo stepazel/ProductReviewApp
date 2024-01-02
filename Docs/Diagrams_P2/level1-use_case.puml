@@ -1,0 +1,37 @@
+@startuml
+!theme plain
+
+left to right direction
+skinparam packageStyle rectangle
+
+actor ProductManager as "Product Manager"
+actor Reviewer
+actor Voter
+actor Client
+actor System
+
+rectangle "ACME Application" {
+  usecase "Publish Product\n[US1]" as UC1
+  usecase "Review Publication\n[US2]" as UC2
+  usecase "Create Vote and Review\n[US3]" as UC3
+  usecase "Manage Products\n[US4]" as UC4
+  usecase "Manage Reviews\n[US5]" as UC5
+  usecase "Manage Votes\n[US6]" as UC6
+  usecase "API Access\n[US7]" as UC7
+  usecase "System Monitoring\n[US8]" as UC8
+  usecase "Data Persistence\n[US9]" as UC9
+  usecase "User Authentication\n[US10]" as UC10
+}
+
+ProductManager --> UC1 : requests
+Reviewer --> UC2 : reviews
+Voter --> UC3 : participates
+ProductManager --> UC4 : accesses
+Reviewer --> UC5 : accesses
+Voter --> UC6 : accesses
+Client --> UC7 : uses
+System --> UC8 : performs
+System --> UC9 : handles
+Client --> UC10 : requires
+
+@enduml

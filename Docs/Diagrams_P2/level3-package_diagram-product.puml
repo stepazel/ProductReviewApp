@@ -1,0 +1,26 @@
+@startuml
+!theme plain
+
+package "Product Service" {
+    package "Controller"
+    package "Service"
+    package "DTO"
+    package "Model" {
+        package "Document Models"
+        package "Relational Models"
+        package "Graph Models"
+    }
+    package "Repository" {
+        package "Relational"
+        package "Graph"
+        package "Document"
+    }
+}
+
+[Controller] ..> [Service]
+[Controller] ..> [DTO]
+[Service] ..> [Repository]
+[Repository] ..> Model
+Model ..> [DTO]
+
+@enduml

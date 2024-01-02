@@ -1,0 +1,55 @@
+@startuml
+!theme plain
+
+node "Client" as clientServer <<client>> {
+  component "HTTP Client" as client <<artifact>>
+}
+
+node "Load Balancer" as loadBalancer <<load-balancer>> {
+  component "LB" as lb <<artifact>>
+}
+
+node "API Gateway Server" as gatewayServer <<server>> {
+  component "API Gateway" as gateway <<artifact>>
+}
+
+node "Review Service Server" as ReviewServer <<server>> {
+  component "Review Service" as reviewService <<artifact>>
+  component "Configurable Database (H2/Mongo/Neo4j)" as reviewDatabase <<artifact>>
+}
+
+node "Product Service Server" as ProductServer <<server>> {
+  component "Product Service" as productService <<artifact>>
+  component "Configurable Database (H2/Mongo/Neo4j)" as productDatabase <<artifact>>
+}
+
+node "Vote Service Server" as VoteServer <<server>> {
+  component "Vote Service" as voteService <<artifact>>
+  component "Configurable Database (H2/Mongo/Neo4j)" as voteDatabase <<artifact>>
+}
+
+node "External Numbers API Server" as numbersAPIServer <<server>> {
+  component "Numbers API" as numbersAPI <<artifact>>
+}
+
+node "RabbitMQ Server" as rabbitmqServer <<server>> {
+  component "RabbitMQ" as rabbitMQ <<artifact>>
+}
+
+clientServer -r-> loadBalancer : HTTP request <Port: 80>
+loadBalancer -r-> gatewayServer : Distribute requests
+gatewayServer --> ProductServer  : HTTP request <Port: 8081>
+gatewayServer --> VoteServer  : HTTP request  <Port: 8082>
+gatewayServer --> ReviewServer  : HTTP request  <Port: 8083>
+
+ReviewServer --> numbersAPIServer : External API calls
+
+productService --> productDatabase : Data storage and retrieval
+voteService --> voteDatabase : Data storage and retrieval
+reviewService --> reviewDatabase : Data storage and retrieval
+
+ReviewServer --> rabbitmqServer : AMQP <Port: 5672>
+ProductServer --> rabbitmqServer : AMQP <Port: 5672>
+VoteServer --> rabbitmqServer : AMQP <Port: 5672>
+
+@enduml
