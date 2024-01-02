@@ -8,10 +8,10 @@
         <version>2.6.8</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.isep.acme</groupId>
+    <groupId>com.isep.acme.product</groupId>
     <artifactId>product-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>ACME</name>
+    <name>product-service</name>
     <description>A simple Spring Boot Project</description>
     <properties>
         <java.version>19</java.version>
