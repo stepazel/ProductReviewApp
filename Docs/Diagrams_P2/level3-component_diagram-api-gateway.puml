@@ -6,8 +6,12 @@ component "API Gateway" as ApiGatewayService {
     component "Authentication API" as AuthApi <<class>>
     component "Authentication Request" as AuthReq <<class>>
     component "User Controller" as UserControl <<class>>
+    component "Product Controller" as ProductControl <<class>>
+    component "Review Controller" as ReviewControl <<class>>
+    component "Vote Controller" as VoteControl <<class>>
     component "User Mapper" as UserMapper <<abstract class>>
     component "User Details Service" as UserSvc <<interface>>
+    component "HTTP Service" as HTTPSvc <<class>>
     component "User Service" as UserSvcImpl <<class>>
     component "User DTO" as UserDTO <<class>>
     component "User Model" as UserModel <<class>>
@@ -31,6 +35,9 @@ component "API Gateway" as ApiGatewayService {
 database "API Gateway Database" as ApiDB <<database>>
 
 port80 -up- "REST API" : exposes
+ProductControl -up- port80
+ReviewControl -up- port80
+VoteControl -up- port80
 
 UserControl -up- port80
 
@@ -38,6 +45,10 @@ AuthApi -up- port80
 
 UserSvcImpl -down-> UserSvc : implements
 UserSvcImpl -down-> UserMapper : uses
+
+ProductControl -down-> HTTPSvc : uses
+ReviewControl -down-> HTTPSvc : uses
+VoteControl -down-> HTTPSvc : uses
 
 UserControl -down-> UserSvcImpl : uses
 UserControl -down-> UserDTO : data transfer

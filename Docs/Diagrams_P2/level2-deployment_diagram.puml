@@ -5,10 +5,6 @@ node "Client" as clientServer <<client>> {
   component "HTTP Client" as client <<artifact>>
 }
 
-node "Load Balancer" as loadBalancer <<load-balancer>> {
-  component "LB" as lb <<artifact>>
-}
-
 node "API Gateway Server" as gatewayServer <<server>> {
   component "API Gateway" as gateway <<artifact>>
 }
@@ -36,8 +32,7 @@ node "RabbitMQ Server" as rabbitmqServer <<server>> {
   component "RabbitMQ" as rabbitMQ <<artifact>>
 }
 
-clientServer -r-> loadBalancer : HTTP request <Port: 80>
-loadBalancer -r-> gatewayServer : Distribute requests
+clientServer --> gatewayServer : HTTP request <Port: 80>
 gatewayServer --> ProductServer  : HTTP request <Port: 8081>
 gatewayServer --> VoteServer  : HTTP request  <Port: 8082>
 gatewayServer --> ReviewServer  : HTTP request  <Port: 8083>

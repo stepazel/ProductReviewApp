@@ -1,0 +1,43 @@
+@startuml
+!theme plain
+
+actor Developer
+node "Source Code Repository" as Repo
+node "CI/CD Server" as CICD {
+    component "Build System" as Build
+    component "Automated Unit Tests" as UnitTests
+    component "Integration Tests" as IntegrationTests
+    component "Docker Containerization" as Dockerize
+    component "Artifact Repository" as ArtifactRepo
+    component "Deployment Tool" as Deploy
+}
+node "Staging Environment" as Staging
+node "Production Environment" as Production {
+    node "API Gateway Server" as Gateway
+    node "Product Service Server" as ProductService
+    node "Review Service Server" as ReviewService
+    node "Vote Service Server" as VoteService
+}
+
+Developer -d-> Repo : Pushes code changes
+Repo -d-> CICD : Trigger CI process
+
+CICD -d-> Build : Build microservices
+Build -d-> UnitTests : Execute unit tests
+UnitTests -d-> IntegrationTests : Execute integration tests with RabbitMQ
+IntegrationTests -d-> Dockerize : Containerize if tests pass
+
+Dockerize -r-> ArtifactRepo : Store Docker images
+ArtifactRepo -d-> Deploy : Deploy images to Staging
+
+Deploy -r-> Staging : Deploy and test in staging
+Staging -r-> CICD : Validate staging deployment
+
+CICD -> Deploy : Deploy to Production
+
+Deploy -r-> Gateway : API Gateway routes traffic
+Deploy -r-> ProductService : Product microservice
+Deploy -r-> ReviewService : Review microservice
+Deploy --> VoteService : Vote microservice
+
+@enduml
