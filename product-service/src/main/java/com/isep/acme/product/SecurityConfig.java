@@ -47,7 +47,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.POST, "/product" +
                                           "/**/reviews/**")
             .permitAll()
-                .antMatchers(HttpMethod.PATCH, "/products/**").permitAll()
             .anyRequest().authenticated()
             .and()
             .oauth2ResourceServer().jwt();

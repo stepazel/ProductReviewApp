@@ -18,9 +18,11 @@
         <!-- automatically run annotation processors within the incremental compilation -->
         <m2e.apt.activation>jdt_apt</m2e.apt.activation>
     </properties>
+    <packaging>pom</packaging>
     <modules>
         <module>api-gateway</module>
         <module>product-service</module>
+        <module>ReviewsService</module>
     </modules>
 
     <dependencies>

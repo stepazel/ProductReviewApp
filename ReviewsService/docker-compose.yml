@@ -3,7 +3,7 @@ services:
   reviews_service:
     build: .
     ports:
-      - "8080:8080"
+      - "8082:8082"
     environment:
       - spring.datasource.url=jdbc:h2:file:./data/reviews_service;MV_STORE=FALSE;AUTO_SERVER=true;
       - spring.datasource.driverClassName=org.h2.Driver
@@ -14,17 +14,3 @@ services:
       - spring.h2.console.path=/h2-console
     volumes:
       - ./data:/data
-    depends_on:
-      - database
-
-  database:
-    image: oscarfonts/h2
-    ports:
-      - "1521:1521"
-      - "81:81"
-    volumes:
-      - /path/to/local/data_dir:/opt/h2-data
-      - ./data:/data
-    environment:
-      - H2_OPTIONS=-ifNotExists
-    container_name: MyH2Instance

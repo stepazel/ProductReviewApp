@@ -3,7 +3,7 @@ services:
   api-gateway:
     build: ./api-gateway
     ports:
-      - "80:80"
+      - "8090:8090"
     environment:
       - spring.datasource.url=jdbc:h2:file:./data/api-gateway;MV_STORE=FALSE;AUTO_SERVER=true;
       - spring.datasource.driverClassName=org.h2.Driver
@@ -18,24 +18,9 @@ services:
   reviews_service:
     build: ./ReviewsService
     ports:
-      - "8083:8083"
-    environment:
-      - spring.datasource.url=jdbc:h2:file:./data/reviews_service;MV_STORE=FALSE;AUTO_SERVER=true;
-      - spring.datasource.driverClassName=org.h2.Driver
-      - spring.datasource.username=sa
-      - spring.datasource.password=gg
-      - spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
-      - spring.h2.console.enabled=true
-      - spring.h2.console.path=/h2-console
-    volumes:
-      - ./data:/data
-
-  votes_service:
-    build: ./VotesService
-    ports:
       - "8082:8082"
     environment:
-      - spring.datasource.url=jdbc:h2:file:./data/votes_service;MV_STORE=FALSE;AUTO_SERVER=true;
+      - spring.datasource.url=jdbc:h2:file:./data/reviews_service;MV_STORE=FALSE;AUTO_SERVER=true;
       - spring.datasource.driverClassName=org.h2.Driver
       - spring.datasource.username=sa
       - spring.datasource.password=gg

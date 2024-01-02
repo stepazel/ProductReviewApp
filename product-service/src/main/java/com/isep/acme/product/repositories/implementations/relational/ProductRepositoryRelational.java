@@ -72,7 +72,7 @@ public class ProductRepositoryRelational implements ProductRepository {
 
     @Override
     public Product save(Product product) {
-        var jpaProduct = new ProductJpa(product.getSku(), product.getDesignation(), product.getDescription(), product.isPublished(), product.getAcceptVotesCount(), product.getAcceptVoteUsername());
+        var jpaProduct = new ProductJpa(product.getSku(), product.getDesignation(), product.getDescription());
         return this.repositoryA.save(jpaProduct).toDomainEntity();
     }
 }

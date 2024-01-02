@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.isep.acme</groupId>
-    <artifactId>ACME</artifactId>
+    <artifactId>review-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>ACME</name>
-    <description>A simple Spring Boot Project</description>
+    <name>review-service</name>
+    <description>review-service</description>
     <properties>
         <java.version>19</java.version>
         <!-- automatically run annotation processors within the incremental compilation -->
@@ -20,19 +20,19 @@
     </properties>
     <dependencies>
 
-<!-- Azure Service Bus -->
-<!--        <dependency>-->
-<!--            <groupId>com.azure.spring</groupId>-->
-<!--            <artifactId>spring-cloud-azure-dependencies</artifactId>-->
-<!--            <version>4.14.0</version>-->
-<!--            <type>pom</type>-->
-<!--            <scope>import</scope>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>com.azure.spring</groupId>-->
-<!--            <artifactId>spring-cloud-azure-starter-servicebus</artifactId>-->
-<!--            <version>5.8.0</version>-->
-<!--        </dependency>-->
+        <!-- Azure Service Bus -->
+        <!--        <dependency>-->
+        <!--            <groupId>com.azure.spring</groupId>-->
+        <!--            <artifactId>spring-cloud-azure-dependencies</artifactId>-->
+        <!--            <version>4.14.0</version>-->
+        <!--            <type>pom</type>-->
+        <!--            <scope>import</scope>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.azure.spring</groupId>-->
+        <!--            <artifactId>spring-cloud-azure-starter-servicebus</artifactId>-->
+        <!--            <version>5.8.0</version>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-messaging-servicebus</artifactId>

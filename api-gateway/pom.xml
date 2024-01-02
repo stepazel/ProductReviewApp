@@ -12,7 +12,7 @@
     <artifactId>api-gateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>api-gateway</name>
-    <description>Api Gateway</description>
+    <description>api-gateway</description>
     <properties>
         <java.version>19</java.version>
         <!-- automatically run annotation processors within the incremental compilation -->
@@ -131,11 +131,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <compilerArgs>
-                        <arg>-parameters</arg>
-                    </compilerArgs>
-                </configuration>
             </plugin>
 
             <plugin>
