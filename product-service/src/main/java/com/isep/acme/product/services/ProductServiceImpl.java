@@ -108,4 +108,25 @@ public class ProductServiceImpl implements ProductService {
     public void deleteBySku(String sku) {
         repository.deleteBySku(sku);
     }
+
+    @Override
+    public ProductDTO accept(String sku, String username) {
+        final Optional<Product> productToUpdate = repository.findBySku(sku);
+        if (productToUpdate.isEmpty())
+            return null;
+
+        var product = productToUpdate.get();
+        if (product.getAcceptVoteUsername() == null || !product.getAcceptVoteUsername().equals(username)) {
+            product.accept(username);
+        }
+
+        if (product.getAcceptVotesCount() >= 2) {
+            product.publish();
+        }
+
+        Product productUpdated = repository.save(productToUpdate.get());
+
+        return productUpdated.toDto();
+
+    }
 }

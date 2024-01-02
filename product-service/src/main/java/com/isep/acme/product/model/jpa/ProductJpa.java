@@ -21,32 +21,42 @@ public class ProductJpa {
 
     @Column(nullable = false)
     private String description;
-    /*
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<Review> review = new ArrayList<Review>(); */
+
+    @Column(nullable = false)
+    private boolean isPublished;
+
+    @Column(nullable = false)
+    private int acceptVotesCount;
+
+    @Column(nullable = false)
+    private String acceptVoteUsername;
 
     public ProductJpa() {
     }
 
-    public ProductJpa(final Long productID, final String sku) {
-        this.productID = Objects.requireNonNull(productID);
-        setSku(sku);
-    }
+//    public ProductJpa(final Long productID, final String sku) {
+//        this.productID = Objects.requireNonNull(productID);
+//        setSku(sku);
+//    }
 
-    public ProductJpa(final Long productID, final String sku, final String designation, final String description) {
-        this(productID, sku);
-        setDescription(description);
-        setDesignation(designation);
-    }
+//    public ProductJpa(final Long productID, final String sku, final String designation, final String description) {
+//        this(productID, sku);
+//        setDescription(description);
+//        setDesignation(designation);
+//    }
 
     public ProductJpa(final String sku) {
         setSku(sku);
     }
 
-    public ProductJpa(final String sku, final String designation, final String description) {
+    public ProductJpa(final String sku, final String designation, final String description, boolean isPublished, int acceptVotesCount, String acceptVoteUsername) {
         this(sku);
         setDescription(description);
         setDesignation(designation);
+
+        this.isPublished = isPublished;
+        this.acceptVotesCount = acceptVotesCount;
+        this.acceptVoteUsername = acceptVoteUsername;
     }
 
     public void setDesignation(String designation) {

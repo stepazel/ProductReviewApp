@@ -19,9 +19,9 @@ public class Product {
     private Long   productID;
     private String designation;
     private String description;
-    /*
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<Review> review = new ArrayList<Review>(); */
+    private boolean isPublished;
+    private int acceptVotesCount;
+    private String acceptVoteUsername;
 
     public Product(final Long productID, final String sku) {
         this.productID = Objects.requireNonNull(productID);
@@ -42,6 +42,15 @@ public class Product {
         this(sku);
         setDescription(description);
         setDesignation(designation);
+    }
+
+    public void publish() {
+        this.isPublished = true;
+    }
+
+    public void accept(String username) {
+        this.acceptVotesCount++;
+        this.acceptVoteUsername = username;
     }
 
     public void setDesignation(String designation) {
@@ -94,9 +103,9 @@ public class Product {
         return new ProductMongo(getSku(), getDesignation(), getDescription());
     }
 
-    public ProductJpa toJpaModel() {
-        return new ProductJpa(getSku(), getDesignation(), getDescription());
-    }
+//    public ProductJpa toJpaModel() {
+//        return new ProductJpa(getSku(), getDesignation(), getDescription());
+//    }
     
     public ProductDetailDTO toDetailDto() {
         return new ProductDetailDTO(getSku(), getDesignation(), getDescription());

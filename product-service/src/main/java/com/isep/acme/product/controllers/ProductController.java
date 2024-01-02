@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -27,6 +28,17 @@ class ProductController {
     @Autowired
     private ProductService service;
 
+    @PatchMapping("{sku}/accept")
+    public ResponseEntity<ProductDTO> accept(@PathVariable("sku") final String sku) {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        final String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        final ProductDTO product = service.accept(sku, "nekdo");
+
+        if (product == null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found.");
+        else
+            return ResponseEntity.ok().body(product);
+    }
 
     @Operation(summary = "gets catalog, i.e. all products")
     @GetMapping

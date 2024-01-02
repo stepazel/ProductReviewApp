@@ -22,6 +22,18 @@ public class ProductController {
         this.httpService = httpService;
     }
 
+    @PatchMapping("/{sku}/accept")
+    public ResponseEntity<?> publish(@PathVariable String sku) throws IOException, InterruptedException {
+        try {
+            String url      = productServiceUrl + "/products/" + sku + "/accept";
+            Object response = httpService.sendPatchRequest(url, Object.class);
+            return ResponseEntity.ok().body(response);
+        } catch (IOException | InterruptedException e) {
+            ResponseEntity.internalServerError().body("Error accepting product with SKU: " + sku);
+            throw e;
+        }
+    }
+
     @GetMapping
     public ResponseEntity<?> getCatalog() throws IOException, InterruptedException {
         try {
