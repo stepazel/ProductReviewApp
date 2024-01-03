@@ -1,0 +1,29 @@
+@startuml
+!theme plain
+
+component "HTTPS Clients" as Clients
+component "API Gateway" as Gateway
+component "Product Service" as ProductService
+component "Review Service" as ReviewService
+component "Vote Service" as VoteService
+component "RabbitMQ" as Broker
+
+Clients -left-( API : HTTPS requests
+API -- Gateway
+
+Gateway --( "Review API" : HTTPS requests
+Gateway --( "Vote API" : HTTPS requests
+Gateway --( "Product API" : HTTPS requests
+
+"NumbersApi" )-up- ReviewService : HTTP requests
+
+"Review API" -- ReviewService
+"Product API" -- ProductService
+"Vote API" -- VoteService
+
+ReviewService --( "Publish/Subscribe" : AMQP
+ProductService --( "Publish/Subscribe" : AMQP
+VoteService --( "Publish/Subscribe" : AMQP
+
+"Publish/Subscribe" -- Broker
+@enduml

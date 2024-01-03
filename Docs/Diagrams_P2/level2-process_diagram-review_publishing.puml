@@ -1,0 +1,43 @@
+@startuml
+!theme plain
+
+autonumber
+
+title Review Publishing Process
+
+actor "Reviewer" as Reviewer #Yellow
+actor "Recommended Users" as RecommendedUsers #Blue
+participant ":API Gateway" as Gateway #lightBlue
+box ":Review Microservice" #lightGreen
+    participant ":Review Controller" as ReviewCtrl #YellowGreen
+    participant ":Review Service" as ReviewService #YellowGreen
+    participant ":Approval Service" as ApprovalSvc #YellowGreen
+end box
+participant "RabbitMQ" as Broker #orange
+
+Reviewer -> Gateway : [POST /reviews/create] Create New Review
+activate Gateway
+Gateway -> ReviewCtrl : Route to Review Service
+activate ReviewCtrl
+ReviewCtrl -> ReviewService : Initiate Review Creation
+activate ReviewService
+
+loop Approval from Recommended Users
+    RecommendedUsers -> Gateway : [GET /reviews/pending] & [POST /approvalResponse]
+    activate Gateway
+    Gateway -> ApprovalSvc : Process Approval/Denial
+    activate ApprovalSvc
+    ApprovalSvc -> ReviewService : Update Approval Status
+    deactivate ApprovalSvc
+    deactivate Gateway
+end
+
+ReviewService -> Broker : [PUBLISH Event] Review Status Update
+activate Broker
+Broker --> Gateway : Notify of Review Status
+deactivate Broker
+deactivate ReviewService
+deactivate ReviewCtrl
+deactivate Gateway
+
+@enduml

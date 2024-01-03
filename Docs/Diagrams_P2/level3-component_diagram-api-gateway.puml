@@ -1,0 +1,90 @@
+@startuml
+!theme plain
+
+component "API Gateway" as ApiGatewayService {
+    Port "80" as port80
+    component "Authentication API" as AuthApi <<class>>
+    component "Authentication Request" as AuthReq <<class>>
+    component "User Controller" as UserControl <<class>>
+    component "Product Controller" as ProductControl <<class>>
+    component "Review Controller" as ReviewControl <<class>>
+    component "Vote Controller" as VoteControl <<class>>
+    component "User Mapper" as UserMapper <<abstract class>>
+    component "User Details Service" as UserSvc <<interface>>
+    component "HTTP Service" as HTTPSvc <<class>>
+    component "User Service" as UserSvcImpl <<class>>
+    component "User DTO" as UserDTO <<class>>
+    component "User Model" as UserModel <<class>>
+    component "User Model Mongo" as UserModelDoc <<class>>
+    component "User Model JPA" as UserModelRel <<class>>
+    component "User Model Neo4j" as UserModelGraph <<class>>
+    component "User Repository" as UserRepo <<interface>>
+    component "User Repository Document" as UserRepoDoc <<class>>
+    component "User Repository Mongo" as UserRepoMongo <<interface>>
+    component "User Repository Relational" as UserRepoRel <<class>>
+    component "User Repository JPA" as UserRepoSQL <<interface>>
+    component "User Repository Graph" as UserRepoGraph <<class>>
+    component "User Repository Neo4j" as UserRepoNeo4j <<interface>>
+    component "MongoDB Driver" as MongoDriver <<driver>>
+    component "Neo4j Driver" as Neo4jDriver <<driver>>
+    component "H2 Driver" as H2Driver <<driver>>
+    Port "27017" as portMongo
+    Port "7687" as portNeo4j
+}
+
+database "API Gateway Database" as ApiDB <<database>>
+
+port80 -up- "REST API" : exposes
+ProductControl -up- port80
+ReviewControl -up- port80
+VoteControl -up- port80
+
+UserControl -up- port80
+
+AuthApi -up- port80
+
+UserSvcImpl -down-> UserSvc : implements
+UserSvcImpl -down-> UserMapper : uses
+
+ProductControl -down-> HTTPSvc : uses
+ReviewControl -down-> HTTPSvc : uses
+VoteControl -down-> HTTPSvc : uses
+
+UserControl -down-> UserSvcImpl : uses
+UserControl -down-> UserDTO : data transfer
+
+AuthApi -down-> UserMapper : uses
+AuthApi -down-> UserDTO : data transfer
+
+AuthApi -down-> AuthReq : receives
+
+UserSvcImpl -down-> UserRepo : uses
+
+UserModel <-down- UserSvcImpl : uses
+
+UserRepo -down-> UserModel : uses
+UserRepoMongo -down-> UserModelDoc : uses
+UserRepoRel -down-> UserModelRel : uses
+UserRepoGraph -down-> UserModelGraph : uses
+
+UserRepoDoc -right-> MongoDriver : uses
+UserRepoRel -down-> H2Driver : uses
+UserRepoGraph -down-> Neo4jDriver : uses
+
+UserRepoDoc -down-> UserRepoMongo : implements
+UserRepoRel -down-> UserRepoSQL : implements
+UserRepoGraph -down-> UserRepoNeo4j : implements
+
+UserRepoDoc -down-> UserRepo : implements
+UserRepoRel -down-> UserRepo : implements
+UserRepoGraph -down-> UserRepo : implements
+
+H2Driver -down-> ApiDB : persists to
+
+MongoDriver -up-> portMongo : connects to
+Neo4jDriver -up-> portNeo4j : connects to
+
+portMongo -up-> ApiDB : persists to
+portNeo4j -up-> ApiDB : persists to
+
+@enduml

@@ -1,0 +1,36 @@
+@startuml
+!theme plain
+
+title Login Process
+
+actor "User" as User #Yellow
+box ":API Gateway"  #lightBlue
+    participant "Auth Controller" as AuthCtrl #lightGreen
+    participant "Auth Service" as AuthService #lightGreen
+end box
+database "User Database" as UserDB #grey
+
+' User sends login request
+User -> AuthCtrl : [POST /login] Request Login
+activate AuthCtrl
+
+' Authentication process
+AuthCtrl -> AuthService : Process Login Request
+activate AuthService
+AuthService -> UserDB : Query User Credentials
+activate UserDB
+UserDB --> AuthService : Return Credentials
+deactivate UserDB
+
+' Generate response
+AuthService --> AuthCtrl : Authentication Result
+deactivate AuthService
+
+' Final response to User
+alt Authentication Successful
+    AuthCtrl --> User : [200 OK] Login Successful
+else Authentication Failed
+    AuthCtrl --> User : [401 Unauthorized] Login Failed
+end
+
+@enduml

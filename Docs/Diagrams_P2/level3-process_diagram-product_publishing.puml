@@ -1,0 +1,137 @@
+@startuml
+!theme plain
+
+autonumber
+
+title Product Publishing Workflow
+
+actor "Initiating Product Manager" as InitiatingPM #Yellow
+actor "Approving Product Managers" as ApprovingPM #Blue
+participant ":API Gateway" as Gateway #lightBlue
+box "Product Microservice" #lightGreen
+    participant "Product Controller" as ProductCtrl #YellowGreen
+    participant "Product Service" as ProductService #YellowGreen
+    participant "SKU Generator Service" as SKUService #YellowGreen
+    participant "ProductDTO" as ProductDTO #YellowGreen
+    participant "Product Model" as ProductModel #YellowGreen
+    participant "Product Repository" as ProductRepo #YellowGreen
+    participant "Approval Service" as ApprovalSvc #YellowGreen
+end box
+participant "RabbitMQ" as Broker #orange
+database "Product Database" as ProductDB #grey
+
+' API Gateway subscribes to RabbitMQ topics
+Gateway -> Broker : [SUBSCRIBE /productPublished] Subscribe to Published Event
+activate Broker
+Broker --> Gateway : Subscription Confirmed
+deactivate Broker
+
+Gateway -> Broker : [SUBSCRIBE /productDenied] Subscribe to Denied Event
+activate Broker
+Broker --> Gateway : Subscription Confirmed
+deactivate Broker
+
+' Product Creation Process
+InitiatingPM -> Gateway : [POST /products/create] Create New Product
+activate Gateway
+Gateway -> ProductCtrl : Route to Product Service
+activate ProductCtrl
+ProductCtrl -> ProductService : Initiate Product Creation
+activate ProductService
+
+' SKU Generation if needed
+alt Product has no SKU
+    ProductService -> SKUService : Generate SKU
+    activate SKUService
+    SKUService --> ProductService : Return SKU
+else Product has SKU
+    ' Do nothing
+end
+
+ProductService -> ProductModel : Create Product Model
+activate ProductModel
+ProductModel --> ProductService : Return Product Model
+deactivate ProductModel
+ProductService -> ProductRepo : Store Initial Product Data (Status: Pending)
+activate ProductRepo
+ProductRepo -> ProductDB : [INSERT] Save to Database
+activate ProductDB
+ProductDB --> ProductRepo : [201 Created] Confirm Product Creation
+deactivate ProductDB
+ProductRepo --> ProductService : Product Stored
+deactivate ProductRepo
+' Product Data Transfer and Storage
+ProductService -> ProductDTO : Creates ProductDTO
+activate ProductDTO
+ProductDTO --> ProductService : Return ProductDTO
+deactivate ProductDTO
+ProductService --> ProductCtrl : Return ProductDTO
+deactivate ProductService
+ProductCtrl --> Gateway : Product Creation Routed return ProductDTO
+deactivate ProductCtrl
+Gateway --> InitiatingPM : Product Creation Acknowledged return ProductDTO
+deactivate Gateway
+
+' Approval Process
+loop Approval from Other Managers
+    ApprovingPM -> Gateway : [GET /products/pending] List Pending Products
+    activate Gateway
+    Gateway -> ApprovalSvc : Forward Request
+    activate ApprovalSvc
+    ApprovalSvc -> ProductRepo : Retrieve Pending Products
+    activate ProductRepo
+    ProductRepo -> ProductDB : Query Database
+    activate ProductDB
+    ProductDB --> ProductRepo : Return List
+    deactivate ProductDB
+    ProductRepo --> ApprovalSvc : Send List
+    deactivate ProductRepo
+    ApprovalSvc --> Gateway : Send List
+    deactivate ApprovalSvc
+    Gateway --> ApprovingPM : Display Pending Products
+    deactivate Gateway
+
+    ApprovingPM -> Gateway : [POST /approvalResponse] Submit Approval/Denial
+    activate Gateway
+    Gateway -> ApprovalSvc : Forward Response
+    activate ApprovalSvc
+    ApprovalSvc -> ProductRepo : Process Response
+    activate ProductRepo
+    ProductRepo -> ProductDB : Update Database
+    activate ProductDB
+    ProductDB --> ProductRepo : Update Status
+    deactivate ProductDB
+    ProductRepo --> ApprovalSvc : Response Processed
+    deactivate ProductRepo
+    ApprovalSvc --> Gateway : Response Processed
+    deactivate ApprovalSvc
+    Gateway --> ApprovingPM : Approval/Denial Processed
+    deactivate Gateway
+end
+
+' Final Status Update and Notification
+ProductService -> ProductRepo : Query Approval Status
+activate ProductRepo
+ProductRepo -> ProductDB : Check Status
+activate ProductDB
+ProductDB --> ProductRepo : Return Status
+deactivate ProductDB
+ProductRepo --> ProductService : Status Result
+deactivate ProductRepo
+
+alt All Approvals Received
+    ProductService -> Broker : [PUBLISH /productPublished] Notify of Published Product
+    activate Broker
+    Broker --> Gateway : Published Event Notification
+    Gateway --> InitiatingPM : [200 OK] Confirm Publishing
+else Approval Denied
+    ProductService -> Broker : [PUBLISH /productDenied] Notify of Denied Product
+    activate Broker
+    Broker --> Gateway : Denied Event Notification
+    Gateway --> InitiatingPM : [200 OK] Confirm Denial
+else Insufficient Approvals
+    ' Remain in Pending State
+end
+deactivate Broker
+
+@enduml

@@ -1,0 +1,125 @@
+@startuml
+!theme plain
+
+component "API Gateway" as ApiGatewayService {
+    Port "80" as port80
+
+    Package Authentication {
+        component "Authentication API" as AuthApi <<class>>
+        component "Authentication Request" as AuthReq <<class>>
+    }
+
+    Package Controller {
+        component "User Controller" as UserControl <<class>>
+        component "Product Controller" as ProductControl <<class>>
+        component "Review Controller" as ReviewControl <<class>>
+        component "Vote Controller" as VoteControl <<class>>
+    }
+
+    Package Mapper {
+        component "User Mapper" as UserMapper <<abstract class>>
+    }
+
+    Package Service {
+        component "User Details Service" as UserSvc <<interface>>
+        component "User Service" as UserSvcImpl <<class>>
+        component "HTTP Service" as HTTPSvc <<class>>
+    }
+
+    Package DTO {
+        component "User DTO" as UserDTO <<class>>
+    }
+
+    Package Model {
+        component "User Model" as UserModel <<class>>
+        Package "document" as UserDoc {
+            component "User Model Mongo" as UserModelDoc <<class>>
+        }
+        Package "relational" as UserRel {
+            component "User Model JPA" as UserModelRel <<class>>
+        }
+        Package "graph" as UserGraph {
+            component "User Model Neo4j" as UserModelGraph <<class>>
+        }
+    }
+    Package Repository {
+        component "User Repository" as UserRepo <<interface>>
+        Package "document" {
+            component "User Repository Document" as UserRepoDoc <<class>>
+            component "User Repository Mongo" as UserRepoMongo <<interface>>
+        }
+        Package "relational" {
+            component "User Repository Relational" as UserRepoRel <<class>>
+            component "User Repository JPA" as UserRepoSQL <<interface>>
+        }
+        Package "graph" {
+            component "User Repository Graph" as UserRepoGraph <<class>>
+            component "User Repository Neo4j" as UserRepoNeo4j <<interface>>
+        }
+    }
+
+    Package "DB Driver" {
+            component "MongoDB Driver" as MongoDriver <<driver>>
+            component "Neo4j Driver" as Neo4jDriver <<driver>>
+            component "H2 Driver" as H2Driver <<driver>>
+    }
+
+    Port "27017" as portMongo
+    Port "7687" as portNeo4j
+}
+
+
+database "API Gateway Database" as ApiDB <<database>>
+
+port80 -up- "REST API" : exposes
+
+UserControl -up- port80
+ProductControl -up- port80
+ReviewControl -up- port80
+VoteControl -up- port80
+
+AuthApi -up- port80
+
+UserSvcImpl -right-> UserSvc : implements
+UserSvcImpl -left-> UserMapper : uses
+
+UserControl -down-> UserSvcImpl : uses
+ProductControl -down-> HTTPSvc : uses
+ReviewControl -down-> HTTPSvc : uses
+VoteControl -down-> HTTPSvc : uses
+UserControl -down-> UserDTO : data transfer
+
+AuthApi -down-> UserMapper : uses
+AuthApi -down-> UserDTO : data transfer
+AuthApi -left-> AuthReq : receives
+
+UserSvcImpl -down-> UserRepo : uses
+
+UserModel <-up- UserSvcImpl : uses
+
+UserRepo -up-> UserModel : uses
+UserRepoMongo -up-> UserModelDoc : uses
+UserRepoRel -up-> UserModelRel : uses
+UserRepoGraph -up-> UserModelGraph : uses
+
+UserRepoDoc -down-> MongoDriver : uses
+UserRepoRel -down-> H2Driver : uses
+UserRepoGraph -down-> Neo4jDriver : uses
+
+UserRepoDoc -left-> UserRepoMongo : implements
+UserRepoRel -left-> UserRepoSQL : implements
+UserRepoGraph -right-> UserRepoNeo4j : implements
+
+UserRepoDoc -up-> UserRepo : implements
+UserRepoRel -up-> UserRepo : implements
+UserRepoGraph -up-> UserRepo : implements
+
+H2Driver -down-> ApiDB : persists to
+
+MongoDriver -down-> portMongo : connects to
+Neo4jDriver -down-> portNeo4j : connects to
+
+portMongo -down-> ApiDB : persists to
+portNeo4j -down-> ApiDB : persists to
+
+@enduml

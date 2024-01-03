@@ -1,0 +1,103 @@
+@startuml
+!theme plain
+
+Component ProductService {
+    Port "8081" as port8081
+
+    Package Controller {
+        component "Product Controller" as ProductCtrl <<class>>
+    }
+    Package Service {
+        component "Product Service" as ProductSvc <<interface>>
+        component "Product Service Impl" as ProductSvcImpl <<class>>
+        component "SKU Generator" as SKUGeneratorI <<interface>>
+        component "SKU Generator Impl (Hash)" as SKUGenerator <<class>>
+        component "SKU Generator Impl (Random)" as SKUGeneratorRandom <<class>>
+    }
+    Package DTO {
+        component "Product DTO" as ProductDTO <<class>>
+    }
+    Package Model {
+        component "Product Model" as ProductModel<<class>>
+        Package "documentModel" as documentModel {
+            component "Product Model Mongo" as ProductModelMongo <<class>>
+        }
+        Package "relationalModel" as relationalModel {
+            component "Product Model JPA" as ProductModelJPA <<class>>
+        }
+        Package "graphModel" as graphModel {
+            component "Product Model Neo4j" as ProductModelNeo4j <<class>>
+        }
+    }
+    Package Repository {
+        component "Product Repository" as ProductRepo <<interface>>
+        Package "implementations" {
+            Package "document" {
+                component "Product Repository Document" as ProductRepoDoc <<class>>
+                component "Product Repository Mongo" as ProductRepoMongo <<interface>>
+            }
+            Package "relational" {
+                component "Product Repository Relational" as ProductRepoRel <<class>>
+                component "Product Repository JPA" as ProductRepoJPA <<interface>>
+            }
+            Package "graph" {
+                component "Product Repository Graph" as ProductRepoGraph <<class>>
+                component "Product Repository Neo4j" as ProductRepoNeo4j <<interface>>
+            }
+        }
+    }
+    Package "DB Driver" {
+        component "MongoDB Driver" as MongoDriver <<driver>>
+        component "Neo4j Driver" as Neo4jDriver <<driver>>
+        component "H2 Driver" as H2Driver <<driver>>
+    }
+
+    Port "27017" as portMongo
+    Port "7687" as portNeo4j
+}
+
+database "Product Database" as ProductDB <<database>>
+
+port8081 -up-> "REST API" : exposes
+
+ProductCtrl -up- port8081
+
+ProductSvcImpl -left-> SKUGeneratorI : uses
+ProductSvcImpl -up-> ProductSvc : implements
+
+ProductRepoDoc -up-> ProductRepo : implements
+ProductRepoDoc -right-> ProductRepoMongo : uses
+ProductRepoMongo -up-> ProductModelMongo : manipulates
+
+SKUGeneratorI <-up- SKUGenerator : implements
+SKUGeneratorI <-up- SKUGeneratorRandom : implements
+
+ProductRepoRel -up-> ProductRepo : implements
+ProductRepoRel -right-> ProductRepoJPA : uses
+ProductRepoJPA -up-> ProductModelJPA : manipulates
+
+ProductRepoGraph -up-> ProductRepo : implements
+ProductRepoGraph -right-> ProductRepoNeo4j : uses
+ProductRepoNeo4j -up-> ProductModelNeo4j : manipulates
+
+ProductRepoDoc -down-> MongoDriver : uses
+ProductRepoRel -down-> H2Driver : uses
+ProductRepoGraph -down-> Neo4jDriver : uses
+
+ProductSvcImpl -down-> ProductModel : manipulates
+ProductRepo -up-> ProductModel : manipulates
+
+ProductCtrl -down-> ProductSvcImpl : uses
+ProductCtrl -down-> ProductDTO : data transfer
+ProductSvcImpl -left-> ProductDTO : data transfer
+ProductSvcImpl -down-> ProductRepo : interacts with
+
+H2Driver -down-> ProductDB : persists to
+
+MongoDriver -down-> portMongo : connects to
+Neo4jDriver -down-> portNeo4j : connects to
+
+portMongo -down-> ProductDB : persists to
+portNeo4j -down-> ProductDB : persists to
+
+@enduml

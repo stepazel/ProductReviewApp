@@ -1,0 +1,27 @@
+@startuml
+!theme plain
+
+autonumber
+
+title Review Publishing Process
+
+actor "Reviewer" as Reviewer #Yellow
+actor "Recommended Users" as RecommendedUsers #Blue
+participant ":API Gateway" as Gateway #lightBlue
+participant ":Review Microservice" as ReviewMicroservice #lightGreen
+
+Reviewer -> Gateway : Request to Publish Review
+activate Gateway
+Gateway -> ReviewMicroservice : Initiate Review Publishing Process
+activate ReviewMicroservice
+
+loop Approval Process
+    RecommendedUsers -> Gateway : Approval/Denial Actions
+    Gateway -> ReviewMicroservice : Update Approval Status
+end
+
+Gateway --> Reviewer : Confirm Publishing Outcome
+deactivate Gateway
+deactivate ReviewMicroservice
+
+@enduml

@@ -1,0 +1,123 @@
+@startuml
+!theme plain
+
+autonumber
+
+title Review Publishing Process
+
+actor "Reviewer" as Reviewer #Yellow
+actor "Approving Users" as ApprovingUsers #Blue
+participant ":API Gateway" as Gateway #lightBlue
+box "Review Microservice" #lightGreen
+    participant "Review Controller" as ReviewCtrl #YellowGreen
+    participant "Review Service" as ReviewService #YellowGreen
+    participant "Review Repository" as ReviewRepo #YellowGreen
+    participant "Review Model" as ReviewModel #YellowGreen
+    participant "Review DTO" as ReviewDTO #YellowGreen
+    participant "Approval Service" as ApprovalSvc #YellowGreen
+end box
+participant "RabbitMQ" as Broker #orange
+database "Review Database" as ReviewDB #grey
+
+' API Gateway subscribes to RabbitMQ topics
+Gateway -> Broker : [SUBSCRIBE /reviewPublished] Subscribe to Published Event
+activate Broker
+Broker --> Gateway : Subscription Confirmed
+deactivate Broker
+Gateway -> Broker : [SUBSCRIBE /reviewDenied] Subscribe to Denied Event
+activate Broker
+Broker --> Gateway : Subscription Confirmed
+deactivate Broker
+
+' Review Creation Process
+Reviewer -> Gateway : [POST /reviews/create] Submit Review
+activate Gateway
+Gateway -> ReviewCtrl : Route to Review Service
+activate ReviewCtrl
+ReviewCtrl -> ReviewService : Initiate Review Creation
+activate ReviewService
+ReviewService -> ReviewModel : Create Review Model
+activate ReviewModel
+ReviewModel -> ReviewRepo : Save Review (Status: Pending)
+activate ReviewRepo
+ReviewRepo -> ReviewDB : [INSERT] Store Review Data
+activate ReviewDB
+ReviewDB --> ReviewRepo : [201 Created] Confirm Review Storage
+deactivate ReviewDB
+ReviewRepo --> ReviewService : Review Stored
+deactivate ReviewRepo
+ReviewService -> ReviewDTO : Convert to DTO
+activate ReviewDTO
+ReviewDTO --> ReviewService : Return ReviewDTO
+deactivate ReviewDTO
+ReviewService --> ReviewCtrl : Review Creation Complete
+deactivate ReviewService
+ReviewCtrl --> Gateway : Review Submission Complete
+deactivate ReviewCtrl
+Gateway --> Reviewer : [200 OK] Review Submitted Successfully
+deactivate Gateway
+
+' Approval Process
+loop Approval from Other Users
+    ApprovingUsers -> Gateway : [GET /reviews/pending] Request Pending Reviews
+    activate Gateway
+    Gateway -> ApprovalSvc : Forward Request
+    activate ApprovalSvc
+    ApprovalSvc -> ReviewRepo : Retrieve Pending Reviews
+    activate ReviewRepo
+    ReviewRepo -> ReviewDB : Query Database
+    activate ReviewDB
+    ReviewDB --> ReviewRepo : Return List
+    deactivate ReviewDB
+    ReviewRepo --> ApprovalSvc : Send List
+    deactivate ReviewRepo
+    ApprovalSvc --> Gateway : Return List
+    deactivate ApprovalSvc
+    Gateway --> ApprovingUsers : Display Pending Reviews
+    deactivate Gateway
+
+    ApprovingUsers -> Gateway : [POST /approvalResponse] Submit Approval/Denial
+    activate Gateway
+    Gateway -> ApprovalSvc : Process Response
+    activate ApprovalSvc
+    ApprovalSvc -> ReviewRepo : Update Review Status
+    activate ReviewRepo
+    ReviewRepo -> ReviewDB : [UPDATE] Change Status
+    activate ReviewDB
+    ReviewDB --> ReviewRepo : Status Updated
+    deactivate ReviewDB
+    ReviewRepo --> ApprovalSvc : Status Updated
+    deactivate ReviewRepo
+    ApprovalSvc --> Gateway : Response Processed
+    deactivate ApprovalSvc
+    Gateway --> ApprovingUsers : Approval/Denial Acknowledged
+    deactivate Gateway
+end
+
+' Final Status Update and Notification
+ReviewService -> ReviewRepo : Check Final Status
+activate ReviewService
+activate ReviewRepo
+ReviewRepo -> ReviewDB : Query Approval Status
+activate ReviewDB
+ReviewDB --> ReviewRepo : Return Status
+deactivate ReviewDB
+ReviewRepo --> ReviewService : Status Result
+deactivate ReviewRepo
+
+alt All Approvals Received
+    ReviewService -> Broker : [PUBLISH /reviewPublished] Publish Review Event
+    activate Broker
+    Broker --> Gateway : Review Published Notification
+       Gateway --> Reviewer : [200 OK] Confirm Review Publishing
+else Approval Denied
+    ReviewService -> Broker : [PUBLISH /reviewDenied] Publish Denial Event
+    Broker --> Gateway : Review Denial Notification
+    Gateway --> Reviewer : [200 OK] Confirm Review Denial
+else Insufficient Approvals
+    ' Remain in Pending State
+end
+deactivate Broker
+deactivate ReviewService
+
+@enduml

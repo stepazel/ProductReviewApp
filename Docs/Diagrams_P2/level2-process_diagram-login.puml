@@ -1,0 +1,25 @@
+@startuml
+!theme plain
+
+title Login Process
+
+actor "User" as User
+box :API Gateway #lightBlue
+    participant ":Authentication Controller" as AuthCtrl #lightGreen
+    participant ":Authentication Service" as AuthService #lightGreen
+end box
+database "User Database" as UserDB #grey
+
+User -> AuthCtrl : [POST /login] Request Login
+activate AuthCtrl
+AuthCtrl -> AuthService : Process Login
+activate AuthService
+AuthService -> UserDB : Validate Credentials
+activate UserDB
+UserDB --> AuthService : Authentication Result
+AuthService --> AuthCtrl : Process Result
+AuthCtrl --> User : Route Response
+deactivate AuthService
+deactivate AuthCtrl
+
+@enduml
