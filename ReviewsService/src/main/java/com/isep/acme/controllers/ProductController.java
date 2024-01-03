@@ -1,19 +1,14 @@
 package com.isep.acme.controllers;
 
-import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.messaging.servicebus.ServiceBusMessage;
-import com.azure.messaging.servicebus.ServiceBusReceiverClient;
-import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.isep.acme.model.Product;
+import com.isep.acme.model.dto.CreateProductDTO;
 import com.isep.acme.model.dto.ProductDTO;
 import com.isep.acme.model.dto.ProductDetailDTO;
 import com.isep.acme.services.ProductService;
-import com.isep.acme.model.dto.CreateProductDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,14 +26,14 @@ class ProductController {
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     private final ProductService service;
-    private final String productServiceUrl = "http://localhost:8081/";
-    private final RestTemplate restTemplate = new RestTemplate();
-    private final ServiceBusSenderClient senderClient;
-    private final ServiceBusReceiverClient receiverClient;
+    private final String         productServiceUrl = "http://localhost:8081/";
+    private final RestTemplate   restTemplate      = new RestTemplate();
+    /*private final ServiceBusSenderClient senderClient;
+    private final ServiceBusReceiverClient receiverClient;*/
 
-    public ProductController(ProductService service, @Value("${azure.servicebus.connection-string}") String connectionString){
+    public ProductController(ProductService service) {
         this.service = service;
-        this.senderClient = new ServiceBusClientBuilder()
+        /*this.senderClient = new ServiceBusClientBuilder()
                 .connectionString(connectionString)
                 .sender()
                 .queueName("productReviewQueue")
@@ -47,7 +42,7 @@ class ProductController {
                 .connectionString(connectionString)
                 .receiver()
                 .queueName("productReviewQueue")
-                .buildClient();
+                .buildClient();*/
     }
 
 
@@ -64,7 +59,7 @@ class ProductController {
 
 
         final var products = service.getCatalog();
-//        final var response = this.restTemplate.getForObject(this.productServiceUrl, Iterable.class);
+        //        final var response = this.restTemplate.getForObject(this.productServiceUrl, Iterable.class);
 
         //
         return ResponseEntity.ok().body(products);
@@ -93,13 +88,13 @@ class ProductController {
     @Operation(summary = "finds product by sku")
     @GetMapping(value = "/{sku}")
     public ResponseEntity<ProductDTO> getProductBySku(@PathVariable("sku") final String sku) {
-//        senderClient.sendMessage(new ServiceBusMessage("Hello, world!"));
-//        System.out.print("Sent a message to queue");
-//        senderClient.close();
-//
-//        var message = receiverClient.receiveMessages(1).iterator().next();
-//        System.out.printf("Message received: %s from queue: %s%n", message.getBody(), receiverClient.getEntityPath());
-//        receiverClient.close();
+        //        senderClient.sendMessage(new ServiceBusMessage("Hello, world!"));
+        //        System.out.print("Sent a message to queue");
+        //        senderClient.close();
+        //
+        //        var message = receiverClient.receiveMessages(1).iterator().next();
+        //        System.out.printf("Message received: %s from queue: %s%n", message.getBody(), receiverClient.getEntityPath());
+        //        receiverClient.close();
 
         final Optional<ProductDTO> product = service.findBySku(sku);
 
@@ -133,7 +128,7 @@ class ProductController {
     @Operation(summary = "updates a product")
     @PatchMapping(value = "/{sku}")
     public ResponseEntity<ProductDTO> Update(@PathVariable("sku") final String sku,
-                                             @RequestBody final Product product) {
+            @RequestBody final Product product) {
 
         final ProductDTO productDTO = service.updateBySku(sku, product);
 
